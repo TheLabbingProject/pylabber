@@ -1,0 +1,28 @@
+.DS_Store
+
+# Cache directories and byte-code files
+*.py[cod]
+__pycache__/
+.pytest_cache/
+
+# Environment variables (automatically loaded by pipenv)
+.env
+
+# Distribution directories and files
+dist/
+build/
+*.egg-info
+*.spec
+
+# Static files collected with "manage.py collectstatic"
+static/
+
+# JS modules
+node_modules/
+
+# Development database
+db.sqlite3
+
+# Editor directories and files
+.idea
+.vscode

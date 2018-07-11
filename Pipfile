@@ -5,8 +5,14 @@ url = "https://pypi.org/simple"
 
 [packages]
 django = "*"
+django-crispy-forms = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.7"
 
 [dev-packages]
+yapf = "*"
+"flake8" = "*"
+ipython = "*"
+pytest = "*"

@@ -1,4 +1,4 @@
-{% extends 'study_list.html' %} {% block study-content %}
+{% extends 'studies.html' %} {% block study-content %}
 <div class="study-entry">
     <h2>{{ object.name }}</h2>
     <hr>
@@ -17,6 +17,4 @@
     <a href="{% url 'study_edit' study.pk %}">Edit</a> |
     <a href="{% url 'study_delete' study.pk %}">Delete</a>
 </p>
-<p>Back to
-    <a href="{% url 'study_list' %}">All Studies</a>.</p>
 {% endblock study-content %}

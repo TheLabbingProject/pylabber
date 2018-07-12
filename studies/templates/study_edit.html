@@ -1,6 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'studies.html' %} {% block study-content %}
 <h1>Edit</h1>
 <form action="" method="post">{% csrf_token %} {{ form.as_p }}
     <button class="btn btn-info ml-2" type="submit">Update</button>
 </form>
-{% endblock %}
+{% endblock study-content %}

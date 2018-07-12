@@ -1,16 +1,23 @@
-{% extends 'base.html' %} {% block title %}Studies{% endblock title %} {% block content %}
+{% extends 'base.html' %} {% block content %}
 
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="navbar-fixed-left" id="studies-sidebar">
-            <ul class="nav flex-column-sm">
-                {% block study-list %} {% endblock study-list %}
-            </ul>
-        </div>
-        <div class="col offset-2" id="study-content">
-            {% block study-content %} {% endblock study-content %}
-        </div>
+<div class="row">
+    <nav class="nav flex-column nav-fill">
+        <ul class="navbar-nav">
+            {% for study in object_list %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'study_detail' study.id %}">{{ study.name }}</a>
+            </li>
+            {% endfor %}
+            <li class="nav-item">
+                <a href="{% url 'study_new' %}">
+                    <span class="fas fa-plus-square"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="col offset-2" id="study-content">
+        {% block study-content %} {% endblock study-content %}
     </div>
 </div>
 

@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title %}Studies{% endblock title %} {% block content %}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="navbar-fixed-left" id="studies-sidebar">
+            <ul class="nav flex-column-sm">
+                {% block study-list %} {% endblock study-list %}
+            </ul>
+        </div>
+        <div class="col offset-2" id="study-content">
+            {% block study-content %} {% endblock study-content %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

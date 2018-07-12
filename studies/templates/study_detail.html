@@ -1,0 +1,22 @@
+{% extends 'study_list.html' %} {% block study-content %}
+<div class="study-entry">
+    <h2>{{ object.name }}</h2>
+    <hr>
+    <p>Description:</p>
+    <p>{{ object.description }}</p>
+    <hr>
+    <p>Collaborators:</p>
+    {{ object.collaborators.all | join:', ' }} {% comment %} {% for collaborator in object.collaborators.all %}
+    <p>{{ collaborator.get_full_name }}</p>
+    {% endfor %} {% endcomment %}
+    <hr>
+    <p>Created: {{ object.created_at }}</p>
+    <hr>
+</div>
+<p>
+    <a href="{% url 'study_edit' study.pk %}">Edit</a> |
+    <a href="{% url 'study_delete' study.pk %}">Delete</a>
+</p>
+<p>Back to
+    <a href="{% url 'study_list' %}">All Studies</a>.</p>
+{% endblock study-content %}

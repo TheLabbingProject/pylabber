@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     # Local
-    'accounts.apps.AccountsConfig',
+    'accounts',
     'studies',
 ]
 
@@ -89,11 +89,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailModelBackend',
-    'django.contrib.auth.backends.ModelBackend'
-]
 
 AUTH_USER_MODEL = 'accounts.User'
 

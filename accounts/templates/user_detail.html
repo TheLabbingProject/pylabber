@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% load crispy_forms_tags %} {% block title %} User Profile {% endblock %} {% block content %}
+
+<h3>{{ object.get_full_name }}</h3>
+<p>{{ object.email }}</p>
+
+<hr>
+
+<p>Dath of Birth: {{ object.profile.date_of_birth }}</p>
+<p>Institute: {{ object.profile.institute }}</p>
+<p>Bio: {{ object.profile.bio }}</p>
+
+<p>
+    <a href="{% url 'profile_edit' object.profile.id %}">Edit</a>
+</p>
+{% endblock content %}

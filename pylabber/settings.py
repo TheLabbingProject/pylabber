@@ -14,9 +14,10 @@ import os
 
 import environ
 
-env = environ.Env(DEBUG=(bool, False), ALLOWED_HOSTS=(list, []))
-
-environ.Env.read_env()
+env = environ.Env(
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,6 +36,7 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +48,6 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     # Local
-    'accounts',
     'studies',
 ]
 
@@ -90,6 +91,11 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailModelBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
@@ -132,8 +138,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'node_modules'),
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

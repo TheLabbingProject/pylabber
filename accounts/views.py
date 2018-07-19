@@ -7,13 +7,15 @@ from . import models
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = models.User
     template_name = 'user_detail.html'
+    context_object_name = 'object'
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Profile
-    template_name = 'profile_edit.html'
+    template_name = 'profile_update.html'
     fields = [
         'date_of_birth',
         'institute',
         'bio',
     ]
+    # TODO: Fix permissions so that other users can't access profile edit page

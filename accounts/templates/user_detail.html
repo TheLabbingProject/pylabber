@@ -5,11 +5,13 @@
 
 <hr>
 
-<p>Dath of Birth: {{ object.profile.date_of_birth }}</p>
+<p>Date of Birth: {{ object.profile.date_of_birth }}</p>
 <p>Institute: {{ object.profile.institute }}</p>
 <p>Bio: {{ object.profile.bio }}</p>
 
+
+{% if user.id == object.id %}
 <p>
-    <a href="{% url 'profile_edit' object.profile.id %}">Edit</a>
+    <a href="{% url 'profile_update' object.profile.id %}">Edit</a>
 </p>
-{% endblock content %}
+{% endif %} {% endblock content %}

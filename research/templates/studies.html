@@ -4,7 +4,7 @@
 <div class="row">
     <nav class="nav flex-column nav-fill">
         <ul class="navbar-nav">
-            {% for study in object_list %}
+            {% for study in studies %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'study_detail' study.id %}">{{ study.name }}</a>
             </li>

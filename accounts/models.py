@@ -17,6 +17,9 @@ class User(AbstractUser):
         else:
             return self.email
 
+    def __str__(self):
+        return self.get_full_name()
+
 
 class Profile(models.Model):
     user = models.OneToOneField(

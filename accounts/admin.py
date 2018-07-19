@@ -13,12 +13,18 @@ class ProfileInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline, )
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
-                    'get_institute')
+    list_display = (
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'get_institute',
+        'is_staff',
+    )
     list_select_related = ('profile', )
 
     def get_institute(self, instance):
-        return instance.profile.institite
+        return instance.profile.institute
 
     get_institute.short_description = 'Institute'
 
@@ -29,4 +35,3 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
-# admin.site.register(Profile)

@@ -14,6 +14,7 @@ import os
 
 import environ
 
+environ.Env.read_env()
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),

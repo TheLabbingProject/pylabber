@@ -14,7 +14,7 @@
     <hr>
 </div>
 <p>
-    <a href="{% url 'study_edit' study.pk %}">Edit</a> |
-    <a href="{% url 'study_delete' study.pk %}">Delete</a>
+    <a href="{% url 'study_update' study.id %}">Edit</a> |
+    <a href="{% url 'study_delete' study.id %}">Delete</a>
 </p>
 {% endblock study-content %}

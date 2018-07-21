@@ -151,4 +151,5 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# 3rd party application settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

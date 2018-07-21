@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block content %}
+<div class="subject-entry">
+    <p>First Name: {{ object.first_name }}</p>
+    <p>Last Name: {{ object.last_name }}</p>
+    <p>Email: {{ object.email }}</p>
+    <p>Phone: {{ object.phone_number }}</p>
+    <p>Sex: {{ object.sex }}</p>
+    <p>Date of Birth: {{ object.date_of_birth }}</p>
+    <p>Dominant Hand: {{ object.dominant_hand }}</p>
+    <hr>
+</div>
+<p>
+    <a href="{% url 'subject_update' subject.id %}">Edit</a> |
+    <a href="{% url 'subject_delete' subject.id %}">Delete</a>
+</p>
+{% endblock content %}

@@ -8,7 +8,8 @@ class Subject(models.Model):
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
     email = models.EmailField(max_length=254, blank=True)
-    date_of_birth = models.DateField(blank=True, null=True)
+    date_of_birth = models.DateField(
+        blank=True, null=True, verbose_name='Date of Birth')
 
     digits_only = RegexValidator(
         '^\d+$',
@@ -51,6 +52,7 @@ class Subject(models.Model):
     sex = models.CharField(
         max_length=1,
         choices=SEX_CHOICES,
+        blank=True,
     )
 
     CISGENDER = 'C'
@@ -73,6 +75,12 @@ class Subject(models.Model):
         elif self.id_number:
             return self.id_number
         return f'Subject #{self.id}'
+
+    def get_absolute_url(self):
+        return reverse('subject_detail', args=[str(self.id)])
+
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Study(models.Model):

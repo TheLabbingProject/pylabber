@@ -8,6 +8,8 @@ django = "*"
 django-crispy-forms = "*"
 django-environ = "*"
 django-filter = "*"
+pydicom = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.7"

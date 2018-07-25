@@ -1,12 +1,11 @@
-{% extends 'studies/study_list.html' %}
+{% extends 'base.html' %} 
 {% load crispy_forms_tags %} 
 
-
-{% block study-content %}
-    <h1>New study</h1>
+{% block content %}
+    <h1>Add DICOM files</h1>
     <form action="" method="post">
         {% csrf_token %} 
         {{ form | crispy }}
         <button class="btn btn-success ml-2" type="submit">Save</button>
     </form>
-{% endblock study-content %}
+{% endblock content %}

@@ -6,7 +6,7 @@ urlpatterns = [
     path(
         'studies/',
         views.StudyListView.as_view(),
-        name='studies',
+        name='study_list',
     ),
     path(
         'studies/new/',

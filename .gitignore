@@ -20,6 +20,10 @@ static/
 # JS modules
 node_modules/
 
+# Uploaded files
+media
+!media/.gitkeep
+
 # Development database
 db.sqlite3
 

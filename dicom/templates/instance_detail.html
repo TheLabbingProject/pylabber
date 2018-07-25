@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p>Instance UID: {{ object.id }}</p>
+    <table class="table table-striped table-bordered table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Tag</th>
+                <th scope="col">VR</th>
+                <th scope="col">Name</th>
+                <th scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_element in object.headers %}
+                <tr>
+                    <td>{{ data_element.tag }}</td>
+                    <td>{{ data_element.VR }}</td>
+                    <td>{{ data_element.name }}</td>
+                    <td>{{ data_element.value }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <caption>Instance UID: {{ object.id }}</caption>
+    </table>
+{% endblock content %}

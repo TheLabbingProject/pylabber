@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>DICOM Instances</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Instance UID</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Series UID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dcm in object_list %}
+                <tr>
+                    <td>{{ dcm.id }}</td>
+                    <td>{{ dcm.patient.id }}</td>
+                    <td>{{ dcm.series.id }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

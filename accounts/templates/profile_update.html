@@ -1,11 +1,22 @@
-{% extends "base.html" %} {% load crispy_forms_tags %} {% block title %} User Profile {% endblock %} {% block content %}
+{% extends "base.html" %} 
+{% load crispy_forms_tags %} 
 
-<h3>{{ object.user.get_full_name }}</h3>
-<p>{{ object.user.email }}</p>
+{% block title %} 
+    User Profile 
+{% endblock %} 
 
-<hr>
+{% block content %}
+    <h3>
+        {{ object.user.get_full_name }}
+    </h3>
+    
+    <p>{{ object.user.email }}</p>
 
-<form action="" method="post">{% csrf_token %} {{ form | crispy }}
-    <button class="btn btn-info ml-2" type="submit">Update</button>
-</form>
+    <hr>
+
+    <form action="" method="post">
+        {% csrf_token %} 
+        {{ form | crispy }}
+        <button class="btn btn-info ml-2" type="submit">Update</button>
+    </form>
 {% endblock content %}

@@ -1,20 +1,24 @@
-{% extends 'studies.html' %} {% block study-content %}
-<div class="study-entry">
-    <h2>{{ object.name }}</h2>
-    <hr>
-    <p>Description:</p>
-    <p>{{ object.description }}</p>
-    <hr>
-    <p>Collaborators:</p>
-    {{ object.collaborators.all | join:', ' }} {% comment %} {% for collaborator in object.collaborators.all %}
-    <p>{{ collaborator.get_full_name }}</p>
-    {% endfor %} {% endcomment %}
-    <hr>
-    <p>Created: {{ object.created_at }}</p>
-    <hr>
-</div>
-<p>
-    <a href="{% url 'study_update' study.id %}">Edit</a> |
-    <a href="{% url 'study_delete' study.id %}">Delete</a>
-</p>
+{% extends 'studies/study_list.html' %}
+{% load crispy_forms_tags %} 
+
+
+{% block study-content %}
+    <div class="study-entry">
+        <h2>{{ object.name }}</h2>
+        <hr>
+        <p>Description:</p>
+        <p>{{ object.description }}</p>
+        <hr>
+        <p>Collaborators:</p>
+        {{ object.collaborators.all | join:', ' }} {% comment %} {% for collaborator in object.collaborators.all %}
+        <p>{{ collaborator.get_full_name }}</p>
+        {% endfor %} {% endcomment %}
+        <hr>
+        <p>Created: {{ object.created_at }}</p>
+        <hr>
+    </div>
+    <p>
+        <a href="{% url 'study_update' study.id %}">Edit</a> |
+        <a href="{% url 'study_delete' study.id %}">Delete</a>
+    </p>
 {% endblock study-content %}

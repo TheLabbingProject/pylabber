@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
-from django.shortcuts import render, redirect
 from . import models
 
 
@@ -24,7 +23,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         """
         Restricts access to the logged-in user.
-        
+
         :param request: HTTP request method.
         :type request: django.http.HttpRequest
         :return: Profile update page or unauthorized.

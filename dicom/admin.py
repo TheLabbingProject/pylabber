@@ -2,18 +2,34 @@ from django.contrib import admin
 from .models import Instance, Series, Study, Patient
 
 
-class InstanceInLine(admin.TabularInline):
-    model = Instance
-    exclude = (
+class InstanceAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'instance_uid',
+        'patient',
+        'series',
+        'number',
         'date',
         'time',
     )
-    ordering = ('date', 'time')
+    ordering = ['-date', '-series', 'number']
+    readonly_fields = ['instance_uid']
+
+
+class InstanceInLine(admin.TabularInline):
+    model = Instance
+    exclude = (
+        'instance_uid',
+        'date',
+        'time',
+    )
+    ordering = ['date', 'time']
 
 
 class SeriesAdmin(admin.ModelAdmin):
     list_display = (
         'id',
+        'series_uid',
         'date',
         'time',
         'number',
@@ -21,19 +37,23 @@ class SeriesAdmin(admin.ModelAdmin):
     )
     ordering = ['-date', '-time']
     inlines = (InstanceInLine, )
+    readonly_fields = ['series_uid']
 
 
 class StudyAdmin(admin.ModelAdmin):
     list_display = (
         'id',
+        'study_uid',
         'description',
     )
     inlines = (InstanceInLine, )
+    readonly_fields = ['study_uid']
 
 
 class PatientAdmin(admin.ModelAdmin):
     list_display = (
         'id',
+        'patient_uid',
         'given_name',
         'family_name',
         'sex',
@@ -41,6 +61,9 @@ class PatientAdmin(admin.ModelAdmin):
     )
     inlines = (InstanceInLine, )
     fieldsets = (
+        (None, {
+            'fields': ('patient_uid', ),
+        }),
         ('Name', {
             'fields': (
                 'name_prefix',
@@ -62,7 +85,7 @@ class PatientAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(Instance)
+admin.site.register(Instance, InstanceAdmin)
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(Study, StudyAdmin)
 admin.site.register(Patient, PatientAdmin)

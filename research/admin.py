@@ -15,17 +15,11 @@ class SubjectsInline(admin.TabularInline):
     def first_name(self, instance):
         return self.instance.first_name
 
-    first_name.short_description = 'First Name'
-
     def last_name(self, instance):
         return self.instance.last_name
 
-    last_name.short_description = 'Last Name'
-
     def email(self, instance):
         return self.instance.email
-
-    email.short_description = 'Email'
 
 
 class CollaboratorsInline(admin.TabularInline):
@@ -46,9 +40,6 @@ class StudiesAdmin(admin.ModelAdmin):
     exclude = ('subjects', 'collaborators')
 
 
-admin.site.register(Study, StudiesAdmin)
-
-
 class SubjectAdmin(admin.ModelAdmin):
     list_display = (
         'first_name',
@@ -60,4 +51,5 @@ class SubjectAdmin(admin.ModelAdmin):
     )
 
 
+admin.site.register(Study, StudiesAdmin)
 admin.site.register(Subject, SubjectAdmin)

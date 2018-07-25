@@ -7,9 +7,10 @@ from .mixins import StudyListMixin
 from .models import Subject, Study
 
 
-class StudyListView(LoginRequiredMixin, StudyListMixin, ListView):
+class StudyListView(LoginRequiredMixin, ListView):
     model = Study
-    template_name = 'studies.html'
+    template_name = 'studies/study_list.html'
+    context_object_name = 'studies'
 
 
 class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):

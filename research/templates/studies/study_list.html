@@ -1,0 +1,23 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+    <div class="row">
+        <nav class="nav flex-column nav-fill">
+            <ul class="navbar-nav">
+                {% for study in studies %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'study_detail' study.id %}">{{ study.name }}</a>
+                </li>
+                {% endfor %}
+                <li class="nav-item">
+                    <a href="{% url 'study_create' %}">
+                        <span class="fas fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="col offset-2" id="study-content">
+            {% block study-content %} {% endblock study-content %}
+        </div>
+    </div>
+{% endblock content %}

@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1>Add DICOM files</h1>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %} 
         {{ form | crispy }}
         <button class="btn btn-success ml-2" type="submit">Save</button>

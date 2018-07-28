@@ -1,7 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from pylabber.utils import CharNullField
 from .choices import Sex, Gender, DominantHand
-from .validators import digits_only
+from .validators import digits_only, not_future
 
 
 class Subject(models.Model):
@@ -13,12 +14,15 @@ class Subject(models.Model):
         verbose_name='Date of Birth',
         blank=True,
         null=True,
+        validators=[not_future],
     )
 
-    id_number = models.CharField(
+    id_number = CharNullField(
         max_length=9,
+        unique=True,
         validators=[digits_only],
         blank=True,
+        null=True,
     )
     phone_number = models.CharField(
         max_length=50,

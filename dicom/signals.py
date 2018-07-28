@@ -15,3 +15,16 @@ def post_save_instance_model_receiver(sender, instance, created, *args,
             print(
                 'failed to update DICOM fields with the following exception:')
             print(e)
+
+
+@receiver(post_save, sender=models.Patient)
+def post_save_patient_model_receiver(sender, instance, created, *args,
+                                     **kwargs):
+    if created:
+        try:
+            instance.subject = instance.get_subject()
+            instance.save()
+        except Exception as e:
+            print(
+                'failed to update DICOM fields with the following exception:')
+            print(e)

@@ -106,11 +106,12 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
+SIMILARITY_VALIDATOR = \
+    'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': SIMILARITY_VALIDATOR,
     },
     {
         'NAME':

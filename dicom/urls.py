@@ -14,7 +14,7 @@ urlpatterns = [
         name='instances_create',
     ),
     path(
-        '<str:pk>/',
+        '<int:pk>/',
         views.InstanceDetailView.as_view(),
         name='instance_detail',
     ),

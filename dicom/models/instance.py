@@ -4,6 +4,7 @@ import pydicom
 from datetime import datetime
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from .patient import Patient
 from .series import Series
 from .study import Study
@@ -12,6 +13,7 @@ from .validators import digits_and_dots_only
 
 class Instance(models.Model):
     _headers = None
+    SEX_DICT = {'M': 'MALE', 'F': 'FEMALE', 'O': 'OTHER'}
 
     instance_uid = models.CharField(
         max_length=64,
@@ -20,7 +22,7 @@ class Instance(models.Model):
         validators=[digits_and_dots_only],
     )
 
-    file = models.FileField(upload_to='dicom')
+    file = models.FileField(upload_to='dicom', blank=True)
     number = models.IntegerField(
         blank=True,
         null=True,
@@ -38,6 +40,9 @@ class Instance(models.Model):
 
     def __str__(self):
         return self.instance_uid
+
+    def get_absolute_url(self):
+        return reverse('instance_detail', args=[str(self.id)])
 
     def read_data(self) -> pydicom.dataset.FileDataset:
         return pydicom.dcmread(self.file.path)
@@ -123,7 +128,7 @@ class Instance(models.Model):
             'date_of_birth':
             self.parse_date_element(self.headers.PatientBirthDate),
             'sex':
-            self.headers.PatientSex,
+            self.SEX_DICT[self.headers.PatientSex],
         }
 
     def create_patient(self) -> Patient:
@@ -163,14 +168,14 @@ class Instance(models.Model):
         """
         Move the 'file' FileField attribute from its current location to
         another location relative to MEDIA_ROOT.
-        
+
         :param new_name: New relative path, defaults to None (default path)
         :param new_name: str, optional
         :return:
         :rtype: None
         """
 
-        new_name = new_name or self.default_file_name
+        new_name = new_name or self.get_default_file_name()
         initial_path = self.file.path
         self.file.name = new_name
         new_path = os.path.join(settings.MEDIA_ROOT, self.file.name)
@@ -182,7 +187,3 @@ class Instance(models.Model):
         if self._headers is None:
             self._headers = self.read_headers()
         return self._headers
-
-    @property
-    def default_file_name(self):
-        return self.get_default_file_name()

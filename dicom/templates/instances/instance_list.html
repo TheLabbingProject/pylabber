@@ -2,9 +2,10 @@
 
 {% block content %}
     <h3>DICOM Instances</h3>
-    <table class="table table-hover">
+    <table class="table table-hover table-sm">
         <thead>
             <tr>
+                <th scope="col">#</th>
                 <th scope="col">Instance UID</th>
                 <th scope="col">Subject</th>
                 <th scope="col">Series UID</th>
@@ -14,8 +15,13 @@
             {% for dcm in object_list %}
                 <tr>
                     <td>{{ dcm.id }}</td>
-                    <td>{{ dcm.patient.id }}</td>
-                    <td>{{ dcm.series.id }}</td>
+                    <td>
+                        <a href="{% url 'instance_detail' dcm.id %}">
+                            {{ dcm.instance_uid }}
+                        </a>
+                    </td>
+                    <td>{{ dcm.patient.patient_uid }}</td>
+                    <td>{{ dcm.series.series_uid }}</td>
                 </tr>
             {% endfor %}
         </tbody>

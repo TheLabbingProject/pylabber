@@ -26,5 +26,6 @@ def post_save_patient_model_receiver(sender, instance, created, *args,
             instance.save()
         except Exception as e:
             print(
-                'failed to update DICOM fields with the following exception:')
+                'failed to get or create subject with the following exception:'
+            )
             print(e)

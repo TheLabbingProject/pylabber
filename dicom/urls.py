@@ -18,4 +18,9 @@ urlpatterns = [
         views.InstanceDetailView.as_view(),
         name='instance_detail',
     ),
+    path(
+        'series/<int:pk>/',
+        views.SeriesDetailView.as_view(),
+        name='series_plot',
+    ),
 ]

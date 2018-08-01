@@ -1,14 +1,13 @@
-import os
-
-from django.conf import settings
+from bokeh.embed import server_session
+from bokeh.util import session_id
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
 from .forms import CreateInstancesForm
-from .models import Instance
+from .models import Instance, Series
 
 
 class InstanceListView(LoginRequiredMixin, ListView):
@@ -25,19 +24,53 @@ class InstancesCreateView(LoginRequiredMixin, FormView):
     form_class = CreateInstancesForm
     template_name = 'instances/instances_create.html'
     success_url = reverse_lazy('instance_list')
+    temp_file_name = 'tmp.dcm'
+    temp_zip_name = 'tmp.zip'
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if form.is_valid():
             files = request.FILES.getlist('dcm_files')
-            for f in files:
-                temp_path = default_storage.save('tmp.dcm',
-                                                 ContentFile(f.read()))
-                temp_path = os.path.join(settings.MEDIA_ROOT, temp_path)
-                instance = Instance()
-                instance.file = 'tmp.dcm'
-                instance.save()
+            for file in files:
+                if file.name.endswith('.dcm'):
+                    Instance.objects.from_dcm(file)
+                elif file.name.endswith('.zip'):
+                    Instance.objects.from_zip(file)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+
+@login_required
+def series_view(request):
+    absolute_url = request.build_absolute_uri(location="/")
+    bokeh_server_url = f'{absolute_url}bokehproxy/series_plot'
+    server_script = server_session(
+        None,
+        session_id=session_id.generate_session_id(),
+        url=bokeh_server_url)
+    context = {
+        'graph_name': 'MRI Series Viewer',
+        'server_script': server_script,
+    }
+    return render(request, 'series/bokeh_server.html', context)
+
+
+class SeriesDetailView(LoginRequiredMixin, DetailView):
+    model = Series
+    template_name = 'series/bokeh_server.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SeriesDetailView, self).get_context_data(**kwargs)
+        absolute_url = self.request.build_absolute_uri(location="/")
+        bokeh_server_url = f'{absolute_url}bokehproxy/series_plot'
+        server_script = server_session(
+            None,
+            session_id=session_id.generate_session_id(),
+            url=bokeh_server_url)
+        extra = {
+            'graph_name': 'MRI Series Viewer',
+            'server_script': server_script,
+        }
+        return context.update(extra)

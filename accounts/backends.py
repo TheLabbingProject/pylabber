@@ -17,3 +17,9 @@ class EmailModelBackend:
                 return user
         except (ValidationError, User.DoesNotExist):
             return None
+
+    def get_user(self, email: str):
+        try:
+            return User.objects.get(email=email)
+        except User.DoesNotExist:
+            return None

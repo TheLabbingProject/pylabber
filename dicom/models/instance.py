@@ -1,14 +1,36 @@
 import os
 import pydicom
+import zipfile
 
 from datetime import datetime
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.db import models
 from django.urls import reverse
 from .patient import Patient
 from .series import Series
 from .study import Study
 from .validators import digits_and_dots_only
+
+
+class InstanceManager(models.Manager):
+    def from_dcm(self, file):
+        dest_name = default_storage.save('tmp.dcm', ContentFile(file.read()))
+        instance = Instance()
+        instance.file = dest_name
+        instance.save()
+        return instance
+
+    def from_zip(self, file):
+        dest_name = default_storage.save('tmp.zip', ContentFile(file.read()))
+        dest_path = os.path.join(settings.MEDIA_ROOT, dest_name)
+        with zipfile.ZipFile(dest_path, 'r') as archive:
+            for file_name in archive.namelist():
+                if file_name.endswith('.dcm'):
+                    with archive.open(file_name) as dcm_file:
+                        self.from_dcm(dcm_file)
+        os.remove(dest_path)
 
 
 class Instance(models.Model):
@@ -37,6 +59,8 @@ class Instance(models.Model):
         Study, blank=True, null=True, on_delete=models.PROTECT)
     patient = models.ForeignKey(
         Patient, blank=True, null=True, on_delete=models.PROTECT)
+
+    objects = InstanceManager()
 
     def __str__(self):
         return self.instance_uid

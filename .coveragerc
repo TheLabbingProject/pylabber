@@ -1,0 +1,4 @@
+[run]
+omit = ../*migrations*, manage.py, */wsgi.py, run_tests.py
+source = .
+branch = True

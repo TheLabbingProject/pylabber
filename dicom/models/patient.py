@@ -46,22 +46,22 @@ class Patient(models.Model):
     def find_subject(self):
         return Subject.objects.filter(id_number=self.patient_uid).first()
 
-    def subject_is_updated(self):
-        return all([
-            self.subject.first_name == self.given_name,
-            self.subject.last_name == self.family_name,
-            self.subject.date_of_birth == self.date_of_birth,
-            self.subject.sex == self.sex,
-            self.subject.id_number == self.patient_uid,
-        ])
+    # def subject_is_updated(self):
+    #     return all([
+    #         self.subject.first_name == self.given_name,
+    #         self.subject.last_name == self.family_name,
+    #         self.subject.date_of_birth == self.date_of_birth,
+    #         self.subject.sex == self.sex,
+    #         self.subject.id_number == self.patient_uid,
+    #     ])
 
-    def update_subject(self):
-        self.subject.first_name = self.given_name
-        self.subject.last_name = self.family_name
-        self.subject.date_of_birth = self.date_of_birth
-        self.subject.sex = self.sex
-        self.subject.id_number = self.patient_uid
-        self.subject.save()
+    # def update_subject(self):
+    #     self.subject.first_name = self.given_name
+    #     self.subject.last_name = self.family_name
+    #     self.subject.date_of_birth = self.date_of_birth
+    #     self.subject.sex = self.sex
+    #     self.subject.id_number = self.patient_uid
+    #     self.subject.save()
 
     def create_subject(self):
         return Subject.objects.create(**self.get_subject_attributes())

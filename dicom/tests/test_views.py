@@ -1,40 +1,16 @@
 import os
 
-from accounts.tests.utils import TEST_USER_DICT
-from django.conf import settings
-from django.contrib.auth import get_user_model
+from accounts.tests.utils import LoggedInTestCase
 from django.test import TestCase
 from django.urls import reverse
-from dicom.models import Instance
-from shutil import copyfile
-from .test_models import TEST_FILES_PATH
-
-TEST_FILE_NAME = 'test.dcm'
-TEST_FILE_PATH = os.path.abspath(os.path.join(TEST_FILES_PATH, TEST_FILE_NAME))
+from .factories import InstanceFactory, get_test_file_path
 
 
-class InstanceViewTestCase(TestCase):
-    def create_test_instance(self):
-        dest = os.path.join(settings.MEDIA_ROOT, TEST_FILE_NAME)
-        copyfile(TEST_FILE_PATH, dest)
-        try:
-            return Instance.objects.create(file=TEST_FILE_NAME)
-        except Exception as e:
-            self.fail(
-                f'Failed to create test instance with the following exception:\n{e}'
-            )
-
-    def get_test_instance(self):
-        try:
-            return Instance.objects.get(id=1)
-        except Exception as e:
-            self.fail(f'Failed to retrieve test instance with the following\
-                 exception:\n{e}')
-
-
-class LoggedOutInstanceViewTestCase(InstanceViewTestCase):
+class LoggedOutInstanceViewTestCase(TestCase):
     def setUp(self):
-        self.test_instance = self.create_test_instance()
+        self.test_instance = InstanceFactory(
+            file__from_path=get_test_file_path('test'))
+        self.test_instance.save()
 
     def test_instance_list_redirects_to_login(self):
         url = reverse('instance_list')
@@ -52,17 +28,12 @@ class LoggedOutInstanceViewTestCase(InstanceViewTestCase):
         self.assertRedirects(response, f'/accounts/login/?next={url}')
 
 
-class LoggedInInstanceViewTestCase(InstanceViewTestCase):
+class LoggedInInstanceViewTestCase(LoggedInTestCase):
     def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(**TEST_USER_DICT)
-        self.test_instance = self.create_test_instance()
-        self.login()
-
-    def login(self):
-        username = TEST_USER_DICT['username']
-        password = TEST_USER_DICT['password']
-        self.client.login(username=username, password=password)
+        self.test_instance = InstanceFactory(
+            file__from_path=get_test_file_path('test'))
+        self.test_instance.save()
+        super(LoggedInInstanceViewTestCase, self).setUp()
 
     def test_list_view(self):
         response = self.client.get(reverse('instance_list'))

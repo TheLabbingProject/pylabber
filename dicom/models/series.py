@@ -1,3 +1,5 @@
+import numpy as np
+
 from django.db import models
 from .patient import Patient
 from .study import Study
@@ -22,6 +24,12 @@ class Series(models.Model):
 
     def __str__(self):
         return self.series_uid
+
+    def get_data(self) -> np.ndarray:
+        instances = self.instance_set.order_by('number')
+        return np.stack(
+            [instance.read_data().pixel_array for instance in instances],
+            axis=-1)
 
     class Meta:
         verbose_name_plural = 'Series'

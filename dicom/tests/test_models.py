@@ -1,13 +1,17 @@
+import numpy as np
 import os
 import pydicom
 
 from datetime import date, time
-from django.conf import settings
-from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from dicom.models import Instance
-from shutil import copyfile
-
-TEST_FILES_PATH = './dicom/tests/files/'
+from django.test import TestCase
+from .factories import (
+    InstanceFactory,
+    get_test_file_path,
+    TEST_FILES_PATH,
+    SERIES_FILES,
+)
 
 
 class InstanceModelTestCase(TestCase):
@@ -20,76 +24,60 @@ class InstanceModelTestCase(TestCase):
         'different_patient_different_study',
     ]
 
+    ZIPPED_UIDS = [
+        '1.3.12.2.1107.5.2.43.66024.2016120813301385447497555',
+        '1.3.12.2.1107.5.2.43.66024.2016120813360043323300309',
+        '1.3.12.2.1107.5.2.43.66024.2016120813262299647895751',
+        '1.3.12.2.1107.5.2.43.66024.2016121412432166520775187',
+        '1.3.12.2.1107.5.2.43.66024.201612141317482895906735',
+        '1.3.12.2.1107.5.2.43.66024.2016121412485542898477604',
+    ]
+
     def setUp(self):
-        self.raw = self.read_all_test_files()
-        self.copy_all_test_files()
         self.create_all_test_instances()
 
-    def get_test_file_path(self, name: str) -> str:
-        file_path = os.path.join(TEST_FILES_PATH, f'{name}.dcm')
-        return os.path.abspath(file_path)
+    def load_uploaded_dcm(self):
+        with open(get_test_file_path('from_file'), 'rb') as test_file:
+            return SimpleUploadedFile(test_file.name, test_file.read())
 
-    def get_test_file_dest(self, name: str) -> str:
-        return os.path.join(settings.MEDIA_ROOT, f'{name}.dcm')
-
-    def copy_test_file(self, name: str) -> None:
-        source = self.get_test_file_path(name)
-        dest = self.get_test_file_dest(name)
-        copyfile(source, dest)
-
-    def create_test_instance(self, name: str) -> Instance:
-        file = name + '.dcm'
-        return Instance.objects.create(file=file)
-
-    def read_test_file(self, name: str) -> pydicom.dataset.FileDataset:
-        file_path = self.get_test_file_path(name)
-        return pydicom.dcmread(file_path)
-
-    def read_all_test_files(self):
-        return {
-            name: self.read_test_file(name)
-            for name in self.TEST_INSTANCES
-        }
-
-    def copy_all_test_files(self):
-        for name in self.TEST_INSTANCES:
-            self.copy_test_file(name)
+    def load_uploaded_zip(self):
+        relative_path = os.path.join(TEST_FILES_PATH, 'test.zip')
+        source = os.path.abspath(relative_path)
+        with open(source, 'rb') as test_zip:
+            return SimpleUploadedFile(test_zip.name, test_zip.read())
 
     def create_all_test_instances(self):
         for name in self.TEST_INSTANCES:
-            self.create_test_instance(name)
-
-    def delete_test_file_copies_and_clean_up(self):
-        for name in self.TEST_INSTANCES:
-            instance = self.get_instance(name)
-            dir_path = os.path.dirname(instance.file.path)
-            instance.file.delete()
-            while dir_path != settings.MEDIA_ROOT:
-                try:
-                    os.rmdir(dir_path)
-                except OSError:
-                    break
-                dir_path = os.path.dirname(dir_path)
+            path = get_test_file_path(name)
+            instance = InstanceFactory(file__from_path=path)
+            instance.save()
 
     def get_instance(self, name: str) -> Instance:
         id = self.TEST_INSTANCES.index(name) + 1
         return Instance.objects.get(id=id)
 
-    def test_headers_loaded_successfully(self):
-        self.assertIsInstance(self.test_instance.headers,
-                              pydicom.dataset.FileDataset)
-
     def test_str(self):
         self.assertEqual(
-            str(self.test_instance), self.raw['test'].SOPInstanceUID)
+            str(self.test_instance), self.test_instance.headers.SOPInstanceUID)
+
+    def test_get_instance_data(self):
+        data = self.test_instance.read_data()
+        self.assertIsInstance(data, pydicom.dataset.FileDataset)
+        self.assertTrue(hasattr(data, 'pixel_array'))
+
+    def test_get_instance_headers(self):
+        data = self.test_instance.read_headers()
+        self.assertIsInstance(data, pydicom.dataset.FileDataset)
+        with self.assertRaises(TypeError):
+            data.pixel_array
 
     def test_instance_uid(self):
         self.assertEqual(self.test_instance.instance_uid,
-                         self.raw['test'].SOPInstanceUID)
+                         self.test_instance.headers.SOPInstanceUID)
 
     def test_instance_number(self):
         self.assertEqual(self.test_instance.number,
-                         self.raw['test'].InstanceNumber)
+                         self.test_instance.headers.InstanceNumber)
 
     def test_instance_date(self):
         self.assertEqual(self.test_instance.date, date(2016, 12, 8))
@@ -102,12 +90,12 @@ class InstanceModelTestCase(TestCase):
 
     def test_series_uid(self):
         new_series_uid = self.test_instance.series.series_uid
-        expected_uid = self.raw['test'].SeriesInstanceUID
+        expected_uid = self.test_instance.headers.SeriesInstanceUID
         self.assertEqual(new_series_uid, expected_uid)
 
     def test_series_number(self):
         self.assertEqual(self.test_instance.series.number,
-                         self.raw['test'].SeriesNumber)
+                         self.test_instance.headers.SeriesNumber)
 
     def test_series_date(self):
         self.assertEqual(self.test_instance.series.date, date(2016, 12, 8))
@@ -118,7 +106,7 @@ class InstanceModelTestCase(TestCase):
 
     def test_series_description(self):
         self.assertEqual(self.test_instance.series.description,
-                         self.raw['test'].SeriesDescription)
+                         self.test_instance.headers.SeriesDescription)
 
     def test_study_creation(self):
         self.assertIsNotNone(self.test_instance.study)
@@ -135,7 +123,7 @@ class InstanceModelTestCase(TestCase):
 
     def test_study_description(self):
         self.assertEqual(self.test_instance.study.description,
-                         self.raw['test'].StudyDescription)
+                         self.test_instance.headers.StudyDescription)
 
     def test_patient_creation(self):
         self.assertIsNotNone(self.test_instance.patient)
@@ -146,34 +134,35 @@ class InstanceModelTestCase(TestCase):
 
     def test_patient_uid(self):
         self.assertEqual(self.test_instance.patient.patient_uid,
-                         self.raw['test'].PatientID)
+                         self.test_instance.headers.PatientID)
 
     def test_patient_given_name(self):
         self.assertEqual(self.test_instance.patient.given_name,
-                         self.raw['test'].PatientName.given_name)
+                         self.test_instance.headers.PatientName.given_name)
 
     def test_patient_family_name(self):
         self.assertEqual(self.test_instance.patient.family_name,
-                         self.raw['test'].PatientName.family_name)
+                         self.test_instance.headers.PatientName.family_name)
 
     def test_patient_middle_name(self):
         self.assertEqual(self.test_instance.patient.middle_name,
-                         self.raw['test'].PatientName.middle_name)
+                         self.test_instance.headers.PatientName.middle_name)
 
     def test_patient_name_prefix(self):
         self.assertEqual(self.test_instance.patient.name_prefix,
-                         self.raw['test'].PatientName.name_prefix)
+                         self.test_instance.headers.PatientName.name_prefix)
 
     def test_patient_name_suffix(self):
         self.assertEqual(self.test_instance.patient.name_suffix,
-                         self.raw['test'].PatientName.name_suffix)
+                         self.test_instance.headers.PatientName.name_suffix)
 
     def test_patient_birthdate(self):
         self.assertIsInstance(self.test_instance.patient.date_of_birth, date)
 
     def test_patient_sex(self):
-        self.assertEqual(self.test_instance.patient.sex,
-                         Instance.SEX_DICT[self.raw['test'].PatientSex])
+        self.assertEqual(
+            self.test_instance.patient.sex,
+            Instance.SEX_DICT[self.test_instance.headers.PatientSex])
 
     def test_file_moved_to_default_location(self):
         default_location = self.test_instance.get_default_file_name()
@@ -224,8 +213,17 @@ class InstanceModelTestCase(TestCase):
             self.test_instance.study,
             self.different_patient_different_study_instance.study)
 
-    def tearDown(self):
-        self.delete_test_file_copies_and_clean_up()
+    def test_instance_creation_from_uploaded_dcm(self):
+        uploaded_dcm = self.load_uploaded_dcm()
+        instance = Instance.objects.from_dcm(uploaded_dcm)
+        self.assertIsInstance(instance, Instance)
+        self.assertIsNotNone(instance.instance_uid)
+
+    def test_instances_creation_from_uploaded_zip(self):
+        uploaded_zip = self.load_uploaded_zip()
+        Instance.objects.from_zip(uploaded_zip)
+        for uid in self.ZIPPED_UIDS:
+            self.assertIsNotNone(Instance.objects.get(instance_uid=uid))
 
     @property
     def test_instance(self):
@@ -248,3 +246,78 @@ class InstanceModelTestCase(TestCase):
     @property
     def different_patient_different_study_instance(self):
         return self.get_instance('different_patient_different_study')
+
+
+class StudyModelTestCase(TestCase):
+    def setUp(self):
+        path = get_test_file_path('test')
+        test_instance = InstanceFactory(file__from_path=path)
+        test_instance.save()
+        self.test_study = test_instance.study
+
+    def test_str(self):
+        self.assertEqual(str(self.test_study), self.test_study.study_uid)
+
+
+class SeriesModelTestCase(TestCase):
+    def setUp(self):
+        for path in SERIES_FILES:
+            instance = InstanceFactory(file__from_path=path)
+            instance.save()
+        self.test_series = instance.series
+
+    def test_str(self):
+        self.assertEqual(str(self.test_series), self.test_series.series_uid)
+
+    def test_verbose_name(self):
+        self.assertEqual(self.test_series._meta.verbose_name_plural, 'Series')
+
+    def test_getting_data(self):
+        data = self.test_series.get_data()
+        self.assertIsInstance(data, np.ndarray)
+        self.assertEqual(data.shape, (512, 512, 19))
+
+
+class PatientModelTestCase(TestCase):
+    def setUp(self):
+        path = get_test_file_path('test')
+        test_instance = InstanceFactory(file__from_path=path)
+        test_instance.save()
+        self.test_patient = test_instance.patient
+
+    def test_str(self):
+        self.assertEqual(str(self.test_patient), self.test_patient.patient_uid)
+
+    def test_getting_subject_attributes(self):
+        expected = {
+            'first_name': self.test_patient.given_name,
+            'last_name': self.test_patient.family_name,
+            'date_of_birth': self.test_patient.date_of_birth,
+            'sex': self.test_patient.sex,
+            'id_number': self.test_patient.patient_uid,
+        }
+        self.assertEqual(self.test_patient.get_subject_attributes(), expected)
+
+    def test_subject_created(self):
+        self.assertIsNotNone(self.test_patient.subject)
+
+    def test_get_subject_when_subject_field_is_set(self):
+        self.assertEqual(self.test_patient.subject,
+                         self.test_patient.get_subject())
+
+    def test_find_subject_when_subject_does_not_exist(self):
+        original_id = self.test_patient.patient_uid
+        self.test_patient.patient_uid = '012345678'
+        self.test_patient.save()
+        self.assertIsNone(self.test_patient.find_subject())
+        self.test_patient.patient_uid = original_id
+        self.test_patient.save()
+
+    def test_get_subject_when_subject_exists(self):
+        subject = self.test_patient.subject
+        self.test_patient.subject = None
+        self.test_patient.save()
+        self.assertIsNone(self.test_patient.subject)
+        self.assertEqual(self.test_patient.get_subject(), subject)
+        self.test_patient.subject = subject
+        self.test_patient.save()

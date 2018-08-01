@@ -1,32 +1,14 @@
-from accounts.tests.utils import TEST_USER_DICT
-from django.contrib.auth import get_user_model
+# from accounts.tests.factories import UserFactory
+from accounts.tests.utils import LoggedInTestCase
 from django.test import TestCase
 from django.urls import reverse
-from research.models import Study, Subject
-from .test_models import TEST_STUDY_DICT, TEST_SUBJECT_DICT
+from .factories import StudyFactory, SubjectFactory
 
 
-class StudyViewTestCase(TestCase):
-    def create_test_study(self):
-        try:
-            return Study.objects.create(**TEST_STUDY_DICT)
-        except Exception as e:
-            self.fail(
-                f'Failed to create test study with the following exception:\n{e}'
-            )
-
-    def get_test_study(self):
-        try:
-            return Study.objects.get(id=1)
-        except Exception as e:
-            self.fail(
-                f'Failed to retrieve test study with the following exception:\n{e}'
-            )
-
-
-class LoggedOutStudyViewTestCase(StudyViewTestCase):
+class LoggedOutStudyViewTestCase(TestCase):
     def setUp(self):
-        self.test_study = self.create_test_study()
+        self.test_study = StudyFactory()
+        self.test_study.save()
 
     def test_study_list_redirects_to_login(self):
         url = reverse('study_list')
@@ -54,17 +36,11 @@ class LoggedOutStudyViewTestCase(StudyViewTestCase):
         self.assertRedirects(response, f'/accounts/login/?next={url}')
 
 
-class LoggedInStudyViewTestCase(StudyViewTestCase):
+class LoggedInStudyViewTestCase(LoggedInTestCase):
     def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(**TEST_USER_DICT)
-        self.test_study = self.create_test_study()
-        self.login()
-
-    def login(self):
-        username = TEST_USER_DICT['username']
-        password = TEST_USER_DICT['password']
-        self.client.login(username=username, password=password)
+        self.test_study = StudyFactory()
+        self.test_study.save()
+        super(LoggedInStudyViewTestCase, self).setUp()
 
     def test_list_view(self):
         response = self.client.get(reverse('study_list'))
@@ -96,27 +72,10 @@ class LoggedInStudyViewTestCase(StudyViewTestCase):
         self.assertTemplateUsed(response, 'studies/study_create.html')
 
 
-class SubjectViewTestCase(TestCase):
-    def create_test_subject(self):
-        try:
-            return Subject.objects.create(**TEST_SUBJECT_DICT)
-        except Exception as e:
-            self.fail(
-                f'Failed to create test subject with the following exception:\n{e}'
-            )
-
-    def get_test_subject(self):
-        try:
-            return Subject.objects.get(id=1)
-        except Exception as e:
-            self.fail(
-                f'Failed to retrieve test subject with the following exception:\n{e}'
-            )
-
-
-class LoggedOutSubjectViewTestCase(SubjectViewTestCase):
+class LoggedOutSubjectViewTestCase(TestCase):
     def setUp(self):
-        self.test_subject = self.create_test_subject()
+        self.test_subject = SubjectFactory()
+        self.test_subject.save()
 
     def test_subject_list_redirects_to_login(self):
         url = reverse('subject_list')
@@ -144,17 +103,11 @@ class LoggedOutSubjectViewTestCase(SubjectViewTestCase):
         self.assertRedirects(response, f'/accounts/login/?next={url}')
 
 
-class LoggedInSubjectViewTestCase(SubjectViewTestCase):
+class LoggedInSubjectViewTestCase(LoggedInTestCase):
     def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(**TEST_USER_DICT)
-        self.test_subject = self.create_test_subject()
-        self.login()
-
-    def login(self):
-        username = TEST_USER_DICT['username']
-        password = TEST_USER_DICT['password']
-        self.client.login(username=username, password=password)
+        self.test_subject = SubjectFactory()
+        self.test_subject.save()
+        super(LoggedInSubjectViewTestCase, self).setUp()
 
     def test_list_view(self):
         response = self.client.get(reverse('subject_list'))

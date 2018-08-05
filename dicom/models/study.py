@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from .validators import digits_and_dots_only
 
 
@@ -15,6 +16,9 @@ class Study(models.Model):
 
     def __str__(self):
         return self.study_uid
+
+    def get_absolute_url(self):
+        return reverse('dicom_study_detail', args=[str(self.id)])
 
     class Meta:
         verbose_name_plural = 'Studies'

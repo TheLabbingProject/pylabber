@@ -7,22 +7,22 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 from .forms import CreateInstancesForm
-from .models import Instance, Series
+from .models import Instance, Series, Study, Patient
 
 
 class InstanceListView(LoginRequiredMixin, ListView):
     model = Instance
-    template_name = 'instances/instance_list.html'
+    template_name = 'dicom/instances/instance_list.html'
 
 
 class InstanceDetailView(LoginRequiredMixin, DetailView):
     model = Instance
-    template_name = 'instances/instance_detail.html'
+    template_name = 'dicom/instances/instance_detail.html'
 
 
 class InstancesCreateView(LoginRequiredMixin, FormView):
     form_class = CreateInstancesForm
-    template_name = 'instances/instances_create.html'
+    template_name = 'dicom/instances/instances_create.html'
     success_url = reverse_lazy('instance_list')
     temp_file_name = 'tmp.dcm'
     temp_zip_name = 'tmp.zip'
@@ -59,18 +59,43 @@ def series_view(request):
 
 class SeriesDetailView(LoginRequiredMixin, DetailView):
     model = Series
-    template_name = 'series/bokeh_server.html'
+    template_name = 'dicom/series/series_detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(SeriesDetailView, self).get_context_data(**kwargs)
-        absolute_url = self.request.build_absolute_uri(location="/")
-        bokeh_server_url = f'{absolute_url}bokehproxy/series_plot'
-        server_script = server_session(
-            None,
-            session_id=session_id.generate_session_id(),
-            url=bokeh_server_url)
-        extra = {
-            'graph_name': 'MRI Series Viewer',
-            'server_script': server_script,
-        }
-        return context.update(extra)
+    # def get_context_data(self, **kwargs):
+    #     context = super(SeriesDetailView, self).get_context_data(**kwargs)
+    #     absolute_url = self.request.build_absolute_uri(location="/")
+    #     bokeh_server_url = f'{absolute_url}bokehproxy/series_plot'
+    #     server_script = server_session(
+    #         None,
+    #         session_id=session_id.generate_session_id(),
+    #         url=bokeh_server_url)
+    #     extra = {
+    #         'graph_name': 'MRI Series Viewer',
+    #         'server_script': server_script,
+    #     }
+    #     return context.update(extra)
+
+
+class SeriesListView(LoginRequiredMixin, ListView):
+    model = Series
+    template_name = 'dicom/series/series_list.html'
+
+
+class StudyDetailView(LoginRequiredMixin, DetailView):
+    model = Study
+    template_name = 'dicom/studies/study_detail.html'
+
+
+class StudyListView(LoginRequiredMixin, ListView):
+    model = Study
+    template_name = 'dicom/studies/study_list.html'
+
+
+class PatientDetailView(LoginRequiredMixin, DetailView):
+    model = Patient
+    template_name = 'dicom/patients/patient_detail.html'
+
+
+class PatientListView(LoginRequiredMixin, ListView):
+    model = Patient
+    template_name = 'dicom/patients/patient_list.html'

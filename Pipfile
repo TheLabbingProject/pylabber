@@ -10,6 +10,7 @@ django-environ = "*"
 django-filter = "*"
 pydicom = "*"
 numpy = "*"
+bokeh = "*"
 
 [requires]
 python_version = "3.7"

@@ -19,8 +19,33 @@ urlpatterns = [
         name='instance_detail',
     ),
     path(
+        'series/',
+        views.SeriesListView.as_view(),
+        name='series_list',
+    ),
+    path(
         'series/<int:pk>/',
         views.SeriesDetailView.as_view(),
-        name='series_plot',
+        name='series_detail',
+    ),
+    path(
+        'studies/',
+        views.StudyListView.as_view(),
+        name='dicom_study_list',
+    ),
+    path(
+        'study/<int:pk>/',
+        views.StudyDetailView.as_view(),
+        name='dicom_study_detail',
+    ),
+    path(
+        'patients/',
+        views.PatientListView.as_view(),
+        name='patient_list',
+    ),
+    path(
+        'patients/<int:pk>/',
+        views.PatientDetailView.as_view(),
+        name='patient_detail',
     ),
 ]

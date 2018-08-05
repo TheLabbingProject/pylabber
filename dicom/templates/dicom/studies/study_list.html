@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>DICOM Studies</h3>
+    <table class="table table-striped table-bordered table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for study in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'dicom_study_detail' study.id %}">
+                            {{ study.id }}
+                        </a>
+                    </td>
+                    <td>{{ study.description }}</td>
+                    <td>{{ study.date | date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>{{ study.time | time:"TIME_FORMAT"}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

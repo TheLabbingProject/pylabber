@@ -288,6 +288,12 @@ class PatientModelTestCase(TestCase):
     def test_str(self):
         self.assertEqual(str(self.test_patient), self.test_patient.patient_uid)
 
+    def test_name_id(self):
+        first_name = self.test_patient.given_name
+        last_name = self.test_patient.family_name
+        expected = f'{last_name[:2]}{first_name[:2]}'
+        self.assertEqual(self.test_patient.get_name_id(), expected)
+
     def test_getting_subject_attributes(self):
         expected = {
             'first_name': self.test_patient.given_name,

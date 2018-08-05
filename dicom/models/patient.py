@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from research.models import Subject
 from .choices import Sex
 from .validators import digits_only
@@ -33,6 +34,12 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.patient_uid
+
+    def get_absolute_url(self):
+        return reverse('patient_detail', args=[str(self.id)])
+
+    def get_name_id(self):
+        return f'{self.family_name[:2]}{self.given_name[:2]}'
 
     def get_subject_attributes(self) -> dict:
         return {

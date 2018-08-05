@@ -21,7 +21,11 @@
                         </a>
                     </td>
                     <td>{{ dcm.patient.patient_uid }}</td>
-                    <td>{{ dcm.series.series_uid }}</td>
+                    <td>
+                        <a href="{% url 'series_detail' dcm.series.id %}">
+                            {{ dcm.series.series_uid }}
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

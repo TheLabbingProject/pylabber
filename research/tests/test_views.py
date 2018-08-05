@@ -45,31 +45,31 @@ class LoggedInStudyViewTestCase(LoggedInTestCase):
     def test_list_view(self):
         response = self.client.get(reverse('study_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'studies/study_list.html')
+        self.assertTemplateUsed(response, 'research/studies/study_list.html')
 
     def test_detail_view(self):
         url = self.test_study.get_absolute_url()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'studies/study_detail.html')
+        self.assertTemplateUsed(response, 'research/studies/study_detail.html')
 
     def test_update_view(self):
         url = self.test_study.get_absolute_url() + 'edit/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'studies/study_update.html')
+        self.assertTemplateUsed(response, 'research/studies/study_update.html')
 
     def test_delete_view(self):
         url = self.test_study.get_absolute_url() + 'delete/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'studies/study_delete.html')
+        self.assertTemplateUsed(response, 'research/studies/study_delete.html')
 
     def test_create_view(self):
         url = reverse('study_create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'studies/study_create.html')
+        self.assertTemplateUsed(response, 'research/studies/study_create.html')
 
 
 class LoggedOutSubjectViewTestCase(TestCase):
@@ -112,28 +112,33 @@ class LoggedInSubjectViewTestCase(LoggedInTestCase):
     def test_list_view(self):
         response = self.client.get(reverse('subject_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'subjects/subject_list.html')
+        self.assertTemplateUsed(response,
+                                'research/subjects/subject_list.html')
 
     def test_detail_view(self):
         url = self.test_subject.get_absolute_url()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'subjects/subject_detail.html')
+        self.assertTemplateUsed(response,
+                                'research/subjects/subject_detail.html')
 
     def test_update_view(self):
         url = self.test_subject.get_absolute_url() + 'edit/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'subjects/subject_update.html')
+        self.assertTemplateUsed(response,
+                                'research/subjects/subject_update.html')
 
     def test_delete_view(self):
         url = self.test_subject.get_absolute_url() + 'delete/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'subjects/subject_delete.html')
+        self.assertTemplateUsed(response,
+                                'research/subjects/subject_delete.html')
 
     def test_create_view(self):
         url = reverse('subject_create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'subjects/subject_create.html')
+        self.assertTemplateUsed(response,
+                                'research/subjects/subject_create.html')

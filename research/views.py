@@ -9,13 +9,13 @@ from .models import Subject, Study
 
 class StudyListView(LoginRequiredMixin, ListView):
     model = Study
-    template_name = 'studies/study_list.html'
+    template_name = 'research/studies/study_list.html'
     context_object_name = 'studies'
 
 
 class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
     model = Study
-    template_name = 'studies/study_create.html'
+    template_name = 'research/studies/study_create.html'
     fields = [
         'name',
         'description',
@@ -25,7 +25,7 @@ class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
 
 class StudyDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
     model = Study
-    template_name = 'studies/study_detail.html'
+    template_name = 'research/studies/study_detail.html'
 
 
 class StudyUpdateView(LoginRequiredMixin, StudyListMixin, UpdateView):
@@ -35,23 +35,23 @@ class StudyUpdateView(LoginRequiredMixin, StudyListMixin, UpdateView):
         'description',
         'collaborators',
     ]
-    template_name = 'studies/study_update.html'
+    template_name = 'research/studies/study_update.html'
 
 
 class StudyDeleteView(LoginRequiredMixin, StudyListMixin, DeleteView):
     model = Study
-    template_name = 'studies/study_delete.html'
+    template_name = 'research/studies/study_delete.html'
     success_url = reverse_lazy('study_list')
 
 
 class SubjectListView(LoginRequiredMixin, ListView):
     model = Subject
-    template_name = 'subjects/subject_list.html'
+    template_name = 'research/subjects/subject_list.html'
 
 
 class SubjectDetailView(LoginRequiredMixin, DetailView):
     model = Subject
-    template_name = 'subjects/subject_detail.html'
+    template_name = 'research/subjects/subject_detail.html'
 
 
 class SubjectUpdateView(LoginRequiredMixin, UpdateView):
@@ -65,18 +65,18 @@ class SubjectUpdateView(LoginRequiredMixin, UpdateView):
         'date_of_birth',
         'dominant_hand',
     ]
-    template_name = 'subjects/subject_update.html'
+    template_name = 'research/subjects/subject_update.html'
 
 
 class SubjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Subject
-    template_name = 'subjects/subject_delete.html'
+    template_name = 'research/subjects/subject_delete.html'
     success_url = reverse_lazy('subject_list')
 
 
 class SubjectCreateView(LoginRequiredMixin, CreateView):
     model = Subject
-    template_name = 'subjects/subject_create.html'
+    template_name = 'research/subjects/subject_create.html'
     fields = [
         'first_name',
         'last_name',

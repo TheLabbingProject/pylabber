@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>DICOM Patients</h3>
+    <table class="table table-striped table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name ID</th>
+                <th scope="col">Sex</th>
+                <th scope="col">Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in object_list %}
+                <tr>
+                    <td>{{ patient.id }}</td>
+                    <td>
+                        <a href="{% url 'patient_detail' patient.id %}">
+                            {{ patient.patient_uid }}
+                        </a>
+                    </td>
+                    <td>{{ patient.get_name_id }}</td>
+                    <td>{{ patient.sex }}</td>
+                    <td>{{ patient.date_of_birth | date:"SHORT_DATE_FORMAT" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

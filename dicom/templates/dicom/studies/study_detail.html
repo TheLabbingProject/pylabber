@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p>Study UID: {{ object.study_uid }}</p>
+    <p>Date: {{ object.date | date:"SHORT_DATE_FORMAT" }}</p>
+    <p>Time: {{ object.time | date:"TIME_FORMAT" }}</p>
+    <p>Description: {{ object.description }}</p>
+    <hr>
+    <h4>Series</h4>
+    <table class="table table-striped table-bordered table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">UID</th>
+                <th scope="col">Description</th>
+                <th scope="col">Patient</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for series in object.series_set.all %}
+                <tr>
+                    <td>
+                        <a href="{% url 'series_detail' series.id %}">
+                            {{ series.id }}
+                        </a>
+                    </td>
+                    <td>{{ series.date | date:"SHORT_DATE_FORMAT"}}</td>
+                    <td>{{ series.series_uid }}</td>
+                    <td>{{ series.description }}</td>
+                    <td>
+                        <a href="{% url 'patient_detail' series.patient.id %}">
+                            {{ series.patient }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <caption>Database ID: {{ object.id }}</caption>
+    </table>
+{% endblock content %}

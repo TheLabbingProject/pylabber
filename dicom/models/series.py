@@ -1,6 +1,7 @@
 import numpy as np
 
 from django.db import models
+from django.urls import reverse
 from .patient import Patient
 from .study import Study
 from .validators import digits_and_dots_only
@@ -24,6 +25,9 @@ class Series(models.Model):
 
     def __str__(self):
         return self.series_uid
+
+    def get_absolute_url(self):
+        return reverse('series_detail', args=[str(self.id)])
 
     def get_data(self) -> np.ndarray:
         instances = self.instance_set.order_by('number')

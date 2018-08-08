@@ -1,11 +1,12 @@
-{% extends 'base.html' %} 
+{% extends "research/data/data_nav.html" %}
+
 {% load crispy_forms_tags %} 
 
-{% block content %}
+{% block data-content %}
     <h1>Add DICOM files</h1>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %} 
         {{ form | crispy }}
         <button class="btn btn-success ml-2" type="submit">Save</button>
     </form>
-{% endblock content %}
+{% endblock data-content %}

@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -86,3 +86,7 @@ class SubjectCreateView(LoginRequiredMixin, CreateView):
         'date_of_birth',
         'dominant_hand',
     ]
+
+
+class DataSummaryView(LoginRequiredMixin, TemplateView):
+    template_name = 'research/data/data_nav.html'

@@ -17,7 +17,14 @@ import environ
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
+    SECRET_KEY=(str, ''),
+    BOKEH_SECRET_KEY=(str, ''),
+    BOKEH_SIGN_SESSIONS=(bool, True),
+    DB_NAME=(str, ''),
+    DB_USER=(str, ''),
+    DB_PASSWORD=(str, ''),
 )
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +32,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
+
+# Note Bokeh_SECRET_KEY must also be used/set when starting up Bokeh daemon
+# Obtain your own key by typing "bokeh secret" in a terminal
+# the key goes below, and in the bokehserver.service file
+BOKEH_SECRET_KEY = env("BOKEH_SECRET_KEY")
+BOKEH_SIGN_SESSIONS = env("BOKEH_SIGN_SESSIONS")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
@@ -86,8 +99,12 @@ WSGI_APPLICATION = 'pylabber.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -147,7 +164,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'node_modules'),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

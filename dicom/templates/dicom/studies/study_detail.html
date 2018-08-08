@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "research/data/data_nav.html" %}
 
-{% block content %}
+{% block data-content %}
     <p>Study UID: {{ object.study_uid }}</p>
     <p>Date: {{ object.date | date:"SHORT_DATE_FORMAT" }}</p>
     <p>Time: {{ object.time | date:"TIME_FORMAT" }}</p>
@@ -38,4 +38,4 @@
         </tbody>
         <caption>Database ID: {{ object.id }}</caption>
     </table>
-{% endblock content %}
+{% endblock data-content %}

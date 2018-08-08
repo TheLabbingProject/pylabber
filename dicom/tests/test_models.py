@@ -24,6 +24,14 @@ class InstanceModelTestCase(TestCase):
         'different_patient_different_study',
     ]
 
+    TEST_INSTANCE_UIDS = [
+        '1.3.12.2.1107.5.2.43.66024.2016120813110917216691062',
+        '1.3.12.2.1107.5.2.43.66024.2016120813113249580291102',
+        '1.3.12.2.1107.5.2.43.66024.2016120813140464245591454',
+        '1.3.12.2.1107.5.2.43.66024.2018050112252318571884482',
+        '1.3.12.2.1107.5.2.43.66024.2016121412223453546567775',
+    ]
+
     ZIPPED_UIDS = [
         '1.3.12.2.1107.5.2.43.66024.2016120813301385447497555',
         '1.3.12.2.1107.5.2.43.66024.2016120813360043323300309',
@@ -53,8 +61,9 @@ class InstanceModelTestCase(TestCase):
             instance.save()
 
     def get_instance(self, name: str) -> Instance:
-        id = self.TEST_INSTANCES.index(name) + 1
-        return Instance.objects.get(id=id)
+        index = self.TEST_INSTANCES.index(name)
+        return Instance.objects.get(
+            instance_uid=self.TEST_INSTANCE_UIDS[index])
 
     def test_str(self):
         self.assertEqual(

@@ -33,7 +33,6 @@ class Subject(models.Model):
     dominant_hand = models.CharField(
         max_length=5,
         choices=DominantHand.choices(),
-        default=DominantHand.RIGHT,
         blank=True,
     )
 
@@ -46,7 +45,6 @@ class Subject(models.Model):
     gender = models.CharField(
         max_length=5,
         choices=Gender.choices(),
-        default=Gender.CIS,
         blank=True,
     )
 

@@ -1,5 +1,4 @@
 from django.urls import path
-
 from . import views
 
 urlpatterns = [
@@ -53,4 +52,9 @@ urlpatterns = [
         views.SubjectDeleteView.as_view(),
         name='subject_delete',
     ),
+    path(
+        'data/',
+        views.DataSummaryView.as_view(),
+        name='data_summary',
+    )
 ]

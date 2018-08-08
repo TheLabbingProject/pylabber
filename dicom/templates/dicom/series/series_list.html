@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "research/data/data_nav.html" %}
 
-{% block content %}
+{% block data-content %}
     <h3>DICOM Series</h3>
     <table class="table table-striped table-bordered table-sm">
         <thead>
@@ -8,7 +8,6 @@
                 <th scope="col">#</th>
                 <th scope="col">Study</th>
                 <th scope="col">Patient</th>
-                <th scope="col">Series Number</th>
                 <th scope="col">Description</th>
             </tr>
         </thead>
@@ -22,18 +21,19 @@
                     </td>
                     <td>
                         <a href="{% url 'study_detail' series.study.id %}">
-                            {{ series.study.description }}
-                        </a>
+                            {{ series.study.id }}
+                        </a>    
+                        ({{ series.study.description }})
                     </td>
                     <td>
                         <a href="{% url 'patient_detail' series.patient.id %}">
-                            {{ series.patient.get_name_id }}
+                            {{ series.patient.id }}
                         </a>
+                        ({{ series.patient.get_name_id }})
                     </td>
-                    <td>{{ series.number }}</td>
                     <td>{{ series.description }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-{% endblock content %}
+{% endblock data-content %}

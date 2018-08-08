@@ -1,8 +1,6 @@
 from bokeh.embed import server_session
 from bokeh.util import session_id
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
@@ -18,6 +16,20 @@ class InstanceListView(LoginRequiredMixin, ListView):
 class InstanceDetailView(LoginRequiredMixin, DetailView):
     model = Instance
     template_name = 'dicom/instances/instance_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(InstanceDetailView, self).get_context_data(**kwargs)
+        # absolute_url = self.request.build_absolute_uri(location="/")
+        bokeh_server_url = 'http://127.0.0.1:5006/bokehproxy/plot_instance'
+        server_script = server_session(
+            None,
+            session_id=session_id.generate_session_id(),
+            url=bokeh_server_url)
+        extra = {
+            'server_script': server_script,
+        }
+        context.update(extra)
+        return context
 
 
 class InstancesCreateView(LoginRequiredMixin, FormView):
@@ -42,38 +54,9 @@ class InstancesCreateView(LoginRequiredMixin, FormView):
             return self.form_invalid(form)
 
 
-@login_required
-def series_view(request):
-    absolute_url = request.build_absolute_uri(location="/")
-    bokeh_server_url = f'{absolute_url}bokehproxy/series_plot'
-    server_script = server_session(
-        None,
-        session_id=session_id.generate_session_id(),
-        url=bokeh_server_url)
-    context = {
-        'graph_name': 'MRI Series Viewer',
-        'server_script': server_script,
-    }
-    return render(request, 'series/bokeh_server.html', context)
-
-
 class SeriesDetailView(LoginRequiredMixin, DetailView):
     model = Series
     template_name = 'dicom/series/series_detail.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(SeriesDetailView, self).get_context_data(**kwargs)
-    #     absolute_url = self.request.build_absolute_uri(location="/")
-    #     bokeh_server_url = f'{absolute_url}bokehproxy/series_plot'
-    #     server_script = server_session(
-    #         None,
-    #         session_id=session_id.generate_session_id(),
-    #         url=bokeh_server_url)
-    #     extra = {
-    #         'graph_name': 'MRI Series Viewer',
-    #         'server_script': server_script,
-    #     }
-    #     return context.update(extra)
 
 
 class SeriesListView(LoginRequiredMixin, ListView):

@@ -1,33 +1,46 @@
-{% extends "base.html" %}
+{% extends "research/data/data_nav.html" %}
 
-{% block content %}
+{% block data-content %}
     <h3>DICOM Instances</h3>
     <table class="table table-hover table-sm">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Instance UID</th>
+                <th scope="col">Study</th>
                 <th scope="col">Subject</th>
-                <th scope="col">Series UID</th>
+                <th scope="col">Series</th>
+                <th scope="col">Instance Number</th>
             </tr>
         </thead>
         <tbody>
             {% for dcm in object_list %}
                 <tr>
-                    <td>{{ dcm.id }}</td>
                     <td>
                         <a href="{% url 'instance_detail' dcm.id %}">
-                            {{ dcm.instance_uid }}
+                            {{ dcm.id }}
                         </a>
                     </td>
-                    <td>{{ dcm.patient.patient_uid }}</td>
+                    <td>
+                        <a href="{% url 'dicom_study_detail' dcm.study.id %}">
+                            {{ dcm.study.id }}
+                        </a>
+                        ({{ dcm.study.description }})
+                    </td>
+                    <td>
+                        <a href="{% url 'patient_detail' dcm.patient.id %}">
+                            {{ dcm.patient.id }}
+                        </a>
+                        ({{ dcm.patient.patient_uid }})
+                    </td>
                     <td>
                         <a href="{% url 'series_detail' dcm.series.id %}">
-                            {{ dcm.series.series_uid }}
+                            {{ dcm.series.id }}
                         </a>
+                        ({{ dcm.series.description }})
                     </td>
+                    <td>{{ dcm.number }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-{% endblock content %}
+{% endblock data-content %}

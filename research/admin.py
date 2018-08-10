@@ -1,6 +1,9 @@
 from django.contrib import admin
-
+from django.conf import settings
 from .models import Study, Subject
+
+if 'dicom' in settings.INSTALLED_APPS:
+    from dicom.admin import PatientInLine
 
 
 class SubjectsInline(admin.TabularInline):
@@ -13,13 +16,13 @@ class SubjectsInline(admin.TabularInline):
     )
 
     def first_name(self, instance):
-        return self.instance.first_name
+        return instance.subject.first_name
 
     def last_name(self, instance):
-        return self.instance.last_name
+        return instance.subject.last_name
 
     def email(self, instance):
-        return self.instance.email
+        return instance.subject.email
 
 
 class CollaboratorsInline(admin.TabularInline):
@@ -49,6 +52,7 @@ class SubjectAdmin(admin.ModelAdmin):
         'email',
         'phone_number',
     )
+    inlines = (PatientInLine, )
 
 
 admin.site.register(Study, StudiesAdmin)

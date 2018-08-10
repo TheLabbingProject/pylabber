@@ -50,6 +50,46 @@ class StudyAdmin(admin.ModelAdmin):
     readonly_fields = ['study_uid']
 
 
+class PatientInLine(admin.StackedInline):
+    model = Patient
+    verbose_name_plural = 'MRI'
+    fields = (
+        'given_name',
+        'family_name',
+        'sex',
+        'date_of_birth',
+        'studies',
+        'series_count',
+        'dicom_count',
+    )
+    readonly_fields = (
+        'studies',
+        'series_count',
+        'dicom_count',
+    )
+
+    def get_series(self, instance):
+        return Series.objects.filter(patient=instance)
+
+    def series_count(self, instance):
+        return self.get_series(instance).count()
+
+    def get_studies(self, instance):
+        return Study.objects.filter(
+            id__in=self.get_series(instance).values('study').distinct())
+
+    def get_study_list(self, instance):
+        return self.get_studies(instance).values_list('description')
+
+    def studies(self, instance):
+        return [study for study in self.get_study_list(instance)]
+
+    def dicom_count(self, instance):
+        return Instance.objects.filter(patient=instance).count()
+
+    dicom_count.short_description = 'DICOM files'
+
+
 class PatientAdmin(admin.ModelAdmin):
     list_display = (
         'id',

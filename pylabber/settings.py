@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     # Local
     'research',
     'dicom',
+    'questionnaires',
 ]
 
 MIDDLEWARE = [

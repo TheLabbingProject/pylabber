@@ -27,6 +27,14 @@ class QuestionnairesAdmin(admin.ModelAdmin):
     inlines = (QuestionInLine, )
 
 
+class QuestionsAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'text',
+        'solution',
+    )
+
+
 class AnswersAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -40,6 +48,6 @@ class AnswersAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Questionnaire, QuestionnairesAdmin)
-admin.site.register(Question)
+admin.site.register(Question, QuestionsAdmin)
 admin.site.register(Option)
 admin.site.register(Answer, AnswersAdmin)

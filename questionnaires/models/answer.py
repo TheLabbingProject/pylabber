@@ -1,7 +1,16 @@
+# import pandas as pd
+
+# from django.core.files.base import ContentFile
+# from django.core.files.storage import default_storage
 from django.db import models
 from .option import Option
 from .question import Question
 from .questionnaire import Questionnaire
+
+# class AnswerManager(models.Manager):
+#     def from_xlsx(self, file):
+#         dest_name = default_storage.save('tmp.xlsx', ContentFile(file.read()))
+#         df = pd.read_excel(dest_name)
 
 
 class Answer(models.Model):

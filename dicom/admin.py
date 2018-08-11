@@ -54,10 +54,6 @@ class PatientInLine(admin.StackedInline):
     model = Patient
     verbose_name_plural = 'MRI'
     fields = (
-        'given_name',
-        'family_name',
-        'sex',
-        'date_of_birth',
         'studies',
         'series_count',
         'dicom_count',

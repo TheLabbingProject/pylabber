@@ -14,6 +14,8 @@ bokeh = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
 gunicorn = "*"
+pandas = "*"
+xlrd = "*"
 
 [requires]
 python_version = "3.7"

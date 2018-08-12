@@ -1,5 +1,15 @@
 from django.contrib import admin
-from .models import Questionnaire, Question, Option, Answer
+from .models import (
+    Questionnaire,
+    OpenQuestion,
+    MultipleChoiceQuestion,
+    Option,
+    RatingQuestion,
+    ShortOpenAnswer,
+    LongOpenAnswer,
+    MultipleChoiceAnswer,
+    RatingAnswer,
+)
 
 
 class QuestionInLine(admin.StackedInline):
@@ -7,16 +17,6 @@ class QuestionInLine(admin.StackedInline):
     verbose_name = 'Question'
     verbose_name_plural = 'Questions'
     extra = 1
-    readonly_fields = (
-        'options',
-        'solution',
-    )
-
-    def options(self, instance):
-        return [str(option) for option in instance.question.options.all()]
-
-    def solution(self, instance):
-        return instance.question.solution
 
 
 class QuestionnairesAdmin(admin.ModelAdmin):
@@ -25,29 +25,36 @@ class QuestionnairesAdmin(admin.ModelAdmin):
         'description',
     )
     inlines = (QuestionInLine, )
+    exclude = ('questions', )
 
 
-class QuestionsAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'text',
-        'solution',
-    )
+# class QuestionsAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'id',
+#         'text',
+#         'solution',
+#     )
 
-
-class AnswersAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'questionnaire',
-        'subject',
-        'question',
-        'choice',
-        '_is_correct',
-    )
-    ordering = ['questionnaire', 'subject', 'question']
-
+# class AnswersAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'id',
+#         'questionnaire',
+#         'subject',
+#         'question',
+#         'choice',
+#         '_is_correct',
+#     )
+#     ordering = ['questionnaire', 'subject', 'question']
 
 admin.site.register(Questionnaire, QuestionnairesAdmin)
-admin.site.register(Question, QuestionsAdmin)
+admin.site.register(OpenQuestion)
+admin.site.register(ShortOpenAnswer)
+admin.site.register(LongOpenAnswer)
+admin.site.register(MultipleChoiceQuestion)
 admin.site.register(Option)
-admin.site.register(Answer, AnswersAdmin)
+admin.site.register(MultipleChoiceAnswer)
+admin.site.register(RatingQuestion)
+admin.site.register(RatingAnswer)
+# admin.site.register(Question, QuestionsAdmin)
+# admin.site.register(Option)
+# admin.site.register(Answer, AnswersAdmin)

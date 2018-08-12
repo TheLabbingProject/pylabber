@@ -1,6 +1,6 @@
 from django.db import models
-
 # from django.urls import reverse
+from .question import Question
 
 
 class Questionnaire(models.Model):
@@ -8,6 +8,11 @@ class Questionnaire(models.Model):
     description = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    questions = models.ManyToManyField(
+        Question,
+        related_name='questionnaires',
+    )
 
     def __str__(self):
         return self.name

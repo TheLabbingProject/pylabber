@@ -1,0 +1,14 @@
+{% extends 'research/data/data_nav.html' %}
+{% load render_question %}
+
+{% block data-content %}
+    <div>
+        <h2>{{ object.name }}</h2>
+        <p>{{ object.description }}</p>
+        <hr>
+        <h3>Questions</h3>
+        {% for question in object.get_rating_questions %}
+            {% render_rating_question question %}
+        {% endfor %}
+    </div>
+{% endblock data-content %}

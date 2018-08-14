@@ -1,0 +1,6 @@
+<p>{{ text }}</p>
+<div class="btn-group" role="group" aria-label="Rating range">
+    {% for value in range %}
+        <button type="button" class="btn btn-secondary">{{ value | floatformat }}</button>
+    {% endfor %}
+</div>

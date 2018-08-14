@@ -17,5 +17,11 @@ class Questionnaire(models.Model):
     def __str__(self):
         return self.name
 
+    def get_rating_questions(self):
+        return [
+            question for question in self.questions.all()
+            if type(question) == 'RatingQuestion'
+        ]
+
     # def get_absolute_url(self):
     #     return reverse('questionnaire_detail', args=[str(self.id)])

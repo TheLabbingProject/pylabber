@@ -22,6 +22,16 @@
                     </ul>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#submenu2" data-toggle="collapse" data-target="#submenu2">Questionnaires ▾</a>
+                    <ul class="list-unstyled flex-column pl-3 collapse" id="submenu2" aria-expanded="false">
+                        {% for questionnaire in questionnaires %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questionnaire_detail' questionnaire.id %}">{{ questionnaire.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Questionnaires</a>
                 </li>
                 <li class="nav-item">
@@ -30,7 +40,7 @@
             </ul>
         </div>
         <!-- Page Content -->
-        <div class="col main pt-2 mt-3">
+        <div class="col main pt-2 mt-3 offset-2">
             {% block data-content %} {% endblock data-content %}
         </div>
     </div>

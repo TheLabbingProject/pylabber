@@ -1,10 +1,12 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
-
 from .mixins import StudyListMixin
 from .models import Subject, Study
+if 'questionnaires' in settings.INSTALLED_APPS:
+    from questionnaires.mixins import QuestionnaireListMixin
 
 
 class StudyListView(LoginRequiredMixin, ListView):
@@ -88,5 +90,6 @@ class SubjectCreateView(LoginRequiredMixin, CreateView):
     ]
 
 
-class DataSummaryView(LoginRequiredMixin, TemplateView):
+class DataSummaryView(LoginRequiredMixin, QuestionnaireListMixin,
+                      TemplateView):
     template_name = 'research/data/data_nav.html'

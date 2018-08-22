@@ -49,6 +49,7 @@ class SubjectListFormHelper(FormHelper):
                 Div(
                     Field(
                         'date_of_birth',
+                        placeholder='dd/mm/yyyy',
                         css_class='datepicker',
                     ),
                     css_class='col-2',

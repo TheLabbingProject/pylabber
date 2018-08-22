@@ -1,18 +1,17 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django_tables2 import RequestConfig
 from .filters import SubjectListFilter
 from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
-<<<<<<< HEAD
-=======
 from .tables import SubjectTable
 from .utils import FilteredTableMixin
 if 'questionnaires' in settings.INSTALLED_APPS:
     from questionnaires.mixins import QuestionnaireListMixin
->>>>>>> 68b978a0857d3a5e0327a9492e785e9c85102cce
 
 
 class StudyListView(LoginRequiredMixin, ListView):
@@ -65,6 +64,7 @@ class SubjectListView(LoginRequiredMixin, FilteredTableMixin):
         context = super().get_context_data(**kwargs)
         search_query = self.get_queryset()
         table = self.table_class(search_query)
+        RequestConfig(self.request).configure(table)
         context['table'] = table
         return context
 

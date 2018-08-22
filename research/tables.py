@@ -4,7 +4,7 @@ from .models import Subject
 
 
 class SubjectTable(tables.Table):
-    id_number = tables.LinkColumn('subject_detail', args=[A('pk')])
+    id = tables.LinkColumn('subject_detail', args=[A('pk')])
 
     class Meta:
         model = Subject

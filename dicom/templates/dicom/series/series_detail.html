@@ -1,9 +1,15 @@
 {% extends "research/data/data_nav.html" %}
 
 {% block data-content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+
+    <div>
+        {{ server_script | safe }}
+    </div>
+    <hr>
     <p>Series UID: {{ object.series_uid }}</p>
-    <p>Date: {{ object.date | date:"SHORT_DATE_FORMAT" }}</p>
-    <p>Time: {{ object.time | date:"TIME_FORMAT" }}</p>
+    <p>Date: {{ object.date | date:"SHORT_DATE_FORMAT" }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTime: {{ object.time | date:"TIME_FORMAT" }}</p>
     <p>Description: {{ object.description }}</p>
     <p>
         Study: 
@@ -19,11 +25,10 @@
     </p>
     <hr>
     <h4>Instances</h4>
-    <table class="table table-striped table-bordered table-sm">
+    <table class="table table-striped table-bordered table-sm" id="instance_table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Series</th>
                 <th scope="col">Instance Number</th>
                 <th scope="col">UID</th>
             </tr>
@@ -36,11 +41,6 @@
                             {{ instance.id }}
                         </a>
                     </td>
-                    <td>
-                        <a href="{% url 'series_detail' instance.series.id %}">
-                            {{ instance.series.id }}
-                        </a>
-                    </td>
                     <td>{{ instance.number }}</td>
                     <td>{{ instance.instance_uid }}</td>
                 </tr>
@@ -49,3 +49,12 @@
         <caption>Database ID: {{ object.id }}</caption>
     </table>
 {% endblock data-content %}
+{% block extra-scripts %} 
+    <script>
+        $(document).ready( function () {
+            $('#instance_table').DataTable( {
+                "pageLength": 100,
+            } );
+        } );
+    </script>
+{% endblock extra-scripts %}

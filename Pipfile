@@ -16,6 +16,7 @@ bokeh = "*"
 gunicorn = "*"
 pandas = "*"
 xlrd = "*"
+"django-tables2" = "*"
 
 [requires]
 python_version = "3.7"

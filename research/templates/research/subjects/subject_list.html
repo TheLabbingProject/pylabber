@@ -1,29 +1,32 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+{% load django_tables2 %}
+{% load static %}
+
 {% block content %}
-    <h3>Subjects</h3>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name ID</th>
-                <th scope="col">Sex</th>
-                <th scope="col">Date of Birth</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for subject in object_list %}
-                <tr>
-                    <th scope="row">{{ subject.id }}</th>
-                    <td>
-                        <a href="{% url 'subject_detail' subject.id %}">
-                            {{ subject }}
-                        </a>
-                    </td>
-                    <td>{{ subject.sex }}</td>
-                    <td>{{ subject.date_of_birth }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <link rel="stylesheet" type="text/css" href="{% static 'research/style.css' %}">
+    <div class="container-fluid" id="main">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                {% if filter %}
+                    <form action="" method="get" class="form form-inline">
+                        {% crispy filter.form filter.form.helper %}
+                    </form>
+                {% endif %}
+                {% render_table table %}
+            </div>
+            <div class="col main pt-3 mt-3">
+                {% block subject-detail %} {% endblock subject-detail %}
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block extra-scripts %}
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({ format: "dd/mm/yyyy" });
+        }); 
+    </script>
+{% endblock extra-scripts %}

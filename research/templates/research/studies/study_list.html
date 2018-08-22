@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %} {% load static %} {% block head-extra %}
 <link rel="stylesheet" type="text/css" href="{% static 'research/style.css' %}"> {% endblock head-extra %} {% block content %}
 <div class="container-fluid" id="main">
@@ -19,7 +20,35 @@
         <!-- Page Content -->
         <div class="col main pt- mt-3">
             {% block study-content %} {% endblock study-content %}
+=======
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head-extra %}
+    <link rel="stylesheet" type="text/css" href="{% static 'research/style.css' %}"> 
+{% endblock head-extra %} 
+
+{% block content %}
+    <div class="container-fluid" id="main">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-md-2 col-lg-2 sidebar-offcanvas bg-light pl-0" id="sidebar" role="navigation">
+                <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
+                    {% for study in studies %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'study_detail' study.id %}">{{ study.name }}</a>
+                    </li>
+                    {% endfor %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'study_create' %}">
+                            <span class="fas fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Page Content -->
+            <div class="col main pt- mt-3 offset-2">
+                {% block study-content %} {% endblock study-content %}
+            </div>
+>>>>>>> 68b978a0857d3a5e0327a9492e785e9c85102cce
         </div>
     </div>
-</div>
 {% endblock content %}

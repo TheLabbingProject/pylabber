@@ -1,12 +1,6 @@
 {% extends "research/data/data_nav.html" %}
 
 {% block data-content %}
-    <div>
-        {% load static %}
-    </div>
-
-    {{ server_script | safe }}
-
     <p>Instance UID: {{ object.instance_uid }}</p>
     <table class="table table-striped table-bordered table-sm">
         <thead>

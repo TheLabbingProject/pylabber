@@ -1,12 +1,11 @@
-{% extends 'research/studies/study_list.html' %}
+{% extends 'research/data/data_nav.html' %}
 {% load crispy_forms_tags %} 
 
-
-{% block study-content %}
-    <h1>New Study</h1>
+{% block data-content %}
+    <h1>New Questionnaire</h1>
     <form action="" method="post">
         {% csrf_token %} 
         {{ form | crispy }}
         <button class="btn btn-success ml-2" type="submit">Save</button>
     </form>
-{% endblock study-content %}
+{% endblock data-content %}

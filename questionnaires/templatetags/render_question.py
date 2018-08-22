@@ -1,5 +1,4 @@
 from django import template
-from django.template.loader import get_template
 
 register = template.Library()
 
@@ -13,12 +12,14 @@ template_dict = {
 }
 
 
+@register.inclusion_tag(template_dict['OpenQuestion'])
 def render_open_question(question):
     return {
         'text': question.text,
     }
 
 
+@register.inclusion_tag(template_dict['MultipleChoiceQuestion'])
 def render_multiple_choice_question(question):
     return {
         'text': question.text,

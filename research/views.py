@@ -3,8 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
+from .filters import SubjectListFilter
+from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
+from .tables import SubjectTable
+from .utils import FilteredTableMixin
 if 'questionnaires' in settings.INSTALLED_APPS:
     from questionnaires.mixins import QuestionnaireListMixin
 
@@ -46,17 +50,35 @@ class StudyDeleteView(LoginRequiredMixin, StudyListMixin, DeleteView):
     success_url = reverse_lazy('study_list')
 
 
-class SubjectListView(LoginRequiredMixin, ListView):
+class SubjectListView(LoginRequiredMixin, FilteredTableMixin):
     model = Subject
+    table_class = SubjectTable
     template_name = 'research/subjects/subject_list.html'
+    paginate_by = 50
+    ordering = ['-id']
+    filterset_class = SubjectListFilter
+    formhelper_class = SubjectListFormHelper
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        search_query = self.get_queryset()
+        table = self.table_class(search_query)
+        context['table'] = table
+        return context
 
 
-class SubjectDetailView(LoginRequiredMixin, DetailView):
+class SubjectDetailView(SubjectListView):
     model = Subject
     template_name = 'research/subjects/subject_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        subject = Subject.objects.get(id=self.kwargs.get('pk'))
+        context['subject'] = subject
+        return context
 
-class SubjectUpdateView(LoginRequiredMixin, UpdateView):
+
+class SubjectUpdateView(SubjectListView, UpdateView):
     model = Subject
     fields = [
         'first_name',
@@ -64,16 +86,31 @@ class SubjectUpdateView(LoginRequiredMixin, UpdateView):
         'email',
         'phone_number',
         'sex',
+        'gender',
         'date_of_birth',
         'dominant_hand',
     ]
     template_name = 'research/subjects/subject_update.html'
 
+    def get_context_data(self, **kwargs):
+        subject = Subject.objects.get(id=self.kwargs['pk'])
+        self.object = subject
+        context = super().get_context_data(**kwargs)
+        context['subject'] = subject
+        return context
 
-class SubjectDeleteView(LoginRequiredMixin, DeleteView):
+
+class SubjectDeleteView(SubjectListView, DeleteView):
     model = Subject
     template_name = 'research/subjects/subject_delete.html'
     success_url = reverse_lazy('subject_list')
+
+    def get_context_data(self, **kwargs):
+        subject = Subject.objects.get(id=self.kwargs['pk'])
+        self.object = subject
+        context = super().get_context_data(**kwargs)
+        context['subject'] = subject
+        return context
 
 
 class SubjectCreateView(LoginRequiredMixin, CreateView):

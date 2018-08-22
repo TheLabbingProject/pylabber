@@ -58,6 +58,8 @@ INSTALLED_APPS = [
 
     # 3rd Party
     'crispy_forms',
+    'django_tables2',
+    'django_filters',
 
     # Local
     'research',
@@ -145,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-GB'
 
 TIME_ZONE = 'UTC'
 
@@ -172,3 +174,4 @@ MEDIA_URL = '/media/'
 
 # 3rd party application settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'

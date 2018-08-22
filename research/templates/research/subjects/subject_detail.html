@@ -1,16 +1,18 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'research/subjects/subject_list.html' %}
+{% block subject-detail %}
 <div class="subject-entry">
-    <p>First Name: {{ object.first_name }}</p>
-    <p>Last Name: {{ object.last_name }}</p>
-    <p>Email: {{ object.email }}</p>
-    <p>Phone: {{ object.phone_number }}</p>
-    <p>Sex: {{ object.sex }}</p>
-    <p>Date of Birth: {{ object.date_of_birth }}</p>
-    <p>Dominant Hand: {{ object.dominant_hand }}</p>
+    <p>First Name: {{ subject.first_name }}</p>
+    <p>Last Name: {{ subject.last_name }}</p>
+    <p>Email: {{ subject.email }}</p>
+    <p>Phone: {{ subject.phone_number }}</p>
+    <p>Sex: {{ subject.sex.capitalize }}</p>
+    <p>Gender: {{ subject.gender.capitalize }}</p>
+    <p>Date of Birth: {{ subject.date_of_birth }}</p>
+    <p>Dominant Hand: {{ subject.dominant_hand }}</p>
     <hr>
 </div>
 <p>
     <a href="{% url 'subject_update' subject.id %}">Edit</a> |
     <a href="{% url 'subject_delete' subject.id %}">Delete</a>
 </p>
-{% endblock content %}
+{% endblock subject-detail %}

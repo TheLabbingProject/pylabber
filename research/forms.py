@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import FormActions, StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML
+from crispy_forms.layout import Layout, Fieldset, Div, HTML
 
 
 class SubjectListFormHelper(FormHelper):
@@ -20,103 +20,12 @@ class SubjectListFormHelper(FormHelper):
                 css_class='row',
             ),
             Div(
-<<<<<<< HEAD
                 'first_name',
                 'last_name',
-=======
-                Div(
-                    Field(
-                        'date_of_birth',
-                        placeholder='dd/mm/yyyy',
-                        css_class='datepicker',
-                    ),
-                    css_class='col-2',
-                ),
->>>>>>> be38950d6305a2f6f4c9bb258179abe2fe13a878
                 css_class='row',
             ),
             css_class='row',
         ),
-        # Div(
-        #     Div(
-        #         Fieldset(
-        #             '<i class="fa fa-search"></i> Search Subject Records'),
-        #         css_class='row',
-        #     ),
-        #     Div(
-        #         Div(
-        #             Field(
-        #                 'id',
-        #                 css_class='ml-2',
-        #             ),
-        #             css_class='mb-2 col',
-        #         ),
-        #         Div(
-        #             Field(
-        #                 'id_number',
-        #                 css_class='ml-2',
-        #             ),
-        #             css_class='mb-2 ml-4 col',
-        #         ),
-        #         Div(
-        #             Field(
-        #                 'first_name',
-        #                 css_class='ml-2',
-        #             ),
-        #             css_class='mb-2 ml-4 col',
-        #         ),
-        #         Div(
-        #             Field(
-        #                 'last_name',
-        #                 css_class='ml-2',
-        #             ),
-        #             css_class='mb-2 ml-4 col',
-        #         ),
-        #         css_class='row',
-        #     ),
-        #     Div(
-        #         Div(
-        #             Field(
-        #                 'sex',
-        #                 css_class='ml-2',
-        #             ),
-        #             css_class='mb-2 ml-4 col',
-        #         ),
-        #         Div(
-        #             Field(
-        #                 'gender',
-        #                 css_class='ml-2',
-        #             ),
-        #             css_class='mb-2 ml-4 col',
-        #         ),
-        #         css_class='row',
-        #     ),
-        #     Div(
-        #         Div(
-        #             Field(
-        #                 'date_of_birth',
-        #                 css_class='datepicker',
-        #                 placeholder='dd/mm/yyyy',
-        #             ),
-        #             css_class='mb-2',
-        #         ),
-        #         Div(
-        #             Field(
-        #                 'date_of_birth__gt',
-        #                 placeholder='yyyy',
-        #             ),
-        #             css_class='mb-2',
-        #         ),
-        #         Div(
-        #             Field(
-        #                 'date_of_birth__lt',
-        #                 placeholder='yyyy',
-        #             ),
-        #             css_class='mb-2',
-        #             placeholder='yyyy',
-        #         ),
-        #         css_class='row',
-        #     ),
         Div(
             FormActions(
                 StrictButton(
@@ -128,5 +37,4 @@ class SubjectListFormHelper(FormHelper):
             css_class='row',
         ),
         HTML('<hr>'),
-        # css_class='container-fluid',
     )

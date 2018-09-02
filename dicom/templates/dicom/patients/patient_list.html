@@ -22,7 +22,7 @@
                     </td>
                     <td>{{ patient.patient_uid }}</td>
                     <td>{{ patient.get_name_id }}</td>
-                    <td>{{ patient.sex }}</td>
+                    <td>{{ patient.sex.capitalize }}</td>
                     <td>{{ patient.date_of_birth | date:"SHORT_DATE_FORMAT" }}</td>
                 </tr>
             {% endfor %}

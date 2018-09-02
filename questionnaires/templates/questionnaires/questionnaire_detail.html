@@ -3,12 +3,42 @@
 
 {% block data-content %}
     <div>
-        <h2>{{ object.name }}</h2>
+        <h1>{{ object.name }}</h1>
         <p>{{ object.description }}</p>
+
         <hr>
+
         <h3>Questions</h3>
-        {% for question in object.get_rating_questions %}
-            {% render_rating_question question %}
-        {% endfor %}
+        <br>
+
+        <h5>Rating Questions</h5>
+        <ul>
+            {% for question in object.get_rating_questions %}
+            <li>
+                {% render_rating_question question %}
+            </li>
+            {% endfor %}
+        </ul>
+        <br>
+
+        <h5>Open Questions</h5>
+        <ul>
+            {% for question in object.get_open_questions %}
+            <li>
+                {% render_open_question question %}
+            </li>
+            {% endfor %}
+        </ul>
+        <br>
+
+        <h5>Multiple Choice Questions</h5>
+        <ul>
+            {% for question in object.get_multiple_choice_questions %}
+            <li>
+                {% render_multiple_choice_question question %}
+            </li>
+            {% endfor %}
+        </ul>
+        <br>
     </div>
 {% endblock data-content %}

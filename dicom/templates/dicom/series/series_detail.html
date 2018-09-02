@@ -49,11 +49,12 @@
         <caption>Database ID: {{ object.id }}</caption>
     </table>
 {% endblock data-content %}
+
 {% block extra-scripts %} 
     <script>
         $(document).ready( function () {
             $('#instance_table').DataTable( {
-                "pageLength": 100,
+                "pageLength": 20,
             } );
         } );
     </script>

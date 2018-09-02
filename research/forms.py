@@ -20,8 +20,19 @@ class SubjectListFormHelper(FormHelper):
                 css_class='row',
             ),
             Div(
+<<<<<<< HEAD
                 'first_name',
                 'last_name',
+=======
+                Div(
+                    Field(
+                        'date_of_birth',
+                        placeholder='dd/mm/yyyy',
+                        css_class='datepicker',
+                    ),
+                    css_class='col-2',
+                ),
+>>>>>>> be38950d6305a2f6f4c9bb258179abe2fe13a878
                 css_class='row',
             ),
             css_class='row',

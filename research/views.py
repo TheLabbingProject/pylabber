@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django_tables2 import RequestConfig
 from .filters import SubjectListFilter
 from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
@@ -63,6 +64,7 @@ class SubjectListView(LoginRequiredMixin, FilteredTableMixin):
         context = super().get_context_data(**kwargs)
         search_query = self.get_queryset()
         table = self.table_class(search_query)
+        RequestConfig(self.request).configure(table)
         context['table'] = table
         return context
 
@@ -127,6 +129,5 @@ class SubjectCreateView(LoginRequiredMixin, CreateView):
     ]
 
 
-class DataSummaryView(LoginRequiredMixin, QuestionnaireListMixin,
-                      TemplateView):
+class DataSummaryView(LoginRequiredMixin, TemplateView):
     template_name = 'research/data/data_nav.html'

@@ -51,9 +51,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         context = super(SeriesDetailView, self).get_context_data(**kwargs)
         bokeh_server_url = 'http://127.0.0.1:5006/app'
         data = context['object'].get_data()
-        np.save('/home/flavus/Projects/series_viewer/data', data)
-        # with pull_session(url=bokeh_server_url) as session:
-        # session.document.delete_modules()
+        np.save('/home/zvi/Projects/series_viewer/data', data)
         server_script = server_session(
             None,
             session_id=session_id.generate_session_id(),

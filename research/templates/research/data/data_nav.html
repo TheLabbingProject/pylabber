@@ -1,45 +1,56 @@
-{% extends 'base.html' %} {% load static %} {% block head-extra %}
-<link rel="stylesheet" type="text/css" href="{% static 'research/style.css' %}"> {% endblock head-extra %} {% block content %}
-<div class="container-fluid" id="main">
-    <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-md-2 col-lg-2 sidebar-offcanvas bg-light pl-0" id="sidebar" role="navigation">
-            <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
-                <li class="nav-item">
-                    <a class="nav-link" href="#submenu1" data-toggle="collapse" data-target="#submenu1">MRI ▾</a>
-                    <ul class="list-unstyled flex-column pl-3 collapse" id="submenu1" aria-expanded="false">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dicom_study_list' %}">Studies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'patient_list' %}">Patients</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'series_list' %}">Series</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'instance_list' %}">Instances</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#submenu2" data-toggle="collapse" data-target="#submenu2">Questionnaires ▾</a>
-                    <ul class="list-unstyled flex-column pl-3 collapse" id="submenu2" aria-expanded="false">
-                        {% for questionnaire in questionnaires %}
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head-extra %}
+    <link rel="stylesheet" type="text/css" href="{% static 'research/style.css' %}"> 
+{% endblock head-extra %} 
+
+{% block content %}
+    <div class="container-fluid" id="main">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-md-2 col-lg-2 sidebar-offcanvas bg-light pl-0" id="sidebar" role="navigation">
+                <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#submenu1" data-toggle="collapse" data-target="#submenu1">MRI ▾</a>
+                        <ul class="list-unstyled flex-column pl-3 collapse" id="submenu1" aria-expanded="false">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dicom_study_list' %}">Studies</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'patient_list' %}">Patients</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'series_list' %}">Series</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'instance_list' %}">Instances</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#submenu2" data-toggle="collapse" data-target="#submenu2">Questionnaires ▾</a>
+                        <ul class="list-unstyled flex-column pl-3 collapse" id="submenu2" aria-expanded="false">
+                            {% for questionnaire in questionnaires %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'questionnaire_detail' questionnaire.id %}">{{ questionnaire.name }}</a>
                             </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">CANTAB</a>
-                </li>
-            </ul>
-        </div>
-        <!-- Page Content -->
-        <div class="col main pt-2 mt-3 offset-2">
-            {% block data-content %} {% endblock data-content %}
+                            {% endfor %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questionnaire_create' %}">
+                                    <span class="fas fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">CANTAB</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Page Content -->
+            <div class="col main pt-2 mt-3">
+                {% block data-content %} {% endblock data-content %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock content %}

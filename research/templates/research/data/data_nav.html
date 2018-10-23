@@ -7,8 +7,8 @@
 
 {% block content %}
     <div class="container-fluid" id="main">
-        <div class="row row-offcanvas row-offcanvas-left">
-            <div class="col-md-2 col-lg-2 sidebar-offcanvas bg-light pl-0" id="sidebar" role="navigation">
+        <div class="row">
+            <div class="col-2 sidenav bg-light" role="navigation">
                 <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
                     <li class="nav-item">
                         <a class="nav-link" href="#submenu1" data-toggle="collapse" data-target="#submenu1">MRI ▾</a>
@@ -48,7 +48,7 @@
                 </ul>
             </div>
             <!-- Page Content -->
-            <div class="col main pt-2 mt-3">
+            <div class="col">
                 {% block data-content %} {% endblock data-content %}
             </div>
         </div>

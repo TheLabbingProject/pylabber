@@ -2,7 +2,7 @@
 {% load render_question %}
 
 {% block data-content %}
-    <div>
+    {% comment %} <div> {% endcomment %}
         <h1>{{ object.name }}</h1>
         <p>{{ object.description }}</p>
 
@@ -40,5 +40,5 @@
             {% endfor %}
         </ul>
         <br>
-    </div>
+    {% comment %} </div> {% endcomment %}
 {% endblock data-content %}

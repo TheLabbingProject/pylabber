@@ -48,4 +48,19 @@ urlpatterns = [
         views.PatientDetailView.as_view(),
         name='patient_detail',
     ),
+    path(
+        'datasources/',
+        views.DataSourceListView.as_view(),
+        name='data_source_list',
+    ),
+    path(
+        'datasources/<int:pk>/',
+        views.DataSourceDetailView.as_view(),
+        name='data_source_detail',
+    ),
+    path(
+        'datasources/smb_create',
+        views.SMBCreateView.as_view(),
+        name='create_smb',
+    ),
 ]

@@ -17,6 +17,7 @@ gunicorn = "*"
 pandas = "*"
 xlrd = "*"
 "django-tables2" = "*"
+pysmb = "*"
 
 [requires]
 python_version = "3.7"

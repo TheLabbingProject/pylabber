@@ -17,7 +17,7 @@ import environ
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
-    SECRET_KEY=(str, ''),
+    SECRET_KEY=(str, 'asdf5sag231sd$#%SADF2341a'),
     BOKEH_SECRET_KEY=(str, ''),
     BOKEH_SIGN_SESSIONS=(bool, True),
     DB_NAME=(str, ''),

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Instance, Series, Study, Patient
+from .models import Instance, Series, Study, Patient, SMBDirectory
 
 
 class InstanceAdmin(admin.ModelAdmin):
@@ -121,7 +121,20 @@ class PatientAdmin(admin.ModelAdmin):
     )
 
 
+class SMBAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'user_id',
+        'share_name',
+        'client_name',
+        'server_name',
+        'server_ip',
+    )
+
+
 admin.site.register(Instance, InstanceAdmin)
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(Study, StudyAdmin)
 admin.site.register(Patient, PatientAdmin)
+admin.site.register(SMBDirectory, SMBAdmin)

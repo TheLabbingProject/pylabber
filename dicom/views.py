@@ -1,14 +1,14 @@
 import numpy as np
 
-from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bokeh.util import session_id
+from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView
 from .forms import CreateInstancesForm
-from .models import Instance, Series, Study, Patient
+from .models import Instance, Series, Study, Patient, DataSource, SMBDirectory
 
 
 class InstanceListView(LoginRequiredMixin, ListView):
@@ -87,3 +87,34 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
 class PatientListView(LoginRequiredMixin, ListView):
     model = Patient
     template_name = 'dicom/patients/patient_list.html'
+
+
+class DataSourceListView(LoginRequiredMixin, ListView):
+    model = SMBDirectory
+    template_name = 'dicom/data_sources/data_source_list.html'
+
+
+class DataSourceDetailView(LoginRequiredMixin, DetailView):
+    model = SMBDirectory
+    template_name = 'dicom/data_sources/data_source_detail.html'
+
+
+class SMBDirectoryForm(forms.ModelForm):
+    class Meta:
+        model = SMBDirectory
+        fields = [
+            'name',
+            'server_name',
+            'share_name',
+            'user_id',
+            'password',
+        ]
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+
+
+class SMBCreateView(LoginRequiredMixin, CreateView):
+    form_class = SMBDirectoryForm
+    template_name = 'dicom/data_sources/smb/smb_create.html'
+    success_url = reverse_lazy('data_source_list')

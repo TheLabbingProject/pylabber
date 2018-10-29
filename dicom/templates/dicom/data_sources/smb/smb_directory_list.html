@@ -1,0 +1,53 @@
+{% extends "research/data/data_nav.html" %}
+
+{% block data-content %}
+    <h2>DICOM Data Sources</h2>
+
+    <h4>Windows Share (SMB)</h4>
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Server Name</th>
+                <th scope="col">Server IP</th>
+                <th scope="col">Share Name</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_source in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'smb_file_list' %}">
+                            {{ data_source.id }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ data_source.name }}
+                    </td>
+                    <td>
+                        {{ data_source.server_name }}
+                    </td>
+                    <td>
+                        {{ data_source.get_server_ip }}
+                    </td>
+                    <td>
+                        {{ data_source.share_name }}
+                    </td>
+                    <td>
+                        {{ data_source.user_id }}
+                    </td>
+                    <td>
+                        {% if  data_source.is_connected %}
+                            <i class="fas fa-circle" style="color: green;"></i>
+                        {% else %}
+                            <i class="fas fa-circle" style="color: red;"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock data-content %}

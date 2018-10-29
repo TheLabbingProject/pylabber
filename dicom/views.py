@@ -2,13 +2,23 @@ import numpy as np
 
 from bokeh.embed import server_session
 from bokeh.util import session_id
-from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView
-from .forms import CreateInstancesForm
-from .models import Instance, Series, Study, Patient, DataSource, SMBDirectory
+from django_tables2 import RequestConfig
+from pylabber.utils import FilteredTableMixin
+from .filters import SMBFileListFilter
+from .forms import CreateInstancesForm, SMBDirectoryForm, SMBFileListFormHelper
+from .models import (
+    Instance,
+    Series,
+    Study,
+    Patient,
+    SMBDirectory,
+    SMBFile,
+)
+from .tables import SMBFileTable
 
 
 class InstanceListView(LoginRequiredMixin, ListView):
@@ -89,32 +99,30 @@ class PatientListView(LoginRequiredMixin, ListView):
     template_name = 'dicom/patients/patient_list.html'
 
 
-class DataSourceListView(LoginRequiredMixin, ListView):
+class SMBDirectoryListView(LoginRequiredMixin, ListView):
     model = SMBDirectory
-    template_name = 'dicom/data_sources/data_source_list.html'
+    template_name = 'dicom/data_sources/smb/smb_directory_list.html'
 
 
-class DataSourceDetailView(LoginRequiredMixin, DetailView):
-    model = SMBDirectory
-    template_name = 'dicom/data_sources/data_source_detail.html'
+class SMBFileListView(LoginRequiredMixin, FilteredTableMixin):
+    model = SMBFile
+    table_class = SMBFileTable
+    template_name = 'dicom/data_sources/smb/smb_file_list.html'
+    paginate_by = 50
+    ordering = ['-id']
+    filterset_class = SMBFileListFilter
+    formhelper_class = SMBFileListFormHelper
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        search_query = self.get_queryset()
+        table = self.table_class(search_query)
+        RequestConfig(self.request).configure(table)
+        context['table'] = table
+        return context
 
 
-class SMBDirectoryForm(forms.ModelForm):
-    class Meta:
-        model = SMBDirectory
-        fields = [
-            'name',
-            'server_name',
-            'share_name',
-            'user_id',
-            'password',
-        ]
-        widgets = {
-            'password': forms.PasswordInput(),
-        }
-
-
-class SMBCreateView(LoginRequiredMixin, CreateView):
+class SMBDirectoryCreateView(LoginRequiredMixin, CreateView):
     form_class = SMBDirectoryForm
-    template_name = 'dicom/data_sources/smb/smb_create.html'
-    success_url = reverse_lazy('data_source_list')
+    template_name = 'dicom/data_sources/smb/smb_directory_create.html'
+    success_url = reverse_lazy('smb_directory_list')

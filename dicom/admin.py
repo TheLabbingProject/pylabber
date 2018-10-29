@@ -125,11 +125,9 @@ class SMBAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'name',
-        'user_id',
-        'share_name',
-        'client_name',
         'server_name',
-        'server_ip',
+        'share_name',
+        'user_id',
     )
 
 

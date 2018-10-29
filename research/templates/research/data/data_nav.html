@@ -1,9 +1,4 @@
 {% extends 'base.html' %} 
-{% load static %} 
-
-{% block head-extra %}
-    <link rel="stylesheet" type="text/css" href="{% static 'research/style.css' %}"> 
-{% endblock head-extra %} 
 
 {% block content %}
     <div class="container-fluid" id="main">
@@ -26,7 +21,7 @@
                                 <a class="nav-link" href="{% url 'instance_list' %}">Instances</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'data_source_list' %}">Data Sources</a>
+                                <a class="nav-link" href="{% url 'smb_directory_list' %}">Data Sources</a>
                             </li>
                         </ul>
                     </li>

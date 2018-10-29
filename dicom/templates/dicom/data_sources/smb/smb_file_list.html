@@ -1,0 +1,64 @@
+{% extends "research/data/data_nav.html" %}
+{% load django_tables2 %}
+{% load crispy_forms_tags %}
+
+
+{% block data-content %}
+
+    {% comment %} <div>
+        <p>Name: {{ object.name }}</p>
+        <p>Status: {{ object.is_connected }}</p>
+        <hr>
+    </div> {% endcomment %}
+
+    {% comment %} <p>
+        <a href="{% url 'subject_update' subject.id %}">Edit</a> |
+        <a href="{% url 'subject_delete' subject.id %}">Delete</a>
+    </p> {% endcomment %}
+
+    <h4>Data Source Files</h4>
+    {% if filter %}
+        <form action="" method="get" class="form form-inline">
+            {% crispy filter.form filter.form.helper %}
+        </form>
+    {% endif %}
+    {% render_table table %}
+    {% comment %} <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Path</th>
+                <th scope="col">Is Archived?</th>
+                <th scope="col">Is Available?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in object.file_set.all %}
+                <tr>
+                    <td>
+                        {{ file.id }}
+                    </td>
+                    <td>
+                        {{ file.path }}
+                    </td>
+                    <td>
+                        {% if  file.is_archived %}
+                            <i class="fas fa-circle" style="color: green;"></i>
+                        {% else %}
+                            <i class="fas fa-circle" style="color: red;"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if  file.is_available %}
+                            <i class="fas fa-circle" style="color: green;"></i>
+                        {% else %}
+                            <i class="fas fa-circle" style="color: red;"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table> {% endcomment %}
+
+
+{% endblock data-content %}

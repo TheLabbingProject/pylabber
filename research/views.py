@@ -4,12 +4,12 @@ from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
+from pylabber.utils import FilteredTableMixin
 from .filters import SubjectListFilter
 from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
 from .tables import SubjectTable
-from .utils import FilteredTableMixin
 if 'questionnaires' in settings.INSTALLED_APPS:
     from questionnaires.mixins import QuestionnaireListMixin
 

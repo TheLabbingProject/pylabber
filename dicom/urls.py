@@ -50,17 +50,17 @@ urlpatterns = [
     ),
     path(
         'datasources/',
-        views.DataSourceListView.as_view(),
-        name='data_source_list',
+        views.SMBDirectoryListView.as_view(),
+        name='smb_directory_list',
     ),
     path(
-        'datasources/<int:pk>/',
-        views.DataSourceDetailView.as_view(),
-        name='data_source_detail',
+        'smb_files/',
+        views.SMBFileListView.as_view(),
+        name='smb_file_list',
     ),
     path(
         'datasources/smb_create',
-        views.SMBCreateView.as_view(),
-        name='create_smb',
+        views.SMBDirectoryCreateView.as_view(),
+        name='smb_directory_create',
     ),
 ]

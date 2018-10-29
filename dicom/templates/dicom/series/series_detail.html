@@ -1,8 +1,8 @@
 {% extends "research/data/data_nav.html" %}
 
 {% block data-content %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    {% comment %} {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}"> {% endcomment %}
 
     <div>
         {{ server_script | safe }}

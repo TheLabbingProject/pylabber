@@ -3,6 +3,7 @@ import numpy as np
 from bokeh.embed import server_session
 from bokeh.util import session_id
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView
@@ -97,6 +98,12 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
 class PatientListView(LoginRequiredMixin, ListView):
     model = Patient
     template_name = 'dicom/patients/patient_list.html'
+
+
+def update_smb_location(request, pk: int):
+    smb = get_object_or_404(SMBDirectory, pk=pk)
+    SMBFile.objects.update_smb(smb)
+    return redirect(SMBFile)
 
 
 class SMBDirectoryListView(LoginRequiredMixin, ListView):

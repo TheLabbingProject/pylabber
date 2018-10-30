@@ -63,4 +63,9 @@ urlpatterns = [
         views.SMBDirectoryCreateView.as_view(),
         name='smb_directory_create',
     ),
+    path(
+        'datasources/smb_update/<int:pk>/',
+        views.update_smb_location,
+        name='smb_file_update',
+    ),
 ]

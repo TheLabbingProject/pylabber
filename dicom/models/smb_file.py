@@ -1,10 +1,10 @@
 import os
+from datetime import datetime
 
 from django.db import models
+from django.urls import reverse
 from smb.smb_structs import OperationFailure
 from .smb_directory import SMBDirectory
-
-# from django.urls import reverse
 
 
 class SMBFileManager(models.Manager):
@@ -13,8 +13,13 @@ class SMBFileManager(models.Manager):
         for f in files:
             found = instance.file_set.filter(path=f).first()
             if not found:
-                new_file = SMBFile(path=f, source=instance)
+                new_file = SMBFile(
+                    path=f,
+                    source=instance,
+                )
                 new_file.save()
+        instance.last_sync = datetime.now()
+        instance.save()
 
 
 class SMBFile(models.Model):
@@ -30,6 +35,9 @@ class SMBFile(models.Model):
 
     class Meta:
         verbose_name_plural = "SMB Files"
+
+    def get_absolute_url(self):
+        return reverse('smb_file_list')
 
     @property
     def dir_name(self):

@@ -12,12 +12,13 @@ class SMBDirectory(DataSource):
     password = models.CharField(max_length=64, blank=False)
     share_name = models.CharField(max_length=64, blank=False)
     server_name = models.CharField(max_length=64, blank=False)
+    last_sync = models.DateTimeField(null=True)
 
     class Meta:
         verbose_name_plural = "SMB Directories"
 
     def get_absolute_url(self):
-        return reverse('smb_file_list')
+        return reverse('smb_directory_list')
 
     def get_server_ip(self) -> str:
         return socket.getaddrinfo(self.server_name, 139)[0][-1][0]
@@ -35,9 +36,16 @@ class SMBDirectory(DataSource):
 
     def connect(self):
         conn = self.create_connection()
-        if conn.connect(self.get_server_ip()):
-            return conn
-        return False
+        ip_address = self.get_server_ip()
+        # This function is called also when checking whether the directory
+        # is accessible, so the timeout prevents long loading times.
+        try:
+            if conn.connect(ip_address, timeout=1):
+                return conn
+            return False
+        # In case no route is found to the host
+        except OSError:
+            return False
 
     def list_files(self, conn: SMBConnection, location: str):
         files = conn.listPath(self.share_name, location)

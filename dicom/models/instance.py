@@ -3,6 +3,7 @@ import pydicom
 import zipfile
 
 from datetime import datetime
+from django.db.utils import IntegrityError
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -19,7 +20,13 @@ class InstanceManager(models.Manager):
         dest_name = default_storage.save('tmp.dcm', ContentFile(file.read()))
         instance = Instance()
         instance.file = dest_name
-        instance.save()
+        try:
+            instance.save()
+        except IntegrityError:
+            dest_path = os.path.join(settings.MEDIA_ROOT, dest_name)
+            uid = pydicom.dcmread(dest_path).SOPInstanceUID
+            os.remove(dest_path)
+            return Instance.objects.filter(instance_uid=uid).first()
         return instance
 
     def from_zip(self, file):
@@ -40,7 +47,8 @@ class Instance(models.Model):
     instance_uid = models.CharField(
         max_length=64,
         unique=True,
-        blank=True,
+        blank=False,
+        null=False,
         validators=[digits_and_dots_only],
     )
 

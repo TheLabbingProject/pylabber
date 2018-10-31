@@ -104,9 +104,9 @@ WSGI_APPLICATION = 'pylabber.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'NAME': 'zvi',  # env('DB_NAME'),
+        'USER': 'zvi',  # env('DB_USER'),
+        'PASSWORD': '0o9i8u7y!',  # env('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '',
     }

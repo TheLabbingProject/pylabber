@@ -103,7 +103,14 @@ class PatientListView(LoginRequiredMixin, ListView):
 def update_smb_location(request, pk: int):
     smb = get_object_or_404(SMBDirectory, pk=pk)
     SMBFile.objects.update_smb(smb)
-    return redirect(SMBFile)
+    return redirect('smb_directory_list')
+
+
+def archive_files(request):
+    unarchived = SMBFile.objects.filter(is_archived=False)
+    for dcm in unarchived:
+        dcm.archive()
+    return redirect('smb_file_list')
 
 
 class SMBDirectoryListView(LoginRequiredMixin, ListView):

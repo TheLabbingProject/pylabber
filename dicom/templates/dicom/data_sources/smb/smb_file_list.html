@@ -13,6 +13,8 @@
         </form>
     {% endif %}
 
+    <a href="{% url 'smb_archive_all' %}"><button class="btn btn-sm">Archive All</button></a>
+
     {% render_table table %}
 
 {% endblock data-content %}

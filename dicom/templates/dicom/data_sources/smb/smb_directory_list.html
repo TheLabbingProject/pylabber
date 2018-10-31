@@ -42,7 +42,7 @@
                         {{ data_source.user_id }}
                     </td>
                     <td>
-                        {{ data_source.last_sync }}
+                        {{ data_source.last_sync | date:"d/m/Y H:i:s" }}
                     </td>
                     <td>
                         {% if  data_source.is_connected %}

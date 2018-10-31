@@ -49,7 +49,7 @@ urlpatterns = [
         name='patient_detail',
     ),
     path(
-        'datasources/',
+        'data_sources/',
         views.SMBDirectoryListView.as_view(),
         name='smb_directory_list',
     ),
@@ -59,13 +59,18 @@ urlpatterns = [
         name='smb_file_list',
     ),
     path(
-        'datasources/smb_create',
+        'data_sources/smb_create',
         views.SMBDirectoryCreateView.as_view(),
         name='smb_directory_create',
     ),
     path(
-        'datasources/smb_update/<int:pk>/',
+        'data_sources/smb_update/<int:pk>/',
         views.update_smb_location,
         name='smb_file_update',
+    ),
+    path(
+        'data_sources/smb_archive_all/',
+        views.archive_files,
+        name='smb_archive_all',
     ),
 ]

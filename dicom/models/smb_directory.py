@@ -34,7 +34,7 @@ class SMBDirectory(DataSource):
             self.server_name,
         )
 
-    def connect(self):
+    def connect(self) -> SMBConnection:
         conn = self.create_connection()
         ip_address = self.get_server_ip()
         # This function is called also when checking whether the directory
@@ -47,24 +47,27 @@ class SMBDirectory(DataSource):
         except OSError:
             return False
 
-    def list_files(self, conn: SMBConnection, location: str):
-        files = conn.listPath(self.share_name, location)
+    def list_files(self, location: str):
+        connection = self.connect()
+        files = connection.listPath(self.share_name, location)
+        connection.close()
         result = []
         for path in files[2:]:
             full_path = os.path.join(location, path.filename)
             if path.isDirectory:
-                result += self.list_files(conn, full_path)
+                result += self.list_files(full_path)
             else:
                 result += [full_path]
         return result
 
     def list_all_files(self):
-        conn = self.connect()
-        return self.list_files(conn, '.')
+        return self.list_files('.')
 
     @property
     def is_connected(self):
-        if self.connect():
+        connection = self.connect()
+        if connection:
+            connection.close()
             return True
         return False
 

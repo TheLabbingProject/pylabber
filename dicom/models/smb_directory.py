@@ -1,10 +1,12 @@
 import os
 import socket
 
+from datetime import datetime
 from django.db import models
 from django.urls import reverse
 from research.models.data_source import DataSource
 from smb.SMBConnection import SMBConnection
+from .smb_file import SMBFile
 
 
 class SMBDirectory(DataSource):
@@ -62,6 +64,19 @@ class SMBDirectory(DataSource):
 
     def list_all_files(self):
         return self.list_files('.')
+
+    def sync(self):
+        files = self.list_all_files()
+        for f in files:
+            found = self.file_set.filter(path=f).first()
+            if not found:
+                new_file = SMBFile(
+                    path=f,
+                    source=self,
+                )
+                new_file.save()
+        self.last_sync = datetime.now()
+        self.save()
 
     @property
     def is_connected(self):

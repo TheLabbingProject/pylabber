@@ -65,7 +65,7 @@ urlpatterns = [
     ),
     path(
         'data_sources/smb_update/<int:pk>/',
-        views.update_smb_location,
+        views.sync_smb_directory,
         name='smb_file_update',
     ),
     path(

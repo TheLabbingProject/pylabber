@@ -22,6 +22,20 @@ from .models import (
 from .tables import SMBFileTable
 
 
+def sync_smb_directory(request, pk: int):
+    smb = get_object_or_404(SMBDirectory, pk=pk)
+    # SMBFile.objects.sync_directory(smb)
+    smb.sync()
+    return redirect('smb_directory_list')
+
+
+def archive_files(request):
+    unarchived = SMBFile.objects.filter(is_archived=False)
+    for dcm in unarchived:
+        dcm.archive()
+    return redirect('smb_file_list')
+
+
 class InstanceListView(LoginRequiredMixin, ListView):
     model = Instance
     template_name = 'dicom/instances/instance_list.html'
@@ -98,19 +112,6 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
 class PatientListView(LoginRequiredMixin, ListView):
     model = Patient
     template_name = 'dicom/patients/patient_list.html'
-
-
-def update_smb_location(request, pk: int):
-    smb = get_object_or_404(SMBDirectory, pk=pk)
-    SMBFile.objects.update_smb(smb)
-    return redirect('smb_directory_list')
-
-
-def archive_files(request):
-    unarchived = SMBFile.objects.filter(is_archived=False)
-    for dcm in unarchived:
-        dcm.archive()
-    return redirect('smb_file_list')
 
 
 class SMBDirectoryListView(LoginRequiredMixin, ListView):

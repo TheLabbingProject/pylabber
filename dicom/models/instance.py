@@ -1,7 +1,9 @@
 import os
 import pydicom
+import shutil
 import zipfile
 
+from cryptography.fernet import Fernet
 from datetime import datetime
 from django.db.utils import IntegrityError
 from django.conf import settings
@@ -9,6 +11,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db import models
 from django.urls import reverse
+from faker import Faker
 from .patient import Patient
 from .series import Series
 from .study import Study
@@ -39,6 +42,14 @@ class InstanceManager(models.Manager):
                         self.from_dcm(dcm_file)
         os.remove(dest_path)
 
+    def from_local_directory(self, path: str):
+        for directory, sub_directory, file_list in os.walk(path):
+            for file_name in file_list:
+                if file_name.endswith('.dcm'):
+                    full_path = os.path.join(directory, file_name)
+                    with open(full_path, 'rb') as f:
+                        self.from_dcm(f)
+
 
 class Instance(models.Model):
     _headers = None
@@ -67,6 +78,9 @@ class Instance(models.Model):
         Study, blank=True, null=True, on_delete=models.PROTECT)
     patient = models.ForeignKey(
         Patient, blank=True, null=True, on_delete=models.PROTECT)
+
+    has_raw_backup = models.BooleanField(default=False)
+    is_anonymized = models.BooleanField(default=False)
 
     objects = InstanceManager()
 
@@ -206,13 +220,36 @@ class Instance(models.Model):
         :return:
         :rtype: None
         """
-
         new_name = new_name or self.get_default_file_name()
         initial_path = self.file.path
         self.file.name = new_name
         new_path = os.path.join(settings.MEDIA_ROOT, self.file.name)
         os.makedirs(os.path.dirname(new_path), exist_ok=True)
         os.rename(initial_path, new_path)
+
+    def create_backup(self, dest: str):
+        shutil.copyfile(self.file.path, dest)
+        self.has_raw_backup = True
+        self.save()
+
+    def anonymize(self, key: bytes, name: str = None):
+        if self.has_raw_backup:
+            data = self.read_data()
+            patient_id = bytes(data.PatientID, 'utf-8')
+
+            fernet = Fernet(key)
+            faker = Faker()
+            enc_id = fernet.encrypt(patient_id).decode('utf-8')
+
+            data.PatientID = enc_id
+            if isinstance(name, str):
+                data.PatientName = name
+            else:
+                if data.PatientSex is 'M':
+                    data.PatientName = faker.name_male()
+                else:
+                    data.PatientName = faker.name_female()
+            data.save_as(self.file.path)
 
     @property
     def headers(self):

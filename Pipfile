@@ -18,6 +18,8 @@ pandas = "*"
 xlrd = "*"
 "django-tables2" = "*"
 pysmb = "*"
+faker = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.7"

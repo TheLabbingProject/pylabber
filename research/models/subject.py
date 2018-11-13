@@ -8,7 +8,7 @@ from .validators import digits_only, not_future
 class Subject(models.Model):
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
-    email = models.EmailField(max_length=254, blank=True)
+    # email = models.EmailField(max_length=254, blank=True)
 
     date_of_birth = models.DateField(
         verbose_name='Date of Birth',
@@ -24,11 +24,11 @@ class Subject(models.Model):
         blank=True,
         null=True,
     )
-    phone_number = models.CharField(
-        max_length=50,
-        validators=[digits_only],
-        blank=True,
-    )
+    # phone_number = models.CharField(
+    #     max_length=50,
+    #     validators=[digits_only],
+    #     blank=True,
+    # )
 
     dominant_hand = models.CharField(
         max_length=5,

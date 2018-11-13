@@ -16,6 +16,7 @@ from .patient import Patient
 from .series import Series
 from .study import Study
 from .validators import digits_and_dots_only
+from ..settings import ANONYMIZATION_KEY
 
 
 class InstanceManager(models.Manager):
@@ -235,11 +236,12 @@ class Instance(models.Model):
     def anonymize(self, key: bytes, name: str = None):
         if self.has_raw_backup:
             data = self.read_data()
-            patient_id = bytes(data.PatientID, 'utf-8')
 
+            patient_id = bytes(data.PatientID, 'utf-8')
             fernet = Fernet(key)
-            faker = Faker()
             enc_id = fernet.encrypt(patient_id).decode('utf-8')
+
+            faker = Faker()
 
             data.PatientID = enc_id
             if isinstance(name, str):

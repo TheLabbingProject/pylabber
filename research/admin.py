@@ -10,10 +10,15 @@ class SubjectsInline(admin.TabularInline):
     model = Study.subjects.through
     verbose_name_plural = 'Subjects'
     readonly_fields = (
+        'id_number',
         'first_name',
         'last_name',
-        'email',
+        'sex',
+        'date_of_birth',
     )
+
+    def id_number(self, instance):
+        return instance.subject.id_number
 
     def first_name(self, instance):
         return instance.subject.first_name
@@ -21,8 +26,11 @@ class SubjectsInline(admin.TabularInline):
     def last_name(self, instance):
         return instance.subject.last_name
 
-    def email(self, instance):
-        return instance.subject.email
+    def sex(self, instance):
+        return instance.subject.sex
+
+    def date_of_birth(self, instance):
+        return instance.subject.date_of_birth
 
 
 class CollaboratorsInline(admin.TabularInline):
@@ -45,12 +53,12 @@ class StudiesAdmin(admin.ModelAdmin):
 
 class SubjectAdmin(admin.ModelAdmin):
     list_display = (
+        'id_number',
         'first_name',
         'last_name',
         'sex',
         'date_of_birth',
-        'email',
-        'phone_number',
+        'dominant_hand',
     )
     inlines = (PatientInLine, )
 

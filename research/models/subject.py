@@ -6,17 +6,6 @@ from .validators import digits_only, not_future
 
 
 class Subject(models.Model):
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
-    # email = models.EmailField(max_length=254, blank=True)
-
-    date_of_birth = models.DateField(
-        verbose_name='Date of Birth',
-        blank=True,
-        null=True,
-        validators=[not_future],
-    )
-
     id_number = CharNullField(
         max_length=9,
         unique=True,
@@ -24,24 +13,24 @@ class Subject(models.Model):
         blank=True,
         null=True,
     )
-    # phone_number = models.CharField(
-    #     max_length=50,
-    #     validators=[digits_only],
-    #     blank=True,
-    # )
-
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
+    date_of_birth = models.DateField(
+        verbose_name='Date of Birth',
+        blank=True,
+        null=True,
+        validators=[not_future],
+    )
     dominant_hand = models.CharField(
         max_length=5,
         choices=DominantHand.choices(),
         blank=True,
     )
-
     sex = models.CharField(
         max_length=6,
         choices=Sex.choices(),
         blank=True,
     )
-
     gender = models.CharField(
         max_length=5,
         choices=Gender.choices(),

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.conf import settings
+# from django.conf import settings
 from .models import Study, Subject
 
-if 'dicom' in settings.INSTALLED_APPS:
-    from dicom.admin import PatientInLine
+# if 'dicomdj' in settings.INSTALLED_APPS:
+#     from dicomdj.admin import PatientInLine
 
 
 class SubjectsInline(admin.TabularInline):
@@ -60,7 +60,7 @@ class SubjectAdmin(admin.ModelAdmin):
         'date_of_birth',
         'dominant_hand',
     )
-    inlines = (PatientInLine, )
+    # inlines = (PatientInLine, )
 
 
 admin.site.register(Study, StudiesAdmin)

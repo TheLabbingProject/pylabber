@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
@@ -10,8 +9,6 @@ from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
 from .tables import SubjectTable
-if 'questionnaires' in settings.INSTALLED_APPS:
-    from questionnaires.mixins import QuestionnaireListMixin
 
 
 class StudyListView(LoginRequiredMixin, ListView):
@@ -83,10 +80,9 @@ class SubjectDetailView(SubjectListView):
 class SubjectUpdateView(SubjectListView, UpdateView):
     model = Subject
     fields = [
+        'id_number',
         'first_name',
         'last_name',
-        'email',
-        'phone_number',
         'sex',
         'gender',
         'date_of_birth',
@@ -119,11 +115,11 @@ class SubjectCreateView(LoginRequiredMixin, CreateView):
     model = Subject
     template_name = 'research/subjects/subject_create.html'
     fields = [
+        'id_number',
         'first_name',
         'last_name',
-        'email',
-        'phone_number',
         'sex',
+        'gender',
         'date_of_birth',
         'dominant_hand',
     ]

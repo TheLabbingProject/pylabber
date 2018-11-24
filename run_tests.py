@@ -15,7 +15,6 @@ if __name__ == "__main__":
     failures = test_runner.run_tests([
         'accounts',
         'research',
-        'dicom',
     ])
     shutil.rmtree(settings.MEDIA_ROOT)
     sys.exit(bool(failures))

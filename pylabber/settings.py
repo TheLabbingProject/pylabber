@@ -61,10 +61,11 @@ INSTALLED_APPS = [
     'django_tables2',
     'django_filters',
 
+    # Extensions
+    'django_dicom',
+
     # Local
     'research',
-    'dicom',
-    'questionnaires',
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'questionnaires.context_processors.questionnaires',
             ],
         },
     },

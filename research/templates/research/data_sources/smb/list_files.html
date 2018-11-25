@@ -1,0 +1,20 @@
+{% extends "research/data_sources/data_sources_nav.html" %}
+{% load django_tables2 %}
+{% load crispy_forms_tags %}
+
+
+{% block data-content %}
+
+    <h4>Data Source Files</h4>
+    
+    {% if filter %}
+        <form action="" method="get" class="form form-inline">
+            {% crispy filter.form filter.form.helper %}
+        </form>
+    {% endif %}
+
+    {% comment %} <a href="{% url 'smb_archive_all' %}"><button class="btn btn-sm">Archive All</button></a> {% endcomment %}
+
+    {% render_table table %}
+
+{% endblock data-content %}

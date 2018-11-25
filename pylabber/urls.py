@@ -23,5 +23,6 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('dicom/', include('django_dicom.urls')),
+    path('smb/', include('django_smb.urls')),
     path('research/', include('research.urls')),
 ]

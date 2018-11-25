@@ -6,15 +6,51 @@
 {% block data-content %}
 
     <h4>Data Source Files</h4>
-    
-    {% if filter %}
+    <form id="searchForm">
+        <input type="search" id="searchInput" />
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="treeView">
+
+    </div>
+    {% comment %} {% if filter %}
         <form action="" method="get" class="form form-inline">
             {% crispy filter.form filter.form.helper %}
         </form>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     {% comment %} <a href="{% url 'smb_archive_all' %}"><button class="btn btn-sm">Archive All</button></a> {% endcomment %}
 
-    {% render_table table %}
+    {% comment %} {% render_table table %} {% endcomment %}
 
 {% endblock data-content %}
+
+{% block extra-scripts %} 
+    <script>
+        $(document).ready(function(){
+            $(treeView).jstree({
+                'core': {
+                    'data': [
+                        {
+                            'text': 'Root node',
+                            'children': [
+                                {
+                                    'text': 'Child 1',
+                                }, 
+                                {
+                                    'text': 'Child 2',
+                                }
+                            ]
+                        },
+                    ]
+                },
+                "plugins" : ["search"],
+            })
+        })
+        $("#searchForm").submit(function(e) {
+            e.preventDefault();
+            $("#treeView").jstree(true).search($("#searchInput").val());
+        });
+    </script>
+{% endblock extra-scripts %}

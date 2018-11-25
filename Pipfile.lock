@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "83a5592ccf1d13803364b64dfd21b6578c1a93c3312a2f89e94304545ceefe30"
+            "sha256": "d41d5eb10b85650115d6b847eca94df5c07ac44d83b29336677c7b258438958c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -108,6 +108,14 @@
             "index": "pypi",
             "version": "==1.7.2"
         },
+        "django-dicom": {
+            "hashes": [
+                "sha256:4e6a10edb5500c22a1ee256c20cc7c06699d80ae830d85ab797751d968d236a1",
+                "sha256:a5f5a46013411b2c49d9e82c52ba1987ce17ae5e79bf09e1e95c21c4f6f755da"
+            ],
+            "index": "pypi",
+            "version": "==0.2.2"
+        },
         "django-environ": {
             "hashes": [
                 "sha256:6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde",
@@ -132,9 +140,9 @@
             "index": "pypi",
             "version": "==2.0.3"
         },
-        "e418007": {
+        "eb32889": {
             "editable": true,
-            "path": "/home/flavus/Projects/django_dicom"
+            "path": "/home/flavus/Projects/django_smb"
         },
         "faker": {
             "hashes": [

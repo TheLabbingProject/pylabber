@@ -56,5 +56,15 @@ urlpatterns = [
         'data/',
         views.DataSummaryView.as_view(),
         name='data_summary',
-    )
+    ),
+    path(
+        'data_sources/',
+        views.DataSourcesSummaryView.as_view(),
+        name='data_sources',
+    ),
+    path(
+        'smb_files',
+        views.RemoteFileListView.as_view(),
+        name='smb_files',
+    ),
 ]

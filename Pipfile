@@ -20,8 +20,8 @@ xlrd = "*"
 pysmb = "*"
 faker = "*"
 cryptography = "*"
-"e418007" = {editable = true, path = "/home/flavus/Projects/django_dicom"}
 django-dicom = "*"
+"eb32889" = {editable = true, path = "/home/flavus/Projects/django_smb"}
 
 [requires]
 python_version = "3.7"

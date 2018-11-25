@@ -3,11 +3,11 @@
 {% block content %}
     <div class="container-fluid" id="main">
         <div class="row">
-            <div class="col-2 sidenav bg-light" role="navigation">
+            <div class="col-2 sidenav bg-light p-0" role="navigation">
                 <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
                     <li class="nav-item">
                         <a class="nav-link" href="#submenu1" data-toggle="collapse" data-target="#submenu1">MRI ▾</a>
-                        <ul class="list-unstyled flex-column pl-3 collapse" id="submenu1" aria-expanded="false">
+                        <ul class="list-unstyled flex-column collapse" id="submenu1" aria-expanded="false">
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dicom_study_list' %}">Studies</a>
                             </li>
@@ -20,9 +20,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'instance_list' %}">Instances</a>
                             </li>
-                            {% comment %} <li class="nav-item">
-                                <a class="nav-link" href="{% url 'smb_directory_list' %}">Data Sources</a>
-                            </li> {% endcomment %}
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -31,7 +28,7 @@
                 </ul>
             </div>
             <!-- Page Content -->
-            <div class="col">
+            <div class="col mt-4">
                 {% block data-content %} {% endblock data-content %}
             </div>
         </div>

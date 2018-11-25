@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'home' %}">pylabber</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,9 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'data_summary' %}">Data</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'data_sources' %}">Data Sources</a>
                 </li>
             </ul>
         </div>
@@ -74,7 +77,7 @@
             {% endif %}
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
         {% block content %} {% endblock content %}
     </div>
     <!-- jQuery 3, DataTables and Bootstrap 4 JS -->

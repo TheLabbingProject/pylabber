@@ -1,5 +1,6 @@
 import django_filters
-from .models import Subject
+from django_smb.models import RemoteFile, RemoteLocation
+from research.models import Subject
 
 
 class SubjectListFilter(django_filters.FilterSet):
@@ -42,4 +43,26 @@ class SubjectListFilter(django_filters.FilterSet):
             'gender',
             'date_of_birth',
             'id_number',
+        ]
+
+
+class SMBFileListFilter(django_filters.FilterSet):
+    id = django_filters.NumberFilter(label='#')
+    path = django_filters.CharFilter(
+        label='Path',
+        lookup_expr='icontains',
+    )
+    source = django_filters.ModelMultipleChoiceFilter(
+        label='Data Source',
+        queryset=RemoteLocation.objects.all(),
+    )
+    is_archived = django_filters.BooleanFilter(label='Archived')
+
+    class Meta:
+        model = RemoteFile
+        fields = [
+            'id',
+            'path',
+            'source',
+            'is_archived',
         ]

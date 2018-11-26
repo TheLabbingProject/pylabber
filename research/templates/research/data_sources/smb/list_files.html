@@ -28,29 +28,10 @@
 
 {% block extra-scripts %} 
     <script>
-        $(document).ready(function(){
-            $(treeView).jstree({
-                'core': {
-                    'data': [
-                        {
-                            'text': 'Root node',
-                            'children': [
-                                {
-                                    'text': 'Child 1',
-                                }, 
-                                {
-                                    'text': 'Child 2',
-                                }
-                            ]
-                        },
-                    ]
-                },
-                "plugins" : ["search"],
+        $(function(){
+            $(treeView).bootstrapTable({
+                url:
             })
-        })
-        $("#searchForm").submit(function(e) {
-            e.preventDefault();
-            $("#treeView").jstree(true).search($("#searchInput").val());
-        });
+            }
     </script>
 {% endblock extra-scripts %}

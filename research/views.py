@@ -3,14 +3,14 @@ from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
-from django_smb.models import RemoteFile
+# from django_smb.models import RemoteFile
 from django_smb.views import RemoteLocationCreateView, RemoteLocationListView
 from pylabber.utils import FilteredTableMixin
-from .filters import SubjectListFilter, SMBFileListFilter
-from .forms import SubjectListFormHelper, SMBFileListFormHelper
+from .filters import SubjectListFilter  #, SMBFileListFilter
+from .forms import SubjectListFormHelper  #, SMBFileListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
-from .tables import SubjectTable, SMBRemoteFileTable
+from .tables import SubjectTable  #, SMBRemoteFileTable
 
 
 class StudyListView(LoginRequiredMixin, ListView):
@@ -141,20 +141,19 @@ RemoteLocationCreateView.template_name = CREATE_SMB
 LIST_SMB = 'research/data_sources/smb/list_locations.html'
 RemoteLocationListView.template_name = LIST_SMB
 
+# class RemoteFileListView(LoginRequiredMixin, ListView):
+#     model = RemoteFile
+# table_class = SMBRemoteFileTable
+# template_name = 'research/data_sources/smb/list_files.html'
+# paginate_by = 50
+# ordering = ['-id']
+# filterset_class = SMBFileListFilter
+# formhelper_class = SMBFileListFormHelper
 
-class RemoteFileListView(LoginRequiredMixin, ListView):
-    model = RemoteFile
-    table_class = SMBRemoteFileTable
-    template_name = 'research/data_sources/smb/list_files.html'
-    paginate_by = 50
-    ordering = ['-id']
-    filterset_class = SMBFileListFilter
-    formhelper_class = SMBFileListFormHelper
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        search_query = self.get_queryset()
-        table = self.table_class(search_query)
-        RequestConfig(self.request).configure(table)
-        context['table'] = table
-        return context
+# def get_context_data(self, **kwargs):
+#     context = super().get_context_data(**kwargs)
+#     search_query = self.get_queryset()
+#     table = self.table_class(search_query)
+#     RequestConfig(self.request).configure(table)
+#     context['table'] = table
+#     return context

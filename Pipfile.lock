@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8b0f6c72f0e036c36d10fc3e6846dead4e83b5dc06c53e56be0d5b59d3aa6764"
+            "sha256": "d381dfa37dfb4c80adfc6bdf47c71634e988e6caec5f3e6f3ae2d86cb03f6194"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -131,6 +131,25 @@
             ],
             "index": "pypi",
             "version": "==2.0.0"
+        },
+        "django-js-asset": {
+            "hashes": [
+                "sha256:30149158206f693a5d027fe590096fc84495486bd11cd77d395b4f2ec27fc1d0",
+                "sha256:a395d8d19eb201ea8d2bd4f145b38f1717cd74c0f609f040141d8724c5a27f36"
+            ],
+            "version": "==1.1.0"
+        },
+        "django-mptt": {
+            "hashes": [
+                "sha256:18a41d1b56ca7c02a5b04d246e33ee2d18f6ee5459c02ed1d945f5abdef23a2e",
+                "sha256:689a04cce0981671d6061a9928c33a16b47abb0d4cd43cf7dec31ae284fdae9d"
+            ],
+            "index": "pypi",
+            "version": "==0.9.1"
+        },
+        "django-smb": {
+            "editable": true,
+            "path": "/home/zvi/Projects/django_smb"
         },
         "django-tables2": {
             "hashes": [

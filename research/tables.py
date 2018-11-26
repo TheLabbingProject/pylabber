@@ -3,7 +3,7 @@ import django_tables2 as tables
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django_tables2.utils import A, AttributeDict
-from django_smb.models import RemoteFile
+# from django_smb.models import RemoteFile
 from research.models import Subject
 
 
@@ -56,19 +56,19 @@ class StylizedBooleanColumn(tables.BooleanColumn):
             html.format(AttributeDict(attrs).as_html(), escape(text)))
 
 
-class SMBRemoteFileTable(tables.Table):
-    is_archived = StylizedBooleanColumn()
-    is_available = BooleanCircleColumn(yesno=',')
+# class SMBRemoteFileTable(tables.Table):
+#     is_archived = StylizedBooleanColumn()
+#     is_available = BooleanCircleColumn(yesno=',')
 
-    class Meta:
-        model = RemoteFile
-        template_name = 'django_tables2/bootstrap.html'
-        fields = (
-            'id',
-            'path',
-            'source',
-            'is_archived',
-            'is_available',
-        )
-        attrs = {"class": "table table-striped table-hover table-sm"}
-        empty_text = "There are no files matching the search criteria..."
+#     class Meta:
+#         model = RemoteFile
+#         template_name = 'django_tables2/bootstrap.html'
+#         fields = (
+#             'id',
+#             'path',
+#             'source',
+#             'is_archived',
+#             'is_available',
+#         )
+#         attrs = {"class": "table table-striped table-hover table-sm"}
+#         empty_text = "There are no files matching the search criteria..."

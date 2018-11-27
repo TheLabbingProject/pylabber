@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
-# from django_smb.models import RemoteFile
+from django_smb.models import RemoteLocation
 from django_smb.views import RemoteLocationCreateView, RemoteLocationListView
 from pylabber.utils import FilteredTableMixin
 from .filters import SubjectListFilter  #, SMBFileListFilter
@@ -140,6 +140,24 @@ RemoteLocationCreateView.template_name = CREATE_SMB
 
 LIST_SMB = 'research/data_sources/smb/list_locations.html'
 RemoteLocationListView.template_name = LIST_SMB
+
+LIST_SMB_FILES = 'research/data_sources/smb/list_files.html'
+
+
+class RemoteLocationDetailView(LoginRequiredMixin, DetailView):
+    model = RemoteLocation
+    template_name = LIST_SMB_FILES
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = list(self.object.tree_root.get_descendants().values(
+            'id',
+            'parent_id',
+            'name',
+        ))
+        context['data'] = data
+        return context
+
 
 # class RemoteFileListView(LoginRequiredMixin, ListView):
 #     model = RemoteFile

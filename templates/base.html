@@ -16,8 +16,6 @@
     <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css" type="text/css" />
     <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css" type="text/css" />
     <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css" type="text/css" />
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.css"/>
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <!-- FontAwesome -->
@@ -47,16 +45,16 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'study_list' %}">Studies</a>
+                    <a class="nav-link" href="{% url 'research:study_list' %}">Studies</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'subject_list' %}">Subjects</a>
+                    <a class="nav-link" href="{% url 'research:subject_list' %}">Subjects</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'data_summary' %}">Data</a>
+                    <a class="nav-link" href="{% url 'research:data_summary' %}">Data</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'data_sources' %}">Data Sources</a>
+                    <a class="nav-link" href="{% url 'research:data_sources' %}">Data Sources</a>
                 </li>
             </ul>
         </div>

@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = 'research'
+
 urlpatterns = [
     path(
         'studies/',
@@ -62,9 +64,9 @@ urlpatterns = [
         views.DataSourcesSummaryView.as_view(),
         name='data_sources',
     ),
-    # path(
-    #     'smb_files',
-    #     views.RemoteFileListView.as_view(),
-    #     name='smb_files',
-    # ),
+    path(
+        'smb_files/<int:pk>/',
+        views.RemoteLocationDetailView.as_view(),
+        name='smb_files',
+    ),
 ]

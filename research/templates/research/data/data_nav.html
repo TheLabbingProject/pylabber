@@ -9,16 +9,16 @@
                         <a class="nav-link" href="#submenu1" data-toggle="collapse" data-target="#submenu1">MRI ▾</a>
                         <ul class="list-unstyled flex-column collapse" id="submenu1" aria-expanded="false">
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dicom_study_list' %}">Studies</a>
+                                <a class="nav-link" href="{% url 'dicom:dicom_study_list' %}">Studies</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'patient_list' %}">Patients</a>
+                                <a class="nav-link" href="{% url 'dicom:patient_list' %}">Patients</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'series_list' %}">Series</a>
+                                <a class="nav-link" href="{% url 'dicom:series_list' %}">Series</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'instance_list' %}">Instances</a>
+                                <a class="nav-link" href="{% url 'dicom:instance_list' %}">Instances</a>
                             </li>
                         </ul>
                     </li>

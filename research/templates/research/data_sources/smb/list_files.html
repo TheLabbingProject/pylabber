@@ -30,8 +30,53 @@
     <script>
         $(function(){
             $(treeView).bootstrapTable({
-                url: 
-            })
-            }
+                data: JSON.parse('{{ data | safe }}');
+                height: $(window).height(),
+                striped: true,
+                sidePagination: 'server',
+                idField: 'id',
+                columns: [
+                    {
+                    field: 'id',
+                    title: 'ID',
+                    },
+                    {
+                    field: 'name',
+                    title: 'Name'
+                    },
+                    {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    align: 'center',
+                    formatter: 'statusFormatter'
+                    },
+                    {
+                    field: 'permissionValue',
+                    title: '权限值'
+                    }
+                ],
+                // bootstrap-table-tree-column.js 插件配置
+                // treeShowField: 'name',
+                // parentIdField: 'pid'
+                // bootstrap-table-tree-column.js 插件配置
+                // bootstrap-table-treegrid.js 插件配置
+                treeShowField: 'name',
+                parentIdField: 'pid',
+                onLoadSuccess: function(data) {
+                    console.log('load');
+                    // jquery.treegrid.js
+                    $table.treegrid({
+                    // initialState: 'collapsed',
+                    treeColumn: 1,
+                    // expanderExpandedClass: 'glyphicon glyphicon-minus',
+                    // expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                    onChange: function() {
+                        $table.bootstrapTable('resetWidth');
+                    }
+                    });
+                }
+                });
+            });                
     </script>
 {% endblock extra-scripts %}

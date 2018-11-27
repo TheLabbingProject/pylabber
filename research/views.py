@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
@@ -47,7 +49,7 @@ class StudyUpdateView(LoginRequiredMixin, StudyListMixin, UpdateView):
 class StudyDeleteView(LoginRequiredMixin, StudyListMixin, DeleteView):
     model = Study
     template_name = 'research/studies/study_delete.html'
-    success_url = reverse_lazy('study_list')
+    success_url = reverse_lazy('research:study_list')
 
 
 class SubjectListView(LoginRequiredMixin, FilteredTableMixin):
@@ -155,7 +157,7 @@ class RemoteLocationDetailView(LoginRequiredMixin, DetailView):
             'parent_id',
             'name',
         ))
-        context['data'] = data
+        context['data'] = json.dumps(data)
         return context
 
 

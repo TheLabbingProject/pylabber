@@ -21,7 +21,7 @@ pysmb = "*"
 faker = "*"
 cryptography = "*"
 django-dicom = "*"
-eb32889 = {editable = true, path = "/home/flavus/Projects/django_smb"}
+eb32889 = {editable = true, path = "/home/zvi/Projects/django_smb"}
 django-mptt = "*"
 
 [requires]

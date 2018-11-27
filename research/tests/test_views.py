@@ -31,7 +31,7 @@ class LoggedOutStudyViewTestCase(TestCase):
         self.assertRedirects(response, f'/accounts/login/?next={url}')
 
     def test_study_create_redirects_to_login(self):
-        url = reverse('study_create')
+        url = reverse('research:study_create')
         response = self.client.get(url, follow=True)
         self.assertRedirects(response, f'/accounts/login/?next={url}')
 
@@ -66,7 +66,7 @@ class LoggedInStudyViewTestCase(LoggedInTestCase):
         self.assertTemplateUsed(response, 'research/studies/study_delete.html')
 
     def test_create_view(self):
-        url = reverse('study_create')
+        url = reverse('research:study_create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'research/studies/study_create.html')

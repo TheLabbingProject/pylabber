@@ -20,9 +20,9 @@ from django.views.generic.base import TemplateView
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('dicom/', include('django_dicom.urls')),
-    path('smb/', include('django_smb.urls')),
-    path('research/', include('research.urls')),
+    path('dicom/', include('django_dicom.urls', namespace='dicom')),
+    path('smb/', include('django_smb.urls', namespace='smb')),
+    path('research/', include('research.urls', namespace='research')),
 ]

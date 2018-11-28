@@ -149,31 +149,3 @@ LIST_SMB_FILES = 'research/data_sources/smb/list_files.html'
 class RemoteLocationDetailView(LoginRequiredMixin, DetailView):
     model = RemoteLocation
     template_name = LIST_SMB_FILES
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        data = list(self.object.tree_root.get_descendants().values(
-            'id',
-            'parent_id',
-            'name',
-        ))
-        context['data'] = json.dumps(data)
-        return context
-
-
-# class RemoteFileListView(LoginRequiredMixin, ListView):
-#     model = RemoteFile
-# table_class = SMBRemoteFileTable
-# template_name = 'research/data_sources/smb/list_files.html'
-# paginate_by = 50
-# ordering = ['-id']
-# filterset_class = SMBFileListFilter
-# formhelper_class = SMBFileListFormHelper
-
-# def get_context_data(self, **kwargs):
-#     context = super().get_context_data(**kwargs)
-#     search_query = self.get_queryset()
-#     table = self.table_class(search_query)
-#     RequestConfig(self.request).configure(table)
-#     context['table'] = table
-#     return context

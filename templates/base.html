@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <!-- Bootstrap date-picker CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" crossorigin="anonymous">        
+    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" crossorigin="anonymous">         {% endcomment %}
     <!-- Bokeh CSS -->
-    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css" type="text/css" />
+    {% comment %} <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css" type="text/css" />
     <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css" type="text/css" />
-    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css" type="text/css" />
+    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css" type="text/css" /> {% endcomment %}
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <!-- FontAwesome -->
@@ -23,7 +23,8 @@
         crossorigin="anonymous">
     <!-- Bootstrap Table -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-treegrid/0.2.0/css/jquery.treegrid.min.css">
+    <!-- jsTree -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" />
     <title>
         {% block title %} pylabber {% endblock title %}
     </title>
@@ -82,21 +83,22 @@
         {% block content %} {% endblock content %}
     </div>
     <!-- jQuery 3, DataTables and Bootstrap 4 JS -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
     <!-- Bootstrap data-picker JS  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script> {% endcomment %}
     <!-- Bokeh JS -->
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
+    {% comment %} <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js"></script>
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js"></script>
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-api-0.13.0.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-api-0.13.0.min.js"></script> {% endcomment %}
     <!-- Bootstrap Table -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="{% static "js/bootstrap-table-treegrid.js" %}"></script>
-    <script src="https://cdn.bootcss.com/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-en-US.min.js"></script>
+    <!-- jsTree -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/jstree.min.js"></script>
     {% block extra-scripts %} {% endblock extra-scripts %}
 
 </body>

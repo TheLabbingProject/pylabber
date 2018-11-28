@@ -21,7 +21,7 @@
             {% for data_source in object_list %}
                 <tr>
                     <td>
-                        <a href="{% url 'research:smb_files' data_source.id %}">
+                        <a href="{% url 'research:remote_files' %}">
                             {{ data_source.id }}
                         </a>
                     </td>

@@ -1,44 +1,45 @@
-{% extends "research/data_sources/data_sources_nav.html" %}
-{% load django_tables2 %}
-{% load crispy_forms_tags %}
-{% load static %}
+{% extends 'base.html' %} 
 
-{% block data-content %}
+{% block content %}
 
-    <h4>Data Source Files</h4>
-    {% comment %} <form id="searchForm">
-        <input type="search" id="searchInput" />
-        <button type="submit">Search</button>
-    </form> {% endcomment %}
+    <h4>
+        Remote Resources
+    </h4>
 
-    <div id="treeView">
+    <hr>
 
-    </div>
-    {% comment %} {% if filter %}
-        <form action="" method="get" class="form form-inline">
-            {% crispy filter.form filter.form.helper %}
-        </form>
-    {% endif %} {% endcomment %}
+    <a href="{% url 'smb:create' %}"><button class="btn btn-sm">Add</button></a>
 
-    {% comment %} <a href="{% url 'smb_archive_all' %}"><button class="btn btn-sm">Archive All</button></a> {% endcomment %}
+    <a id="syncLink" href="#"><button id="syncButton" class="btn btn-sm" disabled >Sync</button></a>
 
-    {% comment %} {% render_table table %} {% endcomment %}
+    <div id="treeView"></div>
 
-{% endblock data-content %}
+
+
+{% endblock content %}
 
 {% block extra-scripts %} 
     <script>
         $(function() {
-        $('#treeView').jstree({
-            'core' : {
-            'data' : {
-                "url" : "{% url 'smb:lazy_json' object.id %}",
-                "data" : function (node) {
-                return { "id" : node.id };
-                }                
-            }
-            }
-        });
-        });            
+            // Create lazy loading tree
+            $('#treeView').jstree({
+                'core' : {
+                'data' : {
+                    "url" : "{% url 'smb:lazy_json' %}",
+                    "data" : function (node) {
+                        return { "id" : node.id };
+                    }                
+                }
+                }
+
+            // Disable sync button if nothing selected
+            }).on('changed.jstree', function (e, data) {
+                    if (data.selected.length > 0) {
+                        $('#syncButton').prop('disabled', false);
+                    } else {
+                        $('#syncButton').prop('disabled', true);
+                    }
+                });
+            });
     </script>
 {% endblock extra-scripts %}

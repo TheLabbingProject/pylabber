@@ -1,18 +1,15 @@
-import json
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
-from django_smb.models import RemoteLocation
 from django_smb.views import RemoteLocationCreateView, RemoteLocationListView
 from pylabber.utils import FilteredTableMixin
-from .filters import SubjectListFilter  #, SMBFileListFilter
-from .forms import SubjectListFormHelper  #, SMBFileListFormHelper
+from .filters import SubjectListFilter
+from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
-from .tables import SubjectTable  #, SMBRemoteFileTable
+from .tables import SubjectTable
 
 
 class StudyListView(LoginRequiredMixin, ListView):
@@ -140,12 +137,5 @@ class DataSourcesSummaryView(LoginRequiredMixin, TemplateView):
 CREATE_SMB = 'research/data_sources/smb/create_location.html'
 RemoteLocationCreateView.template_name = CREATE_SMB
 
-LIST_SMB = 'research/data_sources/smb/list_locations.html'
-RemoteLocationListView.template_name = LIST_SMB
-
 LIST_SMB_FILES = 'research/data_sources/smb/list_files.html'
-
-
-class RemoteLocationDetailView(LoginRequiredMixin, DetailView):
-    model = RemoteLocation
-    template_name = LIST_SMB_FILES
+RemoteLocationListView.template_name = LIST_SMB_FILES

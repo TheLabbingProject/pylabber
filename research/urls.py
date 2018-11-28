@@ -65,8 +65,8 @@ urlpatterns = [
         name='data_sources',
     ),
     path(
-        'smb_files/<int:pk>/',
-        views.RemoteLocationDetailView.as_view(),
-        name='smb_files',
+        'data_sources/tree/',
+        views.RemoteLocationListView.as_view(),
+        name='remote_files',
     ),
 ]

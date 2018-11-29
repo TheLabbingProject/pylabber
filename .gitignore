@@ -36,3 +36,4 @@ htmlcov
 
 # Other
 *.pem
+*.log

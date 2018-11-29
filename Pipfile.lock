@@ -110,11 +110,11 @@
         },
         "django-dicom": {
             "hashes": [
-                "sha256:0fe48307ca376c4f84b0aaac222089639ff8b840bb5e30dac3d9786729185767",
-                "sha256:9f1d9a57156e6fa6a48c72c6eb15740fb717f253e0af82d6090dc3bb751f9609"
+                "sha256:275d7db457d4aaceb351ac39eba10a2646cbb4860ffd9b85213146919114d859",
+                "sha256:9ecf11de2f8cebf9b27a314e42a94a4ce7a55a0255a6a5b64ba39e58c546b0b8"
             ],
             "index": "pypi",
-            "version": "==0.2.3"
+            "version": "==0.2.6"
         },
         "django-environ": {
             "hashes": [

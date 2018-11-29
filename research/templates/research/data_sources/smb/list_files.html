@@ -1,6 +1,10 @@
 {% extends 'base.html' %} 
+{% load static %}
+
 
 {% block content %}
+
+    <link rel="stylesheet" href="{% static "css/tree.css" %}" />
 
     <h4>
         Remote Resources
@@ -11,8 +15,6 @@
     <input id="searchInput" type="text" name="searchInput"><br>
 
     <a href="{% url 'smb:create' %}"><button class="btn btn-sm">Add</button></a>
-
-    <a id="syncLink" href="#"><button id="syncButton" class="btn btn-sm" disabled >Sync</button></a>
 
     <div id="treeView" class="col-6"></div>
 
@@ -47,12 +49,13 @@
                                     $.ajax(
                                         {
                                             type: "GET",
-                                            url: "{% url 'smb:sync_ajax' %}",
+                                            url: "{% url 'smb:ajax_sync_lazy' %}",
                                             data: {
                                                 "path_id": id
                                             },
                                             success: function (data) {
                                                 console.log(data)
+                                                location.reload()
                                             }
                                         }
                                     )
@@ -63,21 +66,47 @@
                                 "separator_after": false,
                                 "label": "Sync Descendants",
                                 "action": function (obj) { 
-                                    tree.edit($node);
+                                    var id = $('#treeView').jstree("get_selected");
+                                    $.ajax(
+                                        {
+                                            type: "GET",
+                                            url: "{% url 'smb:ajax_sync' %}",
+                                            data: {
+                                                "path_id": id
+                                            },
+                                            success: function (data) {
+                                                console.log(data)
+                                                location.reload()
+                                            }
+                                        }
+                                    )
+                                }
+                            },
+                            "Import Data": {
+                                "separator_before": false,
+                                "separator_after": false,
+                                "label": "Import Data",
+                                "action": function (obj) { 
+                                    var id = $('#treeView').jstree("get_selected");
+                                    $.ajax(
+                                        {
+                                            type: "GET",
+                                            url: "{% url 'research:import_data' %}",
+                                            data: {
+                                                "node_id": id
+                                            },
+                                            success: function (data) {
+                                                console.log(data)
+                                                location.reload()
+                                            }
+                                        }
+                                    )
                                 }
                             }
                         };
                     }
                 }
-
-            // Disable sync button if nothing selected
-            }).on('changed.jstree', function (e, data) {
-                    if (data.selected.length > 0) {
-                        $('#syncButton').prop('disabled', false);
-                    } else {
-                        $('#syncButton').prop('disabled', true);
-                    }
-                });
+            })
             var to = false;
             $('#searchInput').keyup(function () {
                 if(to) { clearTimeout(to); }

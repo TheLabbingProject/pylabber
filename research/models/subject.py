@@ -7,7 +7,7 @@ from .validators import digits_only, not_future
 
 class Subject(models.Model):
     id_number = CharNullField(
-        max_length=9,
+        max_length=64,
         unique=True,
         validators=[digits_only],
         blank=True,
@@ -45,7 +45,7 @@ class Subject(models.Model):
         return f'Subject #{self.id}'
 
     def get_absolute_url(self):
-        return reverse('subject_detail', args=[str(self.id)])
+        return reverse('research:subject_detail', args=[str(self.id)])
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'

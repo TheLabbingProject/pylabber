@@ -61,12 +61,12 @@ urlpatterns = [
     ),
     path(
         'data_sources/',
-        views.DataSourcesSummaryView.as_view(),
+        views.RemoteLocationListView.as_view(),
         name='data_sources',
     ),
     path(
-        'data_sources/tree/',
-        views.RemoteLocationListView.as_view(),
-        name='remote_files',
+        'import/',
+        views.import_node,
+        name='import_data',
     ),
 ]

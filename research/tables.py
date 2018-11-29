@@ -8,7 +8,7 @@ from research.models import Subject
 
 
 class SubjectTable(tables.Table):
-    id = tables.LinkColumn('subject_detail', args=[A('pk')])
+    id = tables.LinkColumn('research:subject_detail', args=[A('pk')])
 
     class Meta:
         model = Subject

@@ -8,6 +8,6 @@
         {% csrf_token %} 
         {{ form | crispy }}
         <button class="btn btn-info btn-padded float-right" type="submit">Update</button>
-        <a href="{% url 'subject_detail' subject.id %}" class="btn btn-black btn-padded float-right">Cancel</a>
+        <a href="{% url 'research:subject_detail' subject.id %}" class="btn btn-black btn-padded float-right">Cancel</a>
     </form>
 {% endblock subject-detail %}

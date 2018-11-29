@@ -13,7 +13,7 @@
     <hr>
 </div>
 <p>
-    <a href="{% url 'subject_update' subject.id %}">Edit</a> |
-    <a href="{% url 'subject_delete' subject.id %}">Delete</a>
+    <a href="{% url 'research:subject_update' subject.id %}">Edit</a> |
+    <a href="{% url 'research:subject_delete' subject.id %}">Delete</a>
 </p>
 {% endblock subject-detail %}

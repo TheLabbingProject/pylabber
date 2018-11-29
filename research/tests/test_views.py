@@ -11,7 +11,7 @@ class LoggedOutStudyViewTestCase(TestCase):
         self.test_study.save()
 
     def test_study_list_redirects_to_login(self):
-        url = reverse('study_list')
+        url = reverse('research:study_list')
         response = self.client.get(url, follow=True)
         self.assertRedirects(response, f'/accounts/login/?next={url}')
 

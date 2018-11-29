@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django_dicom.models import Instance
 from django_tables2 import RequestConfig
+from django_smb.models import RemotePath
 from django_smb.views import RemoteLocationCreateView, RemoteLocationListView
 from pylabber.utils import FilteredTableMixin
 from .filters import SubjectListFilter
@@ -26,6 +29,7 @@ class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
         'description',
         'collaborators',
     ]
+    success_url = reverse_lazy('research:study_detail')
 
 
 class StudyDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
@@ -102,7 +106,7 @@ class SubjectUpdateView(SubjectListView, UpdateView):
 class SubjectDeleteView(SubjectListView, DeleteView):
     model = Subject
     template_name = 'research/subjects/subject_delete.html'
-    success_url = reverse_lazy('subject_list')
+    success_url = reverse_lazy('research:subject_list')
 
     def get_context_data(self, **kwargs):
         subject = Subject.objects.get(id=self.kwargs['pk'])
@@ -139,3 +143,23 @@ RemoteLocationCreateView.template_name = CREATE_SMB
 
 LIST_SMB_FILES = 'research/data_sources/smb/list_files.html'
 RemoteLocationListView.template_name = LIST_SMB_FILES
+
+
+def import_dcms_from_node(node: RemotePath):
+    for descendant in node.get_descendants():
+        if descendant.name.endswith('.dcm') and not descendant.is_imported:
+            f = descendant.get_file()
+            Instance.objects.from_dcm(f)
+            descendant.is_imported = True
+            descendant.save()
+
+
+def import_node(request):
+    if request.method == 'GET':
+        request_path = request.get_full_path()
+        path_id = request_path.split('=')[-1]
+        node = RemotePath.objects.get(id=path_id)
+        import_dcms_from_node(node)
+        return HttpResponse(f'Imported node {path_id}!')
+    else:
+        return HttpResponse('Request method must be GET!')

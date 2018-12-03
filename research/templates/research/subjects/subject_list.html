@@ -23,9 +23,6 @@
 
 {% block extra-scripts %}
     <script>
-        $(document).ready(function() {
-            $('.datepicker').datepicker({ format: "dd/mm/yyyy" });
-        }); 
         $('tr').click(function() {
             var href = $(this).find('a').attr('href');
             if (href) {

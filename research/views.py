@@ -146,12 +146,17 @@ RemoteLocationListView.template_name = LIST_SMB_FILES
 
 
 def import_dcms_from_node(node: RemotePath):
-    for descendant in node.get_descendants():
-        if descendant.name.endswith('.dcm') and not descendant.is_imported:
-            f = descendant.get_file()
-            Instance.objects.from_dcm(f)
-            descendant.is_imported = True
-            descendant.save()
+    try:
+        for descendant in node.get_descendants(include_self=True):
+            if descendant.name.endswith('.dcm') and not descendant.is_imported:
+                f = descendant.get_file()
+                Instance.objects.from_dcm(f)
+                descendant.is_imported = True
+                descendant.save()
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 
 def import_node(request):
@@ -159,7 +164,9 @@ def import_node(request):
         request_path = request.get_full_path()
         path_id = request_path.split('=')[-1]
         node = RemotePath.objects.get(id=path_id)
-        import_dcms_from_node(node)
-        return HttpResponse(f'Imported node {path_id}!')
+        result = import_dcms_from_node(node)
+        if result:
+            return HttpResponse(node.id)
+        return HttpResponse(f'Failure')
     else:
         return HttpResponse('Request method must be GET!')

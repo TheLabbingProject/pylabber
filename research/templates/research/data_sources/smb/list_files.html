@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <link rel="stylesheet" href="{% static "css/tree.css" %}" />
+    <link rel="stylesheet" href="{% static 'css/tree.css' %}" />
 
     <h4>
         Remote Resources
@@ -13,8 +13,8 @@
     <hr>
 
     <input id="searchInput" type="text" name="searchInput"><br>
-
-    <a href="{% url 'smb:create' %}"><button class="btn btn-sm">Add</button></a>
+    <a href="{% url 'smb:create' %}"><button class="btn btn-sm">Add Source</button></a>
+    <p id="messages" style="color: grey; font-style: italic;"></p>
 
     <div id="treeView" class="col-6"></div>
 
@@ -25,11 +25,36 @@
 {% block extra-scripts %} 
     <script>
         $(function() {
-            // Create lazy loading tree
-            $('#treeView').jstree({
+            $('#treeView')
+            .on('load_node.jstree', function (e, data) {
+                if (data.node.children.length == 0) {
+                    $("#messages").text('Syncing ' + data.node.text + ' children...');
+                    $.ajax(
+                        {
+                            type: "GET",
+                            url: "{% url 'smb:ajax_sync_lazy' %}",
+                            data: {
+                                "path_id": data.node.id
+                            },
+                            success: function (data) {
+                                if (data != 'Failure') {                                  
+                                    var node = $('#treeView').jstree(true).get_node({'id': data.toString()});
+                                    $('#treeView').jstree(true).refresh_node(node);
+                                    $('#treeView').jstree(true).open_node(node);
+                                    $("#messages").text(node.text + ' children successfully synced.');
+                                } else {
+                                    $("#messages").text('Failed to create connection to data source');
+                                }
+                                
+                            }
+                        }
+                    )
+                } 
+            })
+            .jstree({
                 'core' : {
                     'data' : {
-                        "url" : "{% url 'smb:lazy_json' %}",
+                        "url" : "{% url 'smb:json' %}",
                         "data" : function (node) {
                             return { "id" : node.id };
                         }
@@ -54,8 +79,13 @@
                                                 "path_id": id
                                             },
                                             success: function (data) {
-                                                console.log(data)
-                                                location.reload()
+                                                if (data != 'Failure') {                                  
+                                                    var node = $('#treeView').jstree(true).get_node({'id': data.toString()});
+                                                    $('#treeView').jstree(true).refresh_node(node);
+                                                    $('#treeView').jstree(true).open_node(node);
+                                                } else {
+                                                    $("#messages").text('Failed to create connection to data source');
+                                                };                                                
                                             }
                                         }
                                     )
@@ -67,6 +97,8 @@
                                 "label": "Sync Descendants",
                                 "action": function (obj) { 
                                     var id = $('#treeView').jstree("get_selected");
+                                    var node = $('#treeView').jstree(true).get_node({'id': id});
+                                    $("#messages").text('Syncing ' + node.text + ' descendants...');
                                     $.ajax(
                                         {
                                             type: "GET",
@@ -75,8 +107,14 @@
                                                 "path_id": id
                                             },
                                             success: function (data) {
-                                                console.log(data)
-                                                location.reload()
+                                                if (data != 'Failure') {                                  
+                                                    var node = $('#treeView').jstree(true).get_node({'id': data.toString()});
+                                                    $('#treeView').jstree(true).refresh_node(node);
+                                                    $('#treeView').jstree(true).open_node(node);
+                                                    $("#messages").text(node.text + ' descendants successfully synced.');
+                                                } else {
+                                                    $("#messages").text('Failed to create connection to data source');
+                                                };
                                             }
                                         }
                                     )
@@ -88,6 +126,8 @@
                                 "label": "Import Data",
                                 "action": function (obj) { 
                                     var id = $('#treeView').jstree("get_selected");
+                                    var node = $('#treeView').jstree(true).get_node({'id': id});
+                                    $("#messages").text('Importing data from ' + node.text + '...');
                                     $.ajax(
                                         {
                                             type: "GET",
@@ -96,8 +136,14 @@
                                                 "node_id": id
                                             },
                                             success: function (data) {
-                                                console.log(data)
-                                                location.reload()
+                                                if (data != 'Failure') {                                  
+                                                    var node = $('#treeView').jstree(true).get_node({'id': data.toString()});
+                                                    $('#treeView').jstree(true).refresh_node(node);
+                                                    $('#treeView').jstree(true).open_node(node);
+                                                    $("#messages").text('Successfully imported data from ' + node.text);
+                                                } else {
+                                                    $("#messages").text('Failed to create connection to data source');
+                                                };
                                             }
                                         }
                                     )

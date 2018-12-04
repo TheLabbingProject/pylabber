@@ -1,6 +1,31 @@
-{% extends 'base.html' %} {% block title %} Home {% endblock %} {% block content %}
-<div class="jumbotron">
-    <h1 class="display-4">pylabber</h1>
-    <p class="lead">A database manager for neuroscience</p>
-</div>
+{% extends 'base.html' %} 
+
+
+{% block title %}
+    Home
+{% endblock title %} 
+
+
+{% block content %}
+    <div class="container-fluid">
+        <h3 class="pt-4">Welcome to Yaniv Assaf's Lab!</h3>
+        {% for member in members %}
+            <div class="jumbotron">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-1">
+                            <img src="{{ member.profile.image.url }}" alt="" height="100" width="100">
+                        </div>
+                        <div class="col">
+                            <h4>
+                                {{ member.profile.get_full_name }}
+                            </h4>
+                            <p>{{ member.email }}</p>
+                            <p>Currently working on: {{ member.profile.get_study_list | join:", " }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

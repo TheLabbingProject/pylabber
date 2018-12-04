@@ -1,31 +1,56 @@
 {% extends 'base.html' %} 
-
+{% comment %} {% load static %} {% endcomment %}
 
 {% block title %}
     Home
 {% endblock title %} 
 
-
-{% block content %}
+{% block content %}    
     <div class="container-fluid">
-        <h3 class="pt-4">Welcome to Yaniv Assaf's Lab!</h3>
+        <h3 class="pt-4 pb-3">Welcome to Yaniv Assaf's Lab!</h3>
         {% for member in members %}
-            <div class="jumbotron">
-                <div class="container-fluid">
+            {% if forloop.first %}<div class="row">{% endif %}
+            <div class="col-4">
+                <div class="jumbotron p-4">
+
                     <div class="row">
-                        <div class="col-1">
-                            <img src="{{ member.profile.image.url }}" alt="" height="100" width="100">
+                        {% comment %} 
+                            Profile Image
+                        {% endcomment %}
+                        <div class="span1">
+                            <a href="{% url 'accounts:user_detail' member.id %}">
+                                {% if member.profile.image %}
+                                    <img src="{{ member.profile.image.url }}" 
+                                            alt="" 
+                                            height="120" 
+                                            width="120"
+                                            title={{member.profile.get_full_name}}>
+                                {% else %}
+                                    <img src="/media/images/no_photo.jpg" 
+                                            alt="" 
+                                            height="120" 
+                                            width="120"
+                                            title={{member.profile.get_full_name}}>
+                                {% endif %}
+                            </a>
                         </div>
+
+                        {% comment %} 
+                            User details
+                        {% endcomment %}
                         <div class="col">
-                            <h4>
+                            <h5>
                                 {{ member.profile.get_full_name }}
-                            </h4>
-                            <p>{{ member.email }}</p>
-                            <p>Currently working on: {{ member.profile.get_study_list | join:", " }}</p>
+                            </h5>
+                            <span class="badge badge-info">{{ member.profile.get_position }}</span>
+                            <p>{{ member.email }}<br>
+                            Collaborator: {{ member.profile.get_study_list | join:", " }}</p>
                         </div>
                     </div>
                 </div>
             </div>
+            {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
+            {% if forloop.last %}</div>{% endif %}
         {% endfor %}
     </div>
 {% endblock %}

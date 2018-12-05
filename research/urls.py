@@ -30,6 +30,11 @@ urlpatterns = [
         name='study_delete',
     ),
     path(
+        'studies/dicom/json/',
+        views.generate_study_mri_json,
+        name='study_dicom_json',
+    ),
+    path(
         'subjects/',
         views.SubjectListView.as_view(),
         name='subject_list',

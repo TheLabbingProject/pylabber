@@ -51,5 +51,21 @@ class Subject(models.Model):
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    def to_tree(self):
+        return {
+            'id':
+            str(self.id),
+            'text':
+            self.get_full_name(),
+            'icon':
+            'fas fa-user',
+            'children': [{
+                'id': f'{self.id}_mri',
+                'icon': 'fab fa-magento',
+                'text': 'MRI',
+                'children': self.get_dicom_patient().to_tree(),
+            }]
+        }
+
     def get_dicom_patient(self):
         return Patient.objects.get(patient_id=self.id_number)

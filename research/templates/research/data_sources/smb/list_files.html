@@ -54,7 +54,7 @@
             .jstree({
                 'core' : {
                     'data' : {
-                        "url" : "{% url 'smb:json' %}",
+                        "url" : "{% url 'smb:lazy_json' %}",
                         "data" : function (node) {
                             return { "id" : node.id };
                         }

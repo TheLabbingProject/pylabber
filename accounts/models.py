@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 
+TITLE_ORDERING_SQL = "case when position='PI' then 1 when position='MAN' then 2 when position='PHD' then 3 when position='MSC' then 4 end"
+
 
 class User(AbstractUser):
     pass

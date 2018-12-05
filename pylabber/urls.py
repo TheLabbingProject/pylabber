@@ -18,7 +18,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from accounts.models import User
+from accounts.choices import Position
+from accounts.models import Profile, TITLE_ORDERING_SQL
+
+BADGE_CLASS = {
+    Position.PI.name: 'dark',
+    Position.POST.name: 'primary',
+    Position.AFF.name: 'secondary',
+    Position.PHD.name: 'success',
+    Position.MSC.name: 'info',
+    Position.MAN.name: 'danger',
+    Position.RA.name: 'warning',
+}
 
 urlpatterns = [
     path(
@@ -26,7 +37,13 @@ urlpatterns = [
         TemplateView.as_view(
             template_name='home.html',
             extra_context={
-                'members': User.objects.order_by('-profile__title')
+                'members':
+                Profile.objects.extra(
+                    select={'position_order': TITLE_ORDERING_SQL},
+                    order_by=['position_order']),
+                # 'members': User.objects.order_by('-profile__title'),
+                'badge_class':
+                BADGE_CLASS,
             },
         ),
         name='home'),

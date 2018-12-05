@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% comment %} {% load static %} {% endcomment %}
+{% load custom_filters %}
 
 {% block title %}
     Home
@@ -18,19 +18,19 @@
                             Profile Image
                         {% endcomment %}
                         <div class="span1">
-                            <a href="{% url 'accounts:user_detail' member.id %}">
-                                {% if member.profile.image %}
-                                    <img src="{{ member.profile.image.url }}" 
+                            <a href="{% url 'accounts:user_detail' member.user.id %}">
+                                {% if member.image %}
+                                    <img src="{{ member.image.url }}" 
                                             alt="" 
                                             height="120" 
                                             width="120"
-                                            title={{member.profile.get_full_name}}>
+                                            title={{member.get_full_name}}>
                                 {% else %}
                                     <img src="/media/images/no_photo.jpg" 
                                             alt="" 
                                             height="120" 
                                             width="120"
-                                            title={{member.profile.get_full_name}}>
+                                            title={{member.get_full_name}}>
                                 {% endif %}
                             </a>
                         </div>
@@ -40,11 +40,13 @@
                         {% endcomment %}
                         <div class="col">
                             <h5>
-                                {{ member.profile.get_full_name }}
+                                {{ member.get_full_name }}
                             </h5>
-                            <span class="badge badge-info">{{ member.profile.get_position }}</span>
-                            <p>{{ member.email }}<br>
-                            Collaborator: {{ member.profile.get_study_list | join:", " }}</p>
+                            <span class="badge badge-{{ badge_class|lookup:member.position }}">{{ member.get_position }}</span>
+                            <p>{{ member.user.email }}<br>
+                            {% if member.user.studies.exists %}
+                                Collaborator: {{ member.get_study_list | join:", " }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,11 @@ class Study(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
+    image = models.ImageField(
+        upload_to='images/studies',
+        blank=True,
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

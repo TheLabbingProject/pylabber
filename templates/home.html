@@ -12,25 +12,27 @@
             {% if forloop.first %}<div class="row">{% endif %}
             <div class="col-4">
                 <div class="jumbotron p-4">
-
                     <div class="row">
+
                         {% comment %} 
                             Profile Image
                         {% endcomment %}
-                        <div class="span1">
+                        <div class="col-3 text-center">
                             <a href="{% url 'accounts:user_detail' member.user.id %}">
                                 {% if member.image %}
                                     <img src="{{ member.image.url }}" 
                                             alt="" 
                                             height="120" 
                                             width="120"
-                                            title={{member.get_full_name}}>
+                                            title={{member.get_full_name}}
+                                            class="rounded-circle">
                                 {% else %}
                                     <img src="/media/images/no_photo.jpg" 
                                             alt="" 
                                             height="120" 
                                             width="120"
-                                            title={{member.get_full_name}}>
+                                            title={{member.get_full_name}}
+                                            class="rounded">
                                 {% endif %}
                             </a>
                         </div>
@@ -43,9 +45,22 @@
                                 {{ member.get_full_name }}
                             </h5>
                             <span class="badge badge-{{ badge_class|lookup:member.position }}">{{ member.get_position }}</span>
-                            <p>{{ member.user.email }}<br>
+                            <p>
+                                {{ member.user.email }}
+                            </p>
+                        </div>
+                        <div class="col-1">
                             {% if member.user.studies.exists %}
-                                Collaborator: {{ member.get_study_list | join:", " }}</p>
+                                {% for study in member.user.studies.all %}
+                                    <a href="{% url 'research:study_detail' study.id %}">
+                                        <img src="{{ study.image.url }}"
+                                            alt="" 
+                                            height="35" 
+                                            width="35"
+                                            title={{study.name}}
+                                            class="rounded-circle">
+                                    </a>
+                                {% endfor %}
                             {% endif %}
                         </div>
                     </div>

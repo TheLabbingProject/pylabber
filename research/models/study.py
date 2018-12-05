@@ -28,3 +28,6 @@ class Study(models.Model):
 
     def get_absolute_url(self):
         return reverse('research:study_detail', args=[str(self.id)])
+
+    def generate_dicom_tree(self) -> list:
+        return [subject.to_tree() for subject in self.subjects.all()]

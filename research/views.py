@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -30,6 +31,24 @@ class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
         'collaborators',
     ]
     success_url = reverse_lazy('research:study_list')
+
+
+def parse_lazy_pk(request) -> int:
+    value = request.get_full_path().split('=')[-1]
+    try:
+        return int(value)
+    except ValueError:
+        return 0
+
+
+def generate_study_mri_json(request):
+    if request.method == 'GET':
+        pk = parse_lazy_pk(request)
+        study = get_object_or_404(Study, pk=pk)
+        data = study.generate_dicom_tree()
+        return JsonResponse(data, safe=False)
+    else:
+        return HttpResponse('Request method must be GET!')
 
 
 class StudyDetailView(LoginRequiredMixin, StudyListMixin, DetailView):

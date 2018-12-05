@@ -3,22 +3,65 @@
 
 
 {% block study-content %}
-    <div class="study-entry">
-        <h2>{{ object.name }}</h2>
-        <hr>
-        <p>Description:</p>
-        <p>{{ object.description }}</p>
-        <hr>
-        <p>Collaborators:</p>
-        {{ object.collaborators.all | join:', ' }} {% comment %} {% for collaborator in object.collaborators.all %}
-        <p>{{ collaborator.get_full_name }}</p>
-        {% endfor %} {% endcomment %}
-        <hr>
-        <p>Created: {{ object.created_at }}</p>
-        <hr>
+
+    <div class="row mt-3">
+        <div class="col-2 text-center">
+            <img src="{{ object.image.url }}" 
+            alt="" 
+            height="250" 
+            width="250"
+            title={{object.name}}
+            class="rounded">
+        </div>
+
+        <div class="col ml-4">
+            <h2>{{ object.name }}</h2>
+            <hr>
+            <p>Description:</p>
+            <p>{{ object.description }}</p>
+            <hr>
+            <p>Collaborators:</p>
+            {{ object.collaborators.all | join:', ' }} {% comment %} {% for collaborator in object.collaborators.all %}
+            <p>{{ collaborator.get_full_name }}</p>
+            {% endfor %} {% endcomment %}
+            <hr>
+            <p>Created: {{ object.created_at }}<br>
+            <a href="{% url 'research:study_update' study.id %}">Edit</a> |
+            <a href="{% url 'research:study_delete' study.id %}">Delete</a>
+            </p>
+        </div>
     </div>
-    <p>
-        <a href="{% url 'research:study_update' study.id %}">Edit</a> |
-        <a href="{% url 'research:study_delete' study.id %}">Delete</a>
-    </p>
+
+    <div class="row pt-3">
+        <div id="treeView" class="col-6">
+    </div>
 {% endblock study-content %}
+
+{% block extra-scripts %} 
+    <script>
+        $(function() {
+            $('#treeView')
+            .jstree({
+                'core' : {
+                    'data' : {
+                        "url" : "{% url 'smb:lazy_json' %}",
+                        "data" : function (node) {
+                            return { "id" : node.id };
+                        }
+                    }
+                },
+                "plugins" : [ "wholerow", "state", "sort", "search" ],
+                "check_callback" : true,
+            })
+        
+        var to = false;
+        $('#searchInput').keyup(function () {
+            if(to) { clearTimeout(to); }
+            to = setTimeout(function () {
+                var v = $('#searchInput').val();
+                $('#treeView').jstree(true).search(v);
+                }, 250);
+            });
+        });
+    </script>
+{% endblock extra-scripts %}

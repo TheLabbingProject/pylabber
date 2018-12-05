@@ -18,7 +18,7 @@ class Profile(models.Model):
         related_name='profile',
     )
     image = models.ImageField(
-        upload_to='images',
+        upload_to='images/profiles',
         blank=True,
     )
     title = models.CharField(

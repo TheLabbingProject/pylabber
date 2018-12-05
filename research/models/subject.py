@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django_dicom.models import Patient
 from pylabber.utils import CharNullField
 from .choices import Sex, Gender, DominantHand
 from .validators import digits_only, not_future
@@ -49,3 +50,6 @@ class Subject(models.Model):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+    def get_dicom_patient(self):
+        return Patient.objects.get(patient_id=self.id_number)

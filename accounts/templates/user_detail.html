@@ -1,17 +1,40 @@
-{% extends "base.html" %} {% load crispy_forms_tags %} {% block title %} User Profile {% endblock %} {% block content %}
+{% extends "base.html" %} 
+{% load static %}
 
-<h3>{{ object.get_full_name }}</h3>
-<p>{{ object.email }}</p>
-
-<hr>
-
-<p>Date of Birth: {{ object.profile.date_of_birth }}</p>
-<p>Institute: {{ object.profile.institute }}</p>
-<p>Bio: {{ object.profile.bio }}</p>
+{% block title %} 
+    User Profile 
+{% endblock title %} 
 
 
-{% if user.id == object.id %}
-<p>
-    <a href="{% url 'accounts:profile_update' object.profile.id %}">Edit</a>
-</p>
-{% endif %} {% endblock content %}
+{% block content %}
+    <div class="row mt-3">
+        <div class="col-2 text-center">
+            <img src="{{ object.profile.image.url }}" 
+            alt="" 
+            height="250" 
+            width="250"
+            title={{object.get_full_name}}
+            class="rounded">
+        </div>
+
+        <div class="col">
+            <h3>
+                {{ object.get_full_name }}
+            </h3>
+
+            <p>{{ object.email }}</p>
+
+            <hr>
+            
+            <p><i class="fas fa-birthday-cake"></i> {{ object.profile.date_of_birth }}</p>
+            <p>Institute: {{ object.profile.institute }}</p>
+            <p>Bio: {{ object.profile.bio }}</p>
+
+
+            {% if user.id == object.id %}
+                <a href="{% url 'accounts:profile_update' object.profile.id %}"><button class="btn btn-primary">Edit</button></a>
+            {% endif %} 
+        </div>
+    </div>
+
+{% endblock content %}

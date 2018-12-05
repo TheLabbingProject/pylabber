@@ -29,7 +29,7 @@ class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
         'description',
         'collaborators',
     ]
-    success_url = reverse_lazy('research:study_detail')
+    success_url = reverse_lazy('research:study_list')
 
 
 class StudyDetailView(LoginRequiredMixin, StudyListMixin, DetailView):

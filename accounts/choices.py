@@ -15,5 +15,6 @@ class Position(ChoiceEnum):
     MSC = 'M.Sc. Student'
     PHD = 'Ph.D. Candidate'
     POST = 'Postdoctoral Researcher'
+    AFF = 'Research Affiliate'
     MAN = 'Lab Manager'
-    HEAD = 'Principle Investigator'
+    PI = 'Principle Investigator'

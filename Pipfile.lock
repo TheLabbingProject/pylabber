@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "86396413f230192416006868330cc08a53c5c2e136fafc559408b5a976671eda"
+            "sha256": "02d62f466b0ead512e6ae516ed6b56f6e11bd886f5d5a86422dd91941ee939e6"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.7"
+            "python_version": "3.6"
         },
         "sources": [
             {
@@ -94,11 +94,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:1ffab268ada3d5684c05ba7ce776eaeedef360712358d6a6b340ae9f16486916",
-                "sha256:dd46d87af4c1bf54f4c926c3cfa41dc2b5c15782f15e4329752ce65f5dad1c37"
+                "sha256:068d51054083d06ceb32ce02b7203f1854256047a0d58682677dd4f81bceabd7",
+                "sha256:55409a056b27e6d1246f19ede41c6c610e4cab549c005b62cbeefabc6433356b"
             ],
             "index": "pypi",
-            "version": "==2.1.3"
+            "version": "==2.1.4"
         },
         "django-crispy-forms": {
             "hashes": [
@@ -147,6 +147,14 @@
             "index": "pypi",
             "version": "==0.9.1"
         },
+        "django-smb": {
+            "hashes": [
+                "sha256:696a9e27cd23f4da38c6e505d1ac1efb04d36873f0071ba389265ffddd0f3214",
+                "sha256:abae5219de030b669dd1c2fb1ffb3f95dfc356e7ceeedb0027339ce5c274e48e"
+            ],
+            "index": "pypi",
+            "version": "==0.1.0"
+        },
         "django-tables2": {
             "hashes": [
                 "sha256:100fe1be2faa620b807dc0c2a49016f466e1ce7e3a2845dc6ecf3aaf9a96df67",
@@ -154,10 +162,6 @@
             ],
             "index": "pypi",
             "version": "==2.0.3"
-        },
-        "eb32889": {
-            "editable": true,
-            "path": "/home/flavus/Projects/django_smb"
         },
         "faker": {
             "hashes": [
@@ -177,10 +181,10 @@
         },
         "idna": {
             "hashes": [
-                "sha256:156a6814fb5ac1fc6850fb002e0852d56c0c8d2531923a51032d1b70760e186e",
-                "sha256:684a38a6f903c1d71d6d5fac066b58d7768af4de2b832e426ec79c30daa94a16"
+                "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407",
+                "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"
             ],
-            "version": "==2.7"
+            "version": "==2.8"
         },
         "jinja2": {
             "hashes": [

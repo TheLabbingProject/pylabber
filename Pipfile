@@ -22,6 +22,7 @@ faker = "*"
 cryptography = "*"
 django-mptt = "*"
 django-dicom = "*"
+django-smb = "*"
 
 [requires]
 python_version = "3.6"

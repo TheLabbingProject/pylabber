@@ -20,6 +20,16 @@ urlpatterns = [
         name='study_detail',
     ),
     path(
+        'studies/<int:pk>/subject/',
+        views.study_subject_view,
+        name='study_detail2',
+    ),
+    path(
+        'studies/<int:study_id>/subject/<int:subject_id>/',
+        views.study_subject_view,
+        name='study_subject',
+    ),
+    path(
         'studies/<int:pk>/edit/',
         views.StudyUpdateView.as_view(),
         name='study_update',

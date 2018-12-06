@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -54,6 +54,37 @@ def generate_study_mri_json(request):
 class StudyDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
     model = Study
     template_name = 'research/studies/study_detail.html'
+
+
+class StudySubjectDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
+    model = Study
+    template_name = 'research/subjects/subject_study_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = parse_lazy_pk(self.request)
+        subject = Subject.objects.get(id=pk)
+        context['subject'] = subject
+        return context
+
+
+def study_subject_view(
+        request,
+        study_id: int,
+        subject_id: int,
+):
+    study = get_object_or_404(Study, pk=study_id)
+    subject = get_object_or_404(Subject, pk=subject_id)
+    studies = Study.objects.all()
+    return render(
+        request,
+        'research/subjects/subject_study_detail.html',
+        {
+            'study': study,
+            'subject': subject,
+            'studies': studies,
+        },
+    )
 
 
 class StudyUpdateView(LoginRequiredMixin, StudyListMixin, UpdateView):

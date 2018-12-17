@@ -20,14 +20,14 @@ urlpatterns = [
         name='study_detail',
     ),
     path(
-        'studies/<int:pk>/subject/',
-        views.study_subject_view,
-        name='study_detail2',
+        'studies/<int:study_id>/subject/<int:subject_id>/',
+        views.embeddable_subject_view,
+        name='study_subject_detail',
     ),
     path(
-        'studies/<int:study_id>/subject/<int:subject_id>/',
-        views.study_subject_view,
-        name='study_subject',
+        'embed/subject/<int:subject_id>/',
+        views.embeddable_subject_view,
+        name='embed_subject_detail',
     ),
     path(
         'studies/<int:pk>/edit/',

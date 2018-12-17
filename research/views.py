@@ -68,22 +68,16 @@ class StudySubjectDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
         return context
 
 
-def study_subject_view(
+def embeddable_subject_view(
         request,
         study_id: int,
         subject_id: int,
 ):
-    study = get_object_or_404(Study, pk=study_id)
     subject = get_object_or_404(Subject, pk=subject_id)
-    studies = Study.objects.all()
     return render(
         request,
         'research/subjects/subject_study_detail.html',
-        {
-            'study': study,
-            'subject': subject,
-            'studies': studies,
-        },
+        {'subject': subject},
     )
 
 

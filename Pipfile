@@ -22,7 +22,7 @@ faker = "*"
 cryptography = "*"
 django-mptt = "*"
 django-smb = "*"
-"e418007" = {editable = true, path = "/home/flavus/Projects/django_dicom"}
+"e418007" = {editable = true, path = "/home/zvi/Projects/django_dicom"}
 
 [requires]
 python_version = "3.6"

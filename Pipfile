@@ -11,7 +11,6 @@ django-filter = "*"
 pydicom = "*"
 numpy = "*"
 bokeh = "*"
-"psycopg2" = "*"
 "psycopg2-binary" = "*"
 gunicorn = "*"
 pandas = "*"
@@ -21,8 +20,9 @@ pysmb = "*"
 faker = "*"
 cryptography = "*"
 django-mptt = "*"
-django-smb = "*"
-"e418007" = {editable = true, path = "/home/zvi/Projects/django_dicom"}
+e418007 = {editable = true,path = "/home/flavus/Projects/django_dicom"}
+django-treebeard = "*"
+django-smb = {editable = true,path = "/home/flavus/Projects/django_smb"}
 
 [requires]
 python_version = "3.6"

@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_tables2',
     'django_filters',
-    'mptt',
+    # 'mptt',
+    'treebeard',
 
     # Extensions
     'django_dicom',

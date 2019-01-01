@@ -25,11 +25,15 @@ class Profile(models.Model):
         max_length=20,
         choices=Title.choices(),
         default=Title.NONE,
+        blank=True,
+        null=True,
     )
     position = models.CharField(
         max_length=20,
         choices=Position.choices(),
         default=Position.NONE,
+        blank=True,
+        null=True,
     )
     date_of_birth = models.DateField(default=None, blank=True, null=True)
     institute = models.CharField(max_length=255, blank=True)
@@ -43,7 +47,7 @@ class Profile(models.Model):
 
     def get_full_name(self):
         full_name = f'{self.user.first_name} {self.user.last_name}'
-        if self.title:
+        if self.title != str(Title.NONE):
             return full_name + f', {Title[self.title].value}'
         return full_name
 

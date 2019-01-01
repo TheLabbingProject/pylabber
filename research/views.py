@@ -191,7 +191,7 @@ RemoteLocationListView.template_name = LIST_SMB_FILES
 
 def import_dcms_from_node(node: RemotePath):
     try:
-        for descendant in node.get_descendants(include_self=True):
+        for descendant in node.get_descendants():
             if descendant.name.endswith('.dcm') and not descendant.is_imported:
                 f = descendant.get_file()
                 Instance.objects.from_dcm(f)

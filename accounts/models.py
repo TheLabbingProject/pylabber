@@ -13,14 +13,9 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='profile',
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
     )
-    image = models.ImageField(
-        upload_to='images/profiles',
-        blank=True,
-    )
+    image = models.ImageField(upload_to="images/profiles", blank=True)
     title = models.CharField(
         max_length=20,
         choices=Title.choices(),
@@ -43,12 +38,12 @@ class Profile(models.Model):
         return self.user.get_full_name()
 
     def get_absolute_url(self):
-        return reverse('user_detail', args=[str(self.user.id)])
+        return reverse("user_detail", args=[str(self.user.id)])
 
     def get_full_name(self):
-        full_name = f'{self.user.first_name} {self.user.last_name}'
+        full_name = f"{self.user.first_name} {self.user.last_name}"
         if self.title != str(Title.NONE):
-            return full_name + f', {Title[self.title].value}'
+            return full_name + f", {Title[self.title].value}"
         return full_name
 
     def get_study_list(self):

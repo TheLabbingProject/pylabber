@@ -22,7 +22,7 @@ class CharNullField(models.CharField):
         Gets value right out of the db and changes it if its ``None``.
         """
         if value is None:
-            return ''
+            return ""
         else:
             return value
 
@@ -35,7 +35,7 @@ class CharNullField(models.CharField):
             return value
         if value is None:
             # If db has NULL, convert it to ''.
-            return ''
+            return ""
 
         # Otherwise, just return the value.
         return value
@@ -44,7 +44,7 @@ class CharNullField(models.CharField):
         """
         Catches value right before sending to db.
         """
-        if value == '':
+        if value == "":
             # If Django tries to save an empty string, send the db None (NULL).
             return None
         else:
@@ -55,10 +55,10 @@ class CharNullField(models.CharField):
 class FilteredTableMixin(SingleTableMixin, FilterView):
     formhelper_class = None
     filterset_class = None
-    context_filter_name = 'filter'
+    context_filter_name = "filter"
 
     def get_queryset(self, **kwargs):
-        qs = super().get_queryset().order_by('-id')
+        qs = super().get_queryset().order_by("-id")
         self.filter = self.filterset_class(self.request.GET, queryset=qs)
         self.filter.form.helper = self.formhelper_class()
         return self.filter.qs

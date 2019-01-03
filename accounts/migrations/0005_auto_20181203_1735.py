@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('accounts', '0004_profile_image'),
-    ]
+    dependencies = [("accounts", "0004_profile_image")]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='image',
-            field=models.ImageField(blank=True, height_field=400, upload_to='images', width_field=400),
-        ),
+            model_name="profile",
+            name="image",
+            field=models.ImageField(
+                blank=True, height_field=400, upload_to="images", width_field=400
+            ),
+        )
     ]

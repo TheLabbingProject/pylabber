@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 # from django.conf import settings
 from .models import Study, Subject
 
@@ -8,14 +9,8 @@ from .models import Study, Subject
 
 class SubjectsInline(admin.TabularInline):
     model = Study.subjects.through
-    verbose_name_plural = 'Subjects'
-    readonly_fields = (
-        'id_number',
-        'first_name',
-        'last_name',
-        'sex',
-        'date_of_birth',
-    )
+    verbose_name_plural = "Subjects"
+    readonly_fields = ("id_number", "first_name", "last_name", "sex", "date_of_birth")
 
     def id_number(self, instance):
         return instance.subject.id_number
@@ -35,30 +30,23 @@ class SubjectsInline(admin.TabularInline):
 
 class CollaboratorsInline(admin.TabularInline):
     model = Study.collaborators.through
-    verbose_name_plural = 'Collaborators'
+    verbose_name_plural = "Collaborators"
 
 
 class StudiesAdmin(admin.ModelAdmin):
-    inlines = (
-        SubjectsInline,
-        CollaboratorsInline,
-    )
-    list_display = (
-        'name',
-        'description',
-        'created_at',
-    )
-    exclude = ('subjects', 'collaborators')
+    inlines = (SubjectsInline, CollaboratorsInline)
+    list_display = ("name", "description", "created_at")
+    exclude = ("subjects", "collaborators")
 
 
 class SubjectAdmin(admin.ModelAdmin):
     list_display = (
-        'id_number',
-        'first_name',
-        'last_name',
-        'sex',
-        'date_of_birth',
-        'dominant_hand',
+        "id_number",
+        "first_name",
+        "last_name",
+        "sex",
+        "date_of_birth",
+        "dominant_hand",
     )
     # inlines = (PatientInLine, )
 

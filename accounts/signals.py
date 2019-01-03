@@ -11,6 +11,5 @@ def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
         try:
             models.Profile.objects.create(user=instance)
         except Exception as e:
-            print(
-                'failed to create user profile with the following exception:')
+            print("failed to create user profile with the following exception:")
             print(e)

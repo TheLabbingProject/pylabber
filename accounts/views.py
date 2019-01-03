@@ -7,18 +7,14 @@ from . import models
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = models.User
-    template_name = 'user_detail.html'
-    context_object_name = 'object'
+    template_name = "user_detail.html"
+    context_object_name = "object"
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Profile
-    template_name = 'profile_update.html'
-    fields = [
-        'date_of_birth',
-        'institute',
-        'bio',
-    ]
+    template_name = "profile_update.html"
+    fields = ["date_of_birth", "institute", "bio"]
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -33,5 +29,4 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         user = self.get_object()
         if user.id != self.request.user.id:
             raise PermissionDenied
-        return super(ProfileUpdateView, self).dispatch(request, *args,
-                                                       **kwargs)
+        return super(ProfileUpdateView, self).dispatch(request, *args, **kwargs)

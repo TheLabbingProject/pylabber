@@ -5,10 +5,10 @@ from django_filters.views import FilterView
 class FilteredTableMixin(SingleTableMixin, FilterView):
     formhelper_class = None
     filterset_class = None
-    context_filter_name = 'filter'
+    context_filter_name = "filter"
 
     def get_queryset(self, **kwargs):
-        qs = super().get_queryset().order_by('-id')
+        qs = super().get_queryset().order_by("-id")
         self.filter = self.filterset_class(self.request.GET, queryset=qs)
         self.filter.form.helper = self.formhelper_class()
         return self.filter.qs

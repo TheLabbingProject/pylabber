@@ -15,21 +15,21 @@ class SubjectModelTestCase(TestCase):
         self.assertRaises(ValidationError, self.test_subject.full_clean)
 
     def test_only_digits_validator(self):
-        self.test_subject.id_number = 'a'
+        self.test_subject.id_number = "a"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '234234d23'
+        self.test_subject.id_number = "234234d23"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '23.234423'
+        self.test_subject.id_number = "23.234423"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '1/1234423'
+        self.test_subject.id_number = "1/1234423"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '11123442+'
+        self.test_subject.id_number = "11123442+"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '111*34423'
+        self.test_subject.id_number = "111*34423"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '1117^4423'
+        self.test_subject.id_number = "1117^4423"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = '111034-33'
+        self.test_subject.id_number = "111034-33"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
 
     def test_null_char_field(self):
@@ -46,10 +46,10 @@ class SubjectModelTestCase(TestCase):
             try:
                 self.test_subject.full_clean()
             except ValidationError:
-                self.fail(f'Failed to set dominant hand to {choice.value}')
+                self.fail(f"Failed to set dominant hand to {choice.value}")
 
     def test_invalid_dominant_hand_choice(self):
-        self.test_subject.dominant_hand = 'R'
+        self.test_subject.dominant_hand = "R"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
 
     def test_sex_choices(self):
@@ -58,10 +58,10 @@ class SubjectModelTestCase(TestCase):
             try:
                 self.test_subject.full_clean()
             except ValidationError:
-                self.fail(f'Failed to set sex to {choice.value}')
+                self.fail(f"Failed to set sex to {choice.value}")
 
     def test_invalid_sex_choice(self):
-        self.test_subject.sex = 'Z'
+        self.test_subject.sex = "Z"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
 
     def test_gender_choices(self):
@@ -70,31 +70,29 @@ class SubjectModelTestCase(TestCase):
             try:
                 self.test_subject.full_clean()
             except ValidationError:
-                self.fail(f'Failed to set gender to {choice.value}')
+                self.fail(f"Failed to set gender to {choice.value}")
 
     def test_invalid_gender_choice(self):
-        self.test_subject.gender = 'Z'
+        self.test_subject.gender = "Z"
         self.assertRaises(ValidationError, self.test_subject.full_clean)
 
     def test_get_full_name(self):
         s = self.test_subject
-        expected = f'{s.first_name} {s.last_name}'
+        expected = f"{s.first_name} {s.last_name}"
         self.assertEqual(self.test_subject.get_full_name(), expected)
 
     def test_str_if_both_names(self):
-        expected = self.test_subject.last_name[:2] + \
-                    self.test_subject.first_name[:2]
+        expected = self.test_subject.last_name[:2] + self.test_subject.first_name[:2]
         self.assertEqual(str(self.test_subject), expected)
 
     def test_str_if_id_number_but_no_names(self):
-        id_number = '999999999'
+        id_number = "999999999"
         subject = SubjectFactory(first_name=None, id_number=id_number)
         self.assertEqual(str(subject), id_number)
 
     def test_str_if_no_id_number_and_no_names(self):
-        subject = SubjectFactory(
-            first_name=None, last_name=None, id_number=None)
-        self.assertEqual(str(subject), f'Subject #{subject.id}')
+        subject = SubjectFactory(first_name=None, last_name=None, id_number=None)
+        self.assertEqual(str(subject), f"Subject #{subject.id}")
 
 
 class StudyModelTestCase(TestCase):
@@ -102,9 +100,7 @@ class StudyModelTestCase(TestCase):
         self.test_study = StudyFactory()
         self.test_study.save()
 
-    def add_subject(self,
-                    study,
-                    exception_msg='Failed to add subject to study!'):
+    def add_subject(self, study, exception_msg="Failed to add subject to study!"):
         subject = SubjectFactory()
         subject.save()
         try:
@@ -114,8 +110,9 @@ class StudyModelTestCase(TestCase):
 
     def test_add_subjects_to_study(self):
         self.add_subject(self.test_study)
-        self.add_subject(self.test_study,
-                         'Failed to add more than one subject to study!')
+        self.add_subject(
+            self.test_study, "Failed to add more than one subject to study!"
+        )
 
     def test_str(self):
         self.assertEqual(str(self.test_study), self.test_study.name)

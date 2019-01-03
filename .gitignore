@@ -1,11 +1,14 @@
 .DS_Store
 
+# Virtual environment directory
+venv/
+
 # Cache directories and byte-code files
 *.py[cod]
 __pycache__/
 .pytest_cache/
 
-# Environment variables (automatically loaded by pipenv)
+# Environment variables
 .env
 
 # Distribution directories and files

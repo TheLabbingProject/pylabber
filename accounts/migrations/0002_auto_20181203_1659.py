@@ -8,19 +8,31 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('accounts', '0001_initial'),
-    ]
+    dependencies = [("accounts", "0001_initial")]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='title',
-            field=models.CharField(blank=True, choices=[('NONE', ''), ('MSC', 'MSc'), ('PHD', 'PhD'), ('PROF', 'Professor')], default=accounts.choices.Title(''), max_length=20),
+            model_name="profile",
+            name="title",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("NONE", ""),
+                    ("MSC", "MSc"),
+                    ("PHD", "PhD"),
+                    ("PROF", "Professor"),
+                ],
+                default=accounts.choices.Title(""),
+                max_length=20,
+            ),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL),
+            model_name="profile",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="profile",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

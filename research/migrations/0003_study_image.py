@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('research', '0002_auto_20181129_1122'),
-    ]
+    dependencies = [("research", "0002_auto_20181129_1122")]
 
     operations = [
         migrations.AddField(
-            model_name='study',
-            name='image',
-            field=models.ImageField(blank=True, upload_to='images/studies'),
-        ),
+            model_name="study",
+            name="image",
+            field=models.ImageField(blank=True, upload_to="images/studies"),
+        )
     ]

@@ -21,8 +21,9 @@ class AdminTestCase(TestCase):
 
 class UserAdminTestCase(AdminTestCase):
     def test_get_user_institute(self):
-        self.assertEqual(self.user.profile.institute,
-                         self.user_admin.get_institute(self.user))
+        self.assertEqual(
+            self.user.profile.institute, self.user_admin.get_institute(self.user)
+        )
 
     def test_get_profile_inline_with_instance(self):
         request = MockRequest()

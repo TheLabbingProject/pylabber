@@ -11,41 +11,112 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='Study',
+            name="Study",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('collaborators', models.ManyToManyField(related_name='studies', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "collaborators",
+                    models.ManyToManyField(
+                        related_name="studies", to=settings.AUTH_USER_MODEL
+                    ),
+                ),
             ],
-            options={
-                'verbose_name_plural': 'Studies',
-            },
+            options={"verbose_name_plural": "Studies"},
         ),
         migrations.CreateModel(
-            name='Subject',
+            name="Subject",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(blank=True, max_length=50)),
-                ('last_name', models.CharField(blank=True, max_length=50)),
-                ('date_of_birth', models.DateField(blank=True, null=True, validators=[research.models.validators.not_future], verbose_name='Date of Birth')),
-                ('id_number', pylabber.utils.CharNullField(blank=True, max_length=9, null=True, unique=True, validators=[django.core.validators.RegexValidator('^\\d+$', code='invalid_number', message='Digits only!')])),
-                ('dominant_hand', models.CharField(blank=True, choices=[('RIGHT', 'Right'), ('LEFT', 'Left'), ('AMBI', 'Ambidextrous')], max_length=5)),
-                ('sex', models.CharField(blank=True, choices=[('MALE', 'Male'), ('FEMALE', 'Female'), ('OTHER', 'Other')], max_length=6)),
-                ('gender', models.CharField(blank=True, choices=[('CIS', 'Cisgender'), ('TRANS', 'Transgender'), ('OTHER', 'Other')], max_length=5)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(blank=True, max_length=50)),
+                ("last_name", models.CharField(blank=True, max_length=50)),
+                (
+                    "date_of_birth",
+                    models.DateField(
+                        blank=True,
+                        null=True,
+                        validators=[research.models.validators.not_future],
+                        verbose_name="Date of Birth",
+                    ),
+                ),
+                (
+                    "id_number",
+                    pylabber.utils.CharNullField(
+                        blank=True,
+                        max_length=9,
+                        null=True,
+                        unique=True,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^\\d+$", code="invalid_number", message="Digits only!"
+                            )
+                        ],
+                    ),
+                ),
+                (
+                    "dominant_hand",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("RIGHT", "Right"),
+                            ("LEFT", "Left"),
+                            ("AMBI", "Ambidextrous"),
+                        ],
+                        max_length=5,
+                    ),
+                ),
+                (
+                    "sex",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("MALE", "Male"),
+                            ("FEMALE", "Female"),
+                            ("OTHER", "Other"),
+                        ],
+                        max_length=6,
+                    ),
+                ),
+                (
+                    "gender",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("CIS", "Cisgender"),
+                            ("TRANS", "Transgender"),
+                            ("OTHER", "Other"),
+                        ],
+                        max_length=5,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='study',
-            name='subjects',
-            field=models.ManyToManyField(related_name='studies', to='research.Subject'),
+            model_name="study",
+            name="subjects",
+            field=models.ManyToManyField(related_name="studies", to="research.Subject"),
         ),
     ]

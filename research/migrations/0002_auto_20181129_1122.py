@@ -7,14 +7,22 @@ import pylabber.utils
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('research', '0001_initial'),
-    ]
+    dependencies = [("research", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='subject',
-            name='id_number',
-            field=pylabber.utils.CharNullField(blank=True, max_length=64, null=True, unique=True, validators=[django.core.validators.RegexValidator('^\\d+$', code='invalid_number', message='Digits only!')]),
-        ),
+            model_name="subject",
+            name="id_number",
+            field=pylabber.utils.CharNullField(
+                blank=True,
+                max_length=64,
+                null=True,
+                unique=True,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        "^\\d+$", code="invalid_number", message="Digits only!"
+                    )
+                ],
+            ),
+        )
     ]

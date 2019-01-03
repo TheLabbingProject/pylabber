@@ -18,23 +18,19 @@ from .tables import SubjectTable
 
 class StudyListView(LoginRequiredMixin, ListView):
     model = Study
-    template_name = 'research/studies/study_list.html'
-    context_object_name = 'studies'
+    template_name = "research/studies/study_list.html"
+    context_object_name = "studies"
 
 
 class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
     model = Study
-    template_name = 'research/studies/study_create.html'
-    fields = [
-        'name',
-        'description',
-        'collaborators',
-    ]
-    success_url = reverse_lazy('research:study_list')
+    template_name = "research/studies/study_create.html"
+    fields = ["name", "description", "collaborators"]
+    success_url = reverse_lazy("research:study_list")
 
 
 def parse_lazy_pk(request) -> int:
-    value = request.get_full_path().split('=')[-1]
+    value = request.get_full_path().split("=")[-1]
     try:
         return int(value)
     except ValueError:
@@ -42,67 +38,57 @@ def parse_lazy_pk(request) -> int:
 
 
 def generate_study_mri_json(request):
-    if request.method == 'GET':
+    if request.method == "GET":
         pk = parse_lazy_pk(request)
         study = get_object_or_404(Study, pk=pk)
         data = study.generate_dicom_tree()
         return JsonResponse(data, safe=False)
     else:
-        return HttpResponse('Request method must be GET!')
+        return HttpResponse("Request method must be GET!")
 
 
 class StudyDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
     model = Study
-    template_name = 'research/studies/study_detail.html'
+    template_name = "research/studies/study_detail.html"
 
 
 class StudySubjectDetailView(LoginRequiredMixin, StudyListMixin, DetailView):
     model = Study
-    template_name = 'research/subjects/subject_study_detail.html'
+    template_name = "research/subjects/subject_study_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = parse_lazy_pk(self.request)
         subject = Subject.objects.get(id=pk)
-        context['subject'] = subject
+        context["subject"] = subject
         return context
 
 
-def embeddable_subject_view(
-        request,
-        study_id: int,
-        subject_id: int,
-):
+def embeddable_subject_view(request, study_id: int, subject_id: int):
     subject = get_object_or_404(Subject, pk=subject_id)
     return render(
-        request,
-        'research/subjects/subject_study_detail.html',
-        {'subject': subject},
+        request, "research/subjects/subject_study_detail.html", {"subject": subject}
     )
 
 
 class StudyUpdateView(LoginRequiredMixin, StudyListMixin, UpdateView):
     model = Study
-    fields = [
-        'name',
-        'description',
-        'collaborators',
-    ]
-    template_name = 'research/studies/study_update.html'
+    fields = ["name", "description", "collaborators"]
+    template_name = "research/studies/study_update.html"
 
 
 class StudyDeleteView(LoginRequiredMixin, StudyListMixin, DeleteView):
     model = Study
-    template_name = 'research/studies/study_delete.html'
-    success_url = reverse_lazy('research:study_list')
+    template_name = "research/studies/study_delete.html"
+    success_url = reverse_lazy("research:study_list")
 
 
 class SubjectListView(LoginRequiredMixin, FilteredTableMixin):
     model = Subject
     table_class = SubjectTable
-    template_name = 'research/subjects/subject_list.html'
+    template_name = "research/subjects/subject_list.html"
     paginate_by = 50
-    ordering = ['-id']
+    ordering = ["-id"]
     filterset_class = SubjectListFilter
     formhelper_class = SubjectListFormHelper
 
@@ -111,88 +97,88 @@ class SubjectListView(LoginRequiredMixin, FilteredTableMixin):
         search_query = self.get_queryset()
         table = self.table_class(search_query)
         RequestConfig(self.request).configure(table)
-        context['table'] = table
+        context["table"] = table
         return context
 
 
 class SubjectDetailView(SubjectListView):
     model = Subject
-    template_name = 'research/subjects/subject_detail.html'
+    template_name = "research/subjects/subject_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        subject = Subject.objects.get(id=self.kwargs.get('pk'))
-        context['subject'] = subject
+        subject = Subject.objects.get(id=self.kwargs.get("pk"))
+        context["subject"] = subject
         return context
 
 
 class SubjectUpdateView(SubjectListView, UpdateView):
     model = Subject
     fields = [
-        'id_number',
-        'first_name',
-        'last_name',
-        'sex',
-        'gender',
-        'date_of_birth',
-        'dominant_hand',
+        "id_number",
+        "first_name",
+        "last_name",
+        "sex",
+        "gender",
+        "date_of_birth",
+        "dominant_hand",
     ]
-    template_name = 'research/subjects/subject_update.html'
+    template_name = "research/subjects/subject_update.html"
 
     def get_context_data(self, **kwargs):
-        subject = Subject.objects.get(id=self.kwargs['pk'])
+        subject = Subject.objects.get(id=self.kwargs["pk"])
         self.object = subject
         context = super().get_context_data(**kwargs)
-        context['subject'] = subject
+        context["subject"] = subject
         return context
 
 
 class SubjectDeleteView(SubjectListView, DeleteView):
     model = Subject
-    template_name = 'research/subjects/subject_delete.html'
-    success_url = reverse_lazy('research:subject_list')
+    template_name = "research/subjects/subject_delete.html"
+    success_url = reverse_lazy("research:subject_list")
 
     def get_context_data(self, **kwargs):
-        subject = Subject.objects.get(id=self.kwargs['pk'])
+        subject = Subject.objects.get(id=self.kwargs["pk"])
         self.object = subject
         context = super().get_context_data(**kwargs)
-        context['subject'] = subject
+        context["subject"] = subject
         return context
 
 
 class SubjectCreateView(LoginRequiredMixin, CreateView):
     model = Subject
-    template_name = 'research/subjects/subject_create.html'
+    template_name = "research/subjects/subject_create.html"
     fields = [
-        'id_number',
-        'first_name',
-        'last_name',
-        'sex',
-        'gender',
-        'date_of_birth',
-        'dominant_hand',
+        "id_number",
+        "first_name",
+        "last_name",
+        "sex",
+        "gender",
+        "date_of_birth",
+        "dominant_hand",
     ]
 
 
 class DataSummaryView(LoginRequiredMixin, TemplateView):
-    template_name = 'research/data/data_nav.html'
+    template_name = "research/data/data_nav.html"
 
 
 class DataSourcesSummaryView(LoginRequiredMixin, TemplateView):
-    template_name = 'research/data_sources/data_sources_nav.html'
+    template_name = "research/data_sources/data_sources_nav.html"
 
 
-CREATE_SMB = 'research/data_sources/smb/create_location.html'
+CREATE_SMB = "research/data_sources/smb/create_location.html"
 RemoteLocationCreateView.template_name = CREATE_SMB
 
-LIST_SMB_FILES = 'research/data_sources/smb/list_files.html'
+LIST_SMB_FILES = "research/data_sources/smb/list_files.html"
 RemoteLocationListView.template_name = LIST_SMB_FILES
 
 
 def import_dcms_from_node(node: RemotePath):
     try:
         for descendant in node.get_descendants():
-            if descendant.name.endswith('.dcm') and not descendant.is_imported:
+            if descendant.name.endswith(".dcm") and not descendant.is_imported:
                 f = descendant.get_file()
                 Instance.objects.from_dcm(f)
                 descendant.is_imported = True
@@ -204,13 +190,13 @@ def import_dcms_from_node(node: RemotePath):
 
 
 def import_node(request):
-    if request.method == 'GET':
+    if request.method == "GET":
         request_path = request.get_full_path()
-        path_id = request_path.split('=')[-1]
+        path_id = request_path.split("=")[-1]
         node = RemotePath.objects.get(id=path_id)
         result = import_dcms_from_node(node)
         if result:
             return HttpResponse(node.id)
-        return HttpResponse(f'Failure')
+        return HttpResponse(f"Failure")
     else:
-        return HttpResponse('Request method must be GET!')
+        return HttpResponse("Request method must be GET!")

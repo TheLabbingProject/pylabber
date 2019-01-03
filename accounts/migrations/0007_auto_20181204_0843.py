@@ -6,19 +6,38 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('accounts', '0006_auto_20181204_0810'),
-    ]
+    dependencies = [("accounts", "0006_auto_20181204_0810")]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='position',
-            field=models.CharField(choices=[('NONE', ''), ('RA', 'Research Assistant'), ('MSC', 'M.Sc. Student'), ('PHD', 'Ph.D. Candidate'), ('POST', 'Postdoctoral Researcher'), ('MAN', 'Lab Manager'), ('HEAD', 'Principle Investigator')], default=accounts.choices.Position(''), max_length=20),
+            model_name="profile",
+            name="position",
+            field=models.CharField(
+                choices=[
+                    ("NONE", ""),
+                    ("RA", "Research Assistant"),
+                    ("MSC", "M.Sc. Student"),
+                    ("PHD", "Ph.D. Candidate"),
+                    ("POST", "Postdoctoral Researcher"),
+                    ("MAN", "Lab Manager"),
+                    ("HEAD", "Principle Investigator"),
+                ],
+                default=accounts.choices.Position(""),
+                max_length=20,
+            ),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='title',
-            field=models.CharField(choices=[('NONE', ''), ('MSC', 'M.Sc.'), ('PHD', 'Ph.D.'), ('PROF', 'Prof.')], default=accounts.choices.Title(''), max_length=20),
+            model_name="profile",
+            name="title",
+            field=models.CharField(
+                choices=[
+                    ("NONE", ""),
+                    ("MSC", "M.Sc."),
+                    ("PHD", "Ph.D."),
+                    ("PROF", "Prof."),
+                ],
+                default=accounts.choices.Title(""),
+                max_length=20,
+            ),
         ),
     ]

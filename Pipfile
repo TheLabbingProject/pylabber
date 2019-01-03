@@ -28,7 +28,7 @@ django-smb = {editable = true,path = "/home/flavus/Projects/django_smb"}
 python_version = "3.6"
 
 [dev-packages]
-yapf = "*"
+black = "*"
 "flake8" = "*"
 ipython = "*"
 pytest = "*"

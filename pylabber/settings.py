@@ -16,13 +16,13 @@ import environ
 
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, []),
-    SECRET_KEY=(str, 'asdf5sag231sd$#%SADF2341a'),
-    BOKEH_SECRET_KEY=(str, ''),
+    ALLOWED_HOSTS=(list, ["*"]),
+    SECRET_KEY=(str, "asdf5sag231sd$#%SADF2341a"),
+    BOKEH_SECRET_KEY=(str, ""),
     BOKEH_SIGN_SESSIONS=(bool, True),
-    DB_NAME=(str, ''),
-    DB_USER=(str, ''),
-    DB_PASSWORD=(str, ''),
+    DB_NAME=(str, ""),
+    DB_USER=(str, ""),
+    DB_PASSWORD=(str, ""),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY")
 
 # Note Bokeh_SECRET_KEY must also be used/set when starting up Bokeh daemon
 # Obtain your own key by typing "bokeh secret" in a terminal
@@ -41,119 +41,106 @@ BOKEH_SECRET_KEY = env("BOKEH_SECRET_KEY")
 BOKEH_SIGN_SESSIONS = env("BOKEH_SIGN_SESSIONS")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts.apps.AccountsConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "accounts.apps.AccountsConfig",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # 3rd Party
-    'crispy_forms',
-    'django_tables2',
-    'django_filters',
+    "crispy_forms",
+    "django_tables2",
+    "django_filters",
     # 'mptt',
-    'treebeard',
-
+    "treebeard",
     # Extensions
-    'django_dicom',
-    'django_smb',
-
+    "django_dicom",
+    "django_smb",
     # Local
-    'research',
+    "research",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'pylabber.urls'
+ROOT_URLCONF = "pylabber.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ]
         },
-    },
+    }
 ]
 
-WSGI_APPLICATION = 'pylabber.wsgi.application'
+WSGI_APPLICATION = "pylabber.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "",
     }
 }
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailModelBackend',
-    'django.contrib.auth.backends.ModelBackend'
+    "accounts.backends.EmailModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = "accounts.User"
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
-SIMILARITY_VALIDATOR = \
-    'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+SIMILARITY_VALIDATOR = (
+    "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+)
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': SIMILARITY_VALIDATOR,
-    },
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME':
-        'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {"NAME": SIMILARITY_VALIDATOR},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-GB'
+LANGUAGE_CODE = "en-GB"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -164,18 +151,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'node_modules'),
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "node_modules"),
 ]
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # 3rd party application settings
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"

@@ -1,1 +1,1 @@
-default_app_config = 'research.apps.ResearchConfig'
+default_app_config = "research.apps.ResearchConfig"

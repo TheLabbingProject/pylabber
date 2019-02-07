@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "django_tables2",
     "django_filters",
+    "django_celery_beat",
     # 'mptt',
     "treebeard",
     # Extensions
@@ -161,7 +162,7 @@ STATICFILES_DIRS = [
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = env("MEDIA_ROOT")
 MEDIA_URL = "/media/"
 
 # 3rd party application settings

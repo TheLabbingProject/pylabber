@@ -168,3 +168,4 @@ MEDIA_URL = "/media/"
 # 3rd party application settings
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+SUBJECTS_ID_FILE = env("SUBJECTS_ID_FILE")

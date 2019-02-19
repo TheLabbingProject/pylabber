@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django_dicom.models import Patient
+from django_dicom.models import Series, Instance
 from pylabber.utils import CharNullField
 from .choices import Sex, Gender, DominantHand
 from .validators import digits_only, not_future
@@ -48,6 +48,27 @@ class Subject(models.Model):
                 }
             ],
         }
+    
+    def get_mri_series_set(self):
+        return Series.objects.filter(patient__in=self.mri_patient_set.all()).order_by('date', 'time')
+    
+    def get_mri_instance_set(self):
+        return Instance.objects.filter(patient__in=self.mri_patient_set.all()).order_by('date', 'time')
 
-    def get_dicom_patient(self):
-        return Patient.objects.get(patient_id=self.id_number)
+    def get_mri_default_anatomical(self):
+        options = [patient.series_set.get_default_anatomical() for patient in self.mri_patient_set.all()]
+        dates = [option.date for option in options]
+        try:
+            return [option for option in options if option.date == max(dates)][0]
+        except IndexError:
+            return None
+        
+
+    @property
+    def mri_series_set(self):
+        return self.get_mri_series_set()
+    
+    @property
+    def mri_instance_set(self):
+        return self.get_mri_instance_set()
+

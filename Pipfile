@@ -10,7 +10,6 @@ django-environ = "*"
 django-filter = "*"
 pydicom = "*"
 numpy = "*"
-bokeh = "*"
 "psycopg2-binary" = "*"
 gunicorn = "*"
 pandas = "*"
@@ -28,7 +27,6 @@ django-smb = {editable = true,path = "/home/flavus/Projects/django_smb"}
 python_version = "3.6"
 
 [dev-packages]
-black = "*"
 "flake8" = "*"
 ipython = "*"
 pytest = "*"

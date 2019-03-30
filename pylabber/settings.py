@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django_nipype",
     # Local
     "research",
+    "mri",
 ]
 
 MIDDLEWARE = [

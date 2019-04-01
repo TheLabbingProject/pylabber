@@ -56,11 +56,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd Party
+    "django_extensions",
     "crispy_forms",
     "django_tables2",
     "django_filters",
     "django_celery_beat",
-    # 'mptt',
     "treebeard",
     # Extensions
     "django_dicom",
@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     # Local
     "research",
     "mri",
+    "mutual_information",
 ]
 
 MIDDLEWARE = [

@@ -46,4 +46,3 @@ class Subject(models.Model):
                 }
             ],
         }
-

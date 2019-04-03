@@ -1,6 +1,4 @@
-import numpy as np
 import pandas as pd
-import sklearn.metrics
 
 from django.db import models, IntegrityError
 from mri.models import Scan
@@ -43,7 +41,7 @@ class MutualInformationScoreManager(models.Manager):
         for other in Subject.objects.exclude(id=subject.id).all():
             other_anatomical = other.scan_set.get_default_anatomical()
             if other_anatomical:
-                existing_score = MutualInformationScore.objects.get_score(
+                existing_score = self.get_score(
                     anatomical, other_anatomical, histogram_bins
                 )
                 if not existing_score:
@@ -72,6 +70,12 @@ class MutualInformationScoreManager(models.Manager):
     def generate_df(self) -> pd.DataFrame:
         records = list(self.values())
         df = pd.DataFrame.from_records(records)
+        df["one_subject_id"] = df.apply(
+            lambda score: self.get(id=score["id"]).one_scan.subject.id, axis=1
+        )
+        df["second_subject_id"] = df.apply(
+            lambda score: self.get(id=score["id"]).second_scan.subject.id, axis=1
+        )
         df["is_self"] = df.apply(
             lambda score: self.get(id=score["id"]).one_scan.subject
             == self.get(id=score["id"]).second_scan.subject,
@@ -79,22 +83,48 @@ class MutualInformationScoreManager(models.Manager):
         )
         return df
 
+    def get_mean_value_by_histogram_bins(
+        self, histogram_bins: int, is_self: bool = False
+    ) -> float:
+        return self.filter(histogram_bins=histogram_bins, is_self=is_self).aggregate(
+            avg=models.Avg("value")
+        )["avg"]
 
-class MutualInformationScore(models.Model):
-    histogram_bins = models.IntegerField()
-    value = models.FloatField()
+    def get_min_value_by_histogram_bins(
+        self, histogram_bins: int, is_self: bool = False
+    ) -> float:
+        return self.filter(histogram_bins=histogram_bins, is_self=is_self).aggregate(
+            minimum=models.Min("value")
+        )["minimum"]
 
-    one_scan = models.ForeignKey(
-        "mri.Scan", on_delete=models.CASCADE, related_name="_mutual_information_scores"
-    )
-    second_scan = models.ForeignKey(
-        "mri.Scan", on_delete=models.CASCADE, related_name="mutual_information_scores"
-    )
+    def get_max_value_by_histogram_bins(
+        self, histogram_bins: int, is_self: bool = False
+    ) -> float:
+        return self.filter(histogram_bins=histogram_bins, is_self=is_self).aggregate(
+            maximum=models.Max("value")
+        )["maximum"]
 
-    objects = MutualInformationScoreManager()
+    def generate_distance_summary(self) -> pd.DataFrame:
+        df = pd.DataFrame(columns=["histogram_bins", "min_to_max", "means"])
+        df["histogram_bins"] = self.get_distinct_histogram_bins()
+        df["min_to_max"] = df.apply(
+            lambda row: self.get_min_value_by_histogram_bins(
+                row["histogram_bins"], is_self=True
+            )
+            - self.get_max_value_by_histogram_bins(
+                row["histogram_bins"], is_self=False
+            ),
+            axis=1,
+        )
+        df["means"] = df.apply(
+            lambda row: self.get_mean_value_by_histogram_bins(
+                row["histogram_bins"], is_self=True
+            )
+            - self.get_mean_value_by_histogram_bins(
+                row["histogram_bins"], is_self=False
+            )
+        )
+        return df
 
-    def calculate(self) -> np.float64:
-        one = self.one_scan.brain_in_mni.get_data().flatten()
-        two = self.second_scan.brain_in_mni.get_data().flatten()
-        histogram = np.histogram2d(one, two, self.histogram_bins)[0]
-        return sklearn.metrics.mutual_info_score(None, None, contingency=histogram)
+    def get_distinct_histogram_bins(self) -> list:
+        return sorted(self.values_list("histogram_bins", flat=True).distinct())

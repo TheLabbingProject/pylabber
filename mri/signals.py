@@ -11,7 +11,7 @@ def post_save_series_model_receiver(sender, instance, created, *args, **kwargs):
         return scan
 
 
-@receiver(pre_save, sender=Scan)
-def pre_save_scan_model_receiver(sender, instance, *args, **kwargs):
-    if instance.dicom and instance.dicom.is_updated and not instance._nifti:
-        instance.update_fields_from_dicom()
+# @receiver(pre_save, sender=Scan)
+# def pre_save_scan_model_receiver(sender, instance, *args, **kwargs):
+#     if instance.dicom and instance.dicom.is_updated and not instance._nifti:
+#         instance.update_fields_from_dicom()

@@ -1,23 +1,28 @@
 import nibabel as nib
 import numpy as np
 import os
-import sklearn.metrics
 
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
+from mri.models.managers import NIfTIManager
+from research.models import Subject
 
 
-class NIfTI(models.Model):
+class NIfTI(TimeStampedModel):
     path = models.FilePathField(max_length=500, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    is_raw = models.BooleanField(default=False)
+    parent = models.ForeignKey(
+        "mri.Scan",
+        on_delete=models.CASCADE,
+        related_name="derived_niftis",
+        blank=True,
+        null=True,
+    )
+
+    objects = NIfTIManager()
 
     def get_data(self) -> np.ndarray:
         return nib.load(self.path).get_data()
-
-    def calculate_mutual_information(self, other, bins: int = 10) -> np.float64:
-        self_data = self.get_data().flatten()
-        other_data = other.get_data().flatten()
-        histogram = np.histogram2d(self_data, other_data, bins)[0]
-        return sklearn.metrics.mutual_info_score(None, None, contingency=histogram)
 
     @property
     def b_value(self) -> list:
@@ -40,3 +45,10 @@ class NIfTI(models.Model):
                 for vector in content.rstrip().split("\n")
             ]
         return None
+
+    @property
+    def subject(self) -> Subject:
+        try:
+            return self.parent.subject
+        except AttributeError:
+            return None

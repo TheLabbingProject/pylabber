@@ -19,7 +19,7 @@ class Scan(models.Model):
         blank=True, null=True, validators=[MinValueValidator(0)]
     )
     time = models.DateTimeField(blank=True, null=True)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, blank=True, null=True)
     echo_time = models.FloatField(
         blank=True, null=True, validators=[MinValueValidator(0)]
     )
@@ -105,7 +105,7 @@ class Scan(models.Model):
             destination = destination or self.get_default_nifti_destination()
             os.makedirs(os.path.dirname(destination), exist_ok=True)
             nifti_path = dcm2niix.convert(self.dicom.get_path(), destination)
-            nifti = NIfTI.objects.create(path=nifti_path)
+            nifti = NIfTI.objects.create(path=nifti_path, parent=self, is_raw=True)
             return nifti
         else:
             raise NotImplementedError
@@ -119,7 +119,9 @@ class Scan(models.Model):
             in_file=self.nifti.path, configuration=configuration, output=[BetRun.BRAIN]
         )[0]
         bet_results = bet_run.run()
-        return NIfTI.objects.get_or_create(path=bet_results.out_file)[0]
+        return NIfTI.objects.get_or_create(
+            path=bet_results.out_file, parent=self, is_raw=False
+        )[0]
 
     def extract_skull(self, configuration: BetConfiguration = None) -> NIfTI:
         if not configuration:
@@ -130,7 +132,9 @@ class Scan(models.Model):
             in_file=self.nifti.path, configuration=configuration, output=[BetRun.SKULL]
         )[0]
         bet_results = bet_run.run()
-        return NIfTI.objects.get_or_create(path=bet_results.skull)[0]
+        return NIfTI.objects.get_or_create(
+            path=bet_results.skull, parent=self, is_raw=False
+        )[0]
 
     def register_brain_to_mni_space(
         self, configuration: FlirtConfiguration = None
@@ -145,7 +149,9 @@ class Scan(models.Model):
             in_file=self.brain.path, reference=mni_path, configuration=configuration
         )[0]
         flirt_results = flirt_run.run()
-        return NIfTI.objects.get_or_create(path=flirt_results.out_file)[0]
+        return NIfTI.objects.get_or_create(
+            path=flirt_results.out_file, parent=self, is_raw=False
+        )[0]
 
     def calculate_mutual_information(
         self, other, histogram_bins: int = 10

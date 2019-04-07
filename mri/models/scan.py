@@ -8,7 +8,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django_dicom.interfaces.dcm2niix import Dcm2niix
 from django_nipype.models.interfaces.fsl.bet import BetConfiguration, BetRun
-from django_nipype.models.interfaces.fsl.flirt import FlirtConfiguration, FlirtRun
+
+# from django_nipype.models.interfaces.fsl.flirt import FlirtConfiguration, FlirtRun
 from mri.models.managers import ScanManager
 from mri.models.nifti import NIfTI
 from mri.models.sequence_type import SequenceType
@@ -38,6 +39,7 @@ class Scan(models.Model):
     dicom = models.OneToOneField(
         "django_dicom.Series", on_delete=models.PROTECT, blank=True, null=True
     )
+    is_updated_from_dicom = models.BooleanField(default=False)
     sequence_type = models.ForeignKey(
         "mri.SequenceType", on_delete=models.PROTECT, blank=True, null=True
     )
@@ -66,6 +68,7 @@ class Scan(models.Model):
             self.repetition_time = self.dicom.repetition_time
             self.spatial_resolution = self.get_spatial_resolution_from_dicom()
             self.sequence_type = self.infer_sequence_type_from_dicom()
+            self.is_updated_from_dicom = True
             return True
         else:
             raise AttributeError(f"No DICOM data associated with MRI scan {self.id}!")
@@ -136,22 +139,22 @@ class Scan(models.Model):
             path=bet_results.skull, parent=self, is_raw=False
         )[0]
 
-    def register_brain_to_mni_space(
-        self, configuration: FlirtConfiguration = None
-    ) -> NIfTI:
-        if not configuration:
-            configuration = FlirtConfiguration.objects.get_or_create()[0]
-        fsl_path = os.environ["FSLDIR"]
-        mni_path = os.path.join(
-            fsl_path, "data", "standard", "MNI152_T1_1mm_brain.nii.gz"
-        )
-        flirt_run = FlirtRun.objects.get_or_create(
-            in_file=self.brain.path, reference=mni_path, configuration=configuration
-        )[0]
-        flirt_results = flirt_run.run()
-        return NIfTI.objects.get_or_create(
-            path=flirt_results.out_file, parent=self, is_raw=False
-        )[0]
+    # def register_brain_to_mni_space(
+    #     self, configuration: FlirtConfiguration = None
+    # ) -> NIfTI:
+    #     if not configuration:
+    #         configuration = FlirtConfiguration.objects.get_or_create()[0]
+    #     fsl_path = os.environ["FSLDIR"]
+    #     mni_path = os.path.join(
+    #         fsl_path, "data", "standard", "MNI152_T1_1mm_brain.nii.gz"
+    #     )
+    #     flirt_run = FlirtRun.objects.get_or_create(
+    #         in_file=self.brain.path, reference=mni_path, configuration=configuration
+    #     )[0]
+    #     flirt_results = flirt_run.run()
+    #     return NIfTI.objects.get_or_create(
+    #         path=flirt_results.out_file, parent=self, is_raw=False
+    #     )[0]
 
     def calculate_mutual_information(
         self, other, histogram_bins: int = 10

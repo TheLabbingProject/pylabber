@@ -7,7 +7,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_dicom.interfaces.dcm2niix import Dcm2niix
-from django_nipype.models.interfaces.fsl.bet import BetConfiguration, BetRun
+
+# from django_nipype.models.interfaces.fsl.bet import BetConfiguration, BetRun
 
 # from django_nipype.models.interfaces.fsl.flirt import FlirtConfiguration, FlirtRun
 from mri.models.managers import ScanManager
@@ -113,31 +114,31 @@ class Scan(models.Model):
         else:
             raise NotImplementedError
 
-    def extract_brain(self, configuration: BetConfiguration = None) -> NIfTI:
-        if not configuration:
-            configuration = BetConfiguration.objects.get_or_create(
-                mode=BetConfiguration.ROBUST
-            )[0]
-        bet_run = BetRun.objects.get_or_create(
-            in_file=self.nifti.path, configuration=configuration, output=[BetRun.BRAIN]
-        )[0]
-        bet_results = bet_run.run()
-        return NIfTI.objects.get_or_create(
-            path=bet_results.out_file, parent=self, is_raw=False
-        )[0]
+    # def extract_brain(self, configuration: BetConfiguration = None) -> NIfTI:
+    #     if not configuration:
+    #         configuration = BetConfiguration.objects.get_or_create(
+    #             mode=BetConfiguration.ROBUST
+    #         )[0]
+    #     bet_run = BetRun.objects.get_or_create(
+    #         in_file=self.nifti.path, configuration=configuration, output=[BetRun.BRAIN]
+    #     )[0]
+    #     bet_results = bet_run.run()
+    #     return NIfTI.objects.get_or_create(
+    #         path=bet_results.out_file, parent=self, is_raw=False
+    #     )[0]
 
-    def extract_skull(self, configuration: BetConfiguration = None) -> NIfTI:
-        if not configuration:
-            configuration = BetConfiguration.objects.get_or_create(
-                mode=BetConfiguration.ROBUST
-            )[0]
-        bet_run = BetRun.objects.get_or_create(
-            in_file=self.nifti.path, configuration=configuration, output=[BetRun.SKULL]
-        )[0]
-        bet_results = bet_run.run()
-        return NIfTI.objects.get_or_create(
-            path=bet_results.skull, parent=self, is_raw=False
-        )[0]
+    # def extract_skull(self, configuration: BetConfiguration = None) -> NIfTI:
+    #     if not configuration:
+    #         configuration = BetConfiguration.objects.get_or_create(
+    #             mode=BetConfiguration.ROBUST
+    #         )[0]
+    #     bet_run = BetRun.objects.get_or_create(
+    #         in_file=self.nifti.path, configuration=configuration, output=[BetRun.SKULL]
+    #     )[0]
+    #     bet_results = bet_run.run()
+    #     return NIfTI.objects.get_or_create(
+    #         path=bet_results.skull, parent=self, is_raw=False
+    #     )[0]
 
     # def register_brain_to_mni_space(
     #     self, configuration: FlirtConfiguration = None

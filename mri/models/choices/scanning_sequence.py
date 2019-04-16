@@ -1,3 +1,11 @@
+"""
+A ChoiceEnum to represent ScanningSequence_ values.
+
+.. _ScanningSequence: https://dicom.innolitics.com/ciods/mr-image/mr-image/00180020
+
+"""
+
+
 from django_dicom.models.choice_enum import ChoiceEnum
 
 

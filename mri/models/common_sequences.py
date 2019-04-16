@@ -1,3 +1,9 @@
+"""
+A list of common MRI sequences and their respective DICOM header attributes.
+
+"""
+
+
 sequences = [
     {
         "name": "MPRAGE",

@@ -4,6 +4,13 @@ from django.db import models
 
 
 class NIfTIManager(models.Manager):
+    """
+    A custom manager for the NIfTI model. Currently all it really does it provide
+    a couple of utility methods for the automatic creation of an MNI brain instance,
+    which is commonly used as a reference. This might need to find a better place.
+    
+    """
+
     def get_mni_path(self, spatial_resolution: float) -> str:
         fsl_path = os.environ["FSLDIR"]
         return os.path.join(

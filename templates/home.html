@@ -50,8 +50,8 @@
                             </p>
                         </div>
                         <div class="col-1">
-                            {% if member.user.studies.exists %}
-                                {% for study in member.user.studies.all %}
+                            {% if member.user.study_set.exists %}
+                                {% for study in member.user.study_set.all %}
                                     <a href="{% url 'research:study_detail' study.id %}">
                                         <img src="{{ study.image.url }}"
                                             alt="" 

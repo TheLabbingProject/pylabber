@@ -53,4 +53,7 @@ urlpatterns = [
     path("dicom/", include("django_dicom.urls", namespace="dicom")),
     path("smb/", include("django_smb.urls", namespace="smb")),
     path("research/", include("research.urls", namespace="research")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -81,18 +81,10 @@ class SubjectModelTestCase(TestCase):
         expected = f"{s.first_name} {s.last_name}"
         self.assertEqual(self.test_subject.get_full_name(), expected)
 
-    def test_str_if_both_names(self):
-        expected = self.test_subject.last_name[:2] + self.test_subject.first_name[:2]
+    def test_str(self):
+        subject_id = self.test_subject.id
+        expected = f"Subject #{subject_id}"
         self.assertEqual(str(self.test_subject), expected)
-
-    def test_str_if_id_number_but_no_names(self):
-        id_number = "999999999"
-        subject = SubjectFactory(first_name=None, id_number=id_number)
-        self.assertEqual(str(subject), id_number)
-
-    def test_str_if_no_id_number_and_no_names(self):
-        subject = SubjectFactory(first_name=None, last_name=None, id_number=None)
-        self.assertEqual(str(subject), f"Subject #{subject.id}")
 
 
 class StudyModelTestCase(TestCase):
@@ -115,4 +107,4 @@ class StudyModelTestCase(TestCase):
         )
 
     def test_str(self):
-        self.assertEqual(str(self.test_study), self.test_study.name)
+        self.assertEqual(str(self.test_study), self.test_study.title)

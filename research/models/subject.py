@@ -8,7 +8,7 @@ from .validators import digits_only, not_future
 
 class Subject(TimeStampedModel):
     """
-    A model to represent a single research subject. Any associated data model 
+    A model to represent a single research subject. Any associated data model
     should have this model's primary key as a relation.
     
     """
@@ -28,7 +28,7 @@ class Subject(TimeStampedModel):
     gender = models.CharField(max_length=5, choices=Gender.choices(), blank=True)
 
     def __str__(self) -> str:
-        return self.id_number
+        return f"Subject #{self.id}"
 
     def get_absolute_url(self):
         return reverse("research:subject_detail", args=[str(self.id)])

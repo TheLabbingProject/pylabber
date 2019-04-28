@@ -1,21 +1,28 @@
 import datetime
 import factory
+
 from accounts.models import Profile
+from accounts.choices import Title, Position
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils import timezone
 from random import randint
 
 TEST_PASSWORD = "Aa123456"
+TITLES = [title.name for title in Title]
+POSITIONS = [position.name for position in Position]
 
 
 @factory.django.mute_signals(post_save)
 class ProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Profile
+        django_get_or_create = ("user",)
 
+    title = factory.Faker("random_element", elements=TITLES)
     date_of_birth = factory.Faker("date_this_century", before_today=True)
     institute = factory.Faker("company")
+    position = factory.Faker("random_element", elements=POSITIONS)
     bio = factory.Faker("text", max_nb_chars=500)
 
     # We pass in profile=None to prevent UserFactory from creating another

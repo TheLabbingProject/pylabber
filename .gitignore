@@ -7,6 +7,7 @@ venv/
 *.py[cod]
 __pycache__/
 .pytest_cache/
+.ipynb_checkpoints/
 
 # Environment variables
 .env
@@ -42,4 +43,5 @@ htmlcov
 *.pem
 *.log
 **.pkl
-docs/
+docs/build/
+docs/source/_*/

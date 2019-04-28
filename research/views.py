@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django_dicom.models import Instance
+from django_dicom.models import Image
 from django_tables2 import RequestConfig
 from django_smb.models import RemotePath
 from django_smb.views import RemoteLocationCreateView, RemoteLocationListView
@@ -180,7 +180,7 @@ def import_dcms_from_node(node: RemotePath):
         for descendant in node.get_descendants():
             if descendant.name.endswith(".dcm") and not descendant.is_imported:
                 f = descendant.get_file()
-                Instance.objects.from_dcm(f)
+                Image.objects.from_dcm(f)
                 descendant.is_imported = True
                 descendant.save()
         return True

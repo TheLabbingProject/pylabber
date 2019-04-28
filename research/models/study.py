@@ -8,7 +8,7 @@ from .subject import Subject
 class Study(TitleDescriptionModel, TimeStampedModel):
     """
     Stores a single study. Each study may has a ManyToMany relationship
-    with both :model:`research.Subject` and :model:`accounts.User`.
+    with both :class:`research.Subject` and :class:`accounts.User`.
 
     """
 

@@ -19,18 +19,10 @@ class Profile(models.Model):
     )
     image = models.ImageField(upload_to="images/profiles", blank=True)
     title = models.CharField(
-        max_length=20,
-        choices=Title.choices(),
-        default=Title.NONE,
-        blank=True,
-        null=True,
+        max_length=20, choices=Title.choices(), default="", blank=True, null=True
     )
     position = models.CharField(
-        max_length=20,
-        choices=Position.choices(),
-        default=Position.NONE,
-        blank=True,
-        null=True,
+        max_length=20, choices=Position.choices(), default="", blank=True, null=True
     )
     date_of_birth = models.DateField(default=None, blank=True, null=True)
     institute = models.CharField(max_length=255, blank=True, null=True)
@@ -39,8 +31,8 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return self.user.get_full_name()
 
-    def get_absolute_url(self):
-        return reverse("user_detail", args=[str(self.user.id)])
+    def get_absolute_url(self) -> str:
+        return reverse("accounts:user_detail", args=[str(self.user.id)])
 
     def get_full_name(self) -> str:
         """
@@ -49,23 +41,10 @@ class Profile(models.Model):
         Returns
         -------
         str
-            User's full name
+            User's full name.
         """
 
-        full_name = f"{self.user.first_name} {self.user.last_name}"
-        if self.title != str(Title.NONE):
-            return full_name + f", {Title[self.title].value}"
-        return full_name
-
-    def get_position(self) -> str:
-        """
-        Returns the display value for a user's position based on its
-        definition in the Position ENUM.
-
-        Returns
-        -------
-        str
-            User's position
-        """
-
-        return Position[self.position].value
+        if self.title:
+            title = Title[self.title].value
+            return f"{self.user.get_full_name()}, {title}"
+        return self.user.get_full_name()

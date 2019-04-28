@@ -18,12 +18,10 @@ class SubjectFactory(factory.django.DjangoModelFactory):
         model = Subject
         strategy = factory.BUILD_STRATEGY
 
+    id_number = factory.fuzzy.FuzzyText(length=9, chars=DIGITS)
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
-    email = factory.Faker("email")
     date_of_birth = factory.Faker("date_this_century", before_today=True)
-    id_number = factory.fuzzy.FuzzyText(length=9, chars=DIGITS)
-    phone_number = factory.fuzzy.FuzzyText(length=10, chars=DIGITS)
     dominant_hand = factory.fuzzy.FuzzyChoice(DOMINANT_HAND_CHOICES)
     sex = factory.fuzzy.FuzzyChoice(SEX_CHOICES)
     gender = factory.fuzzy.FuzzyChoice(GENDER_CHOICES)
@@ -34,16 +32,14 @@ class StudyFactory(factory.django.DjangoModelFactory):
         model = Study
         strategy = factory.BUILD_STRATEGY
 
-    name = factory.Faker("sentence", nb_words=3)
+    title = factory.Faker("sentence", nb_words=2)
     description = factory.Faker("paragraph", nb_sentences=4)
 
     @factory.lazy_attribute
-    def created_at(self):
+    def created(self):
         return timezone.now() - datetime.timedelta(days=randint(5, 50))
 
-    updated_at = factory.lazy_attribute(
-        lambda o: o.created_at + datetime.timedelta(days=4)
-    )
+    modified = factory.lazy_attribute(lambda o: o.created + datetime.timedelta(days=4))
 
     subjects = factory.RelatedFactory(SubjectFactory)
     collaborators = factory.RelatedFactory(UserFactory)

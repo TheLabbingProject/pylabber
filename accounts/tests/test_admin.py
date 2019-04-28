@@ -13,10 +13,7 @@ class AdminTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory()
         self.site = AdminSite()
-        self.user_admin = self.create_user_admin()
-
-    def create_user_admin(self):
-        return UserAdmin(User, self.site)
+        self.user_admin = UserAdmin(User, self.site)
 
 
 class UserAdminTestCase(AdminTestCase):

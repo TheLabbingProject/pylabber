@@ -1,4 +1,5 @@
-# pylabber
+pylabber
+=========
 
 A django app to manage neuroscience data and research.
 

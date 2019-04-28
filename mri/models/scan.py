@@ -7,7 +7,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from django_dicom.interfaces.dcm2niix import Dcm2niix
+from mri.interfaces.dcm2niix import Dcm2niix
 from mri.models.managers import ScanManager
 from mri.models.nifti import NIfTI
 from mri.models.sequence_type import SequenceType
@@ -58,7 +58,7 @@ class Scan(TimeStampedModel):
         validators=[MinValueValidator(0)],
         help_text="The time between the 180-degree inversion pulse and the following spin-echo (SE) sequence (in milliseconds).",
     )
-    spatial_resolution = ArrayField(models.FloatField(blank=True, null=True), size=3)
+    spatial_resolution = ArrayField(models.FloatField(), size=3, blank=True, null=True)
     sequence_type = models.ForeignKey(
         "mri.SequenceType", on_delete=models.PROTECT, blank=True, null=True
     )
@@ -153,7 +153,7 @@ class Scan(TimeStampedModel):
 
     def infer_sequence_type_from_dicom(self) -> SequenceType:
         """
-        Returns the appropriate :model:`mri.SequenceType` instance according to
+        Returns the appropriate :class:`mri.SequenceType` instance according to
         the scan's "*ScanningSequence*" and "*SequenceVariant*" header values.
 
 
@@ -231,7 +231,7 @@ class Scan(TimeStampedModel):
         Returns
         -------
         NIfTI
-            A :model:`mri.NIfTI` instance referencing the conversion output.
+            A :class:`mri.NIfTI` instance referencing the conversion output.
         """
 
         if self.dicom:
@@ -304,7 +304,7 @@ class Scan(TimeStampedModel):
         Returns
         -------
         NIfTI
-            A :model:`mri.NIfTI` instance referencing the appropriate file.
+            A :class:`mri.NIfTI` instance referencing the appropriate file.
         """
 
         if self._nifti:

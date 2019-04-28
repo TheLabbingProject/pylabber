@@ -12,6 +12,6 @@ if __name__ == "__main__":
     os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
     TestRunner = get_runner(settings)
     test_runner = TestRunner()
-    failures = test_runner.run_tests(["accounts", "research"])
+    failures = test_runner.run_tests(["research", "accounts"])
     shutil.rmtree(settings.MEDIA_ROOT)
     sys.exit(bool(failures))

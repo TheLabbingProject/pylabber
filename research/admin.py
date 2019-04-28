@@ -35,7 +35,7 @@ class CollaboratorsInline(admin.TabularInline):
 
 class StudiesAdmin(admin.ModelAdmin):
     inlines = (SubjectsInline, CollaboratorsInline)
-    list_display = ("name", "description", "created_at")
+    list_display = ("title", "description", "created")
     exclude = ("subjects", "collaborators")
 
 

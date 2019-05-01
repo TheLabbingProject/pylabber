@@ -62,15 +62,15 @@ INSTALLED_APPS = [
     "django_filters",
     "django_celery_beat",
     "treebeard",
+    "rest_framework",
     # Extensions
     "django_dicom",
+    "django_mri",
     "django_smb",
     "django_nipype",
     "django_analysis",
     # Local
     "research",
-    "mri",
-    "mutual_information",
 ]
 
 MIDDLEWARE = [
@@ -148,4 +148,13 @@ STATIC_URL = "/static/"
 # 3rd party application settings
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
-SUBJECTS_ID_FILE = env("SUBJECTS_ID_FILE")
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+}

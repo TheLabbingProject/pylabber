@@ -8,7 +8,7 @@
                 <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
                     {% for study in studies %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'research:study_detail' study.id %}">{{ study.name }}</a>
+                        <a class="nav-link" href="{% url 'research:study_detail' study.id %}">{{ study.title }}</a>
                     </li>
                     {% endfor %}
                     <li class="nav-item">

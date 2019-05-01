@@ -8,7 +8,7 @@
             alt="" 
             height="250" 
             width="250"
-            title={{object.name}}
+            title={{ object.title }}
             class="rounded">
         </div>
 
@@ -18,7 +18,7 @@
                 <div class="container-fluid">
                     <div id="studyTitle" class="float-left">
                         <h2>
-                            {{ object.name }}
+                            {{ object.title }}
                         </h2>
                     </div>
 
@@ -30,7 +30,7 @@
                                         alt="" 
                                         height="35" 
                                         width="35"
-                                        title="{{collaborator.name}}"
+                                        title="{{ collaborator.name }}"
                                         class="rounded-circle">
                                 </a>
                             {% endfor %}

@@ -5,7 +5,7 @@
     <h1>Delete</h1>
     <form action="" method="post">
         {% csrf_token %}
-        <p>Are you sure you want to delete "{{ study.name }}"?</p>
+        <p>Are you sure you want to delete "{{ study.title }}"?</p>
         <button class="btn btn-danger ml-2" type="submit">Confirm</button>
     </form>
 {% endblock study-content %}

@@ -75,7 +75,7 @@ def embeddable_subject_view(request, study_id: int, subject_id: int):
 
 class StudyUpdateView(LoginRequiredMixin, StudyListMixin, UpdateView):
     model = Study
-    fields = ["name", "description", "collaborators"]
+    fields = ["title", "description", "collaborators"]
     template_name = "research/studies/study_update.html"
 
 

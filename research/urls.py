@@ -40,6 +40,6 @@ urlpatterns = [
         name="subject_delete",
     ),
     # path("data/", views.DataSummaryView.as_view(), name="data_summary"),
-    path("data_sources/", views.RemoteLocationListView.as_view(), name="data_sources"),
+    # path("data_sources/", views.RemoteLocationListView.as_view(), name="data_sources"),
     # path("import/", views.import_node, name="import_data"),
 ]

@@ -66,9 +66,9 @@ INSTALLED_APPS = [
     # Extensions
     "django_dicom",
     "django_mri",
-    "django_smb",
-    "django_nipype",
-    "django_analysis",
+    # "django_smb",
+    # "django_nipype",
+    # "django_analysis",
     # Local
     "research",
 ]

@@ -160,43 +160,43 @@ class SubjectCreateView(LoginRequiredMixin, CreateView):
     ]
 
 
-class DataSummaryView(LoginRequiredMixin, TemplateView):
-    template_name = "research/data/data_nav.html"
+# class DataSummaryView(LoginRequiredMixin, TemplateView):
+#     template_name = "research/data/data_nav.html"
 
 
-class DataSourcesSummaryView(LoginRequiredMixin, TemplateView):
-    template_name = "research/data_sources/data_sources_nav.html"
+# class DataSourcesSummaryView(LoginRequiredMixin, TemplateView):
+#     template_name = "research/data_sources/data_sources_nav.html"
 
 
-CREATE_SMB = "research/data_sources/smb/create_location.html"
-RemoteLocationCreateView.template_name = CREATE_SMB
+# CREATE_SMB = "research/data_sources/smb/create_location.html"
+# RemoteLocationCreateView.template_name = CREATE_SMB
 
-LIST_SMB_FILES = "research/data_sources/smb/list_files.html"
-RemoteLocationListView.template_name = LIST_SMB_FILES
-
-
-def import_dcms_from_node(node: RemotePath):
-    try:
-        for descendant in node.get_descendants():
-            if descendant.name.endswith(".dcm") and not descendant.is_imported:
-                f = descendant.get_file()
-                Image.objects.from_dcm(f)
-                descendant.is_imported = True
-                descendant.save()
-        return True
-    except Exception as e:
-        print(e)
-        return False
+# LIST_SMB_FILES = "research/data_sources/smb/list_files.html"
+# RemoteLocationListView.template_name = LIST_SMB_FILES
 
 
-def import_node(request):
-    if request.method == "GET":
-        request_path = request.get_full_path()
-        path_id = request_path.split("=")[-1]
-        node = RemotePath.objects.get(id=path_id)
-        result = import_dcms_from_node(node)
-        if result:
-            return HttpResponse(node.id)
-        return HttpResponse(f"Failure")
-    else:
-        return HttpResponse("Request method must be GET!")
+# def import_dcms_from_node(node: RemotePath):
+#     try:
+#         for descendant in node.get_descendants():
+#             if descendant.name.endswith(".dcm") and not descendant.is_imported:
+#                 f = descendant.get_file()
+#                 Image.objects.from_dcm(f)
+#                 descendant.is_imported = True
+#                 descendant.save()
+#         return True
+#     except Exception as e:
+#         print(e)
+#         return False
+
+
+# def import_node(request):
+#     if request.method == "GET":
+#         request_path = request.get_full_path()
+#         path_id = request_path.split("=")[-1]
+#         node = RemotePath.objects.get(id=path_id)
+#         result = import_dcms_from_node(node)
+#         if result:
+#             return HttpResponse(node.id)
+#         return HttpResponse(f"Failure")
+#     else:
+#         return HttpResponse("Request method must be GET!")

@@ -53,7 +53,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("accounts.urls", namespace="accounts")),
-    path("dicom/", include("django_dicom.urls", namespace="dicom")),
+    path("mri/", include("django_mri.urls", namespace="mri")),
     # path("smb/", include("django_smb.urls", namespace="smb")),
     path("research/", include("research.urls", namespace="research")),
 ]

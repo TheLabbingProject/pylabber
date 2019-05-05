@@ -142,8 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = ""
 STATIC_URL = "/static/"
+# Add any extension's static directory if required:
+STATICFILES_DIRS = (os.path.join("static"), os.path.normpath("../django_mri/static"))
+
 
 # 3rd party application settings
 CRISPY_TEMPLATE_PACK = "bootstrap4"

@@ -63,9 +63,11 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "treebeard",
     "rest_framework",
+    "webpack_loader",
     # Extensions
     "django_dicom",
     "django_mri",
+    "data_review",
     # "django_smb",
     # "django_nipype",
     # "django_analysis",
@@ -75,6 +77,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -142,10 +145,15 @@ AUTH_PASSWORD_VALIDATORS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-STATIC_ROOT = ""
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
-# Add any extension's static directory if required:
-STATICFILES_DIRS = (os.path.join("static"), os.path.normpath("../django_mri/static"))
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "dist"),
+    os.path.join(BASE_DIR, "node_modules"),
+    os.path.normpath("../data_review/static"),
+)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 
 # 3rd party application settings
@@ -160,4 +168,15 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+}
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": not DEBUG,
+        "BUNDLE_DIR_NAME": "bundles/",
+        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
+        "POLL_INTERVAL": 0.1,
+        "TIMEOUT": None,
+        "IGNORE": [".*\.hot-update.js", ".+\.map"],
+    }
 }

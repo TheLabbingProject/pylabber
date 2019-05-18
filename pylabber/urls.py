@@ -41,7 +41,7 @@ urlpatterns = [
         TemplateView.as_view(
             template_name="home.html",
             extra_context={
-                "members": Profile.objects.extra(
+                "profiles": Profile.objects.extra(
                     select={"position_order": TITLE_ORDERING_SQL},
                     order_by=["position_order"],
                 ),
@@ -53,6 +53,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("dicom/", include("django_dicom.urls", namespace="dicom")),
     path("mri/", include("django_mri.urls", namespace="mri")),
     path("data_review/", include("data_review.urls", namespace="data_review")),
     # path("smb/", include("django_smb.urls", namespace="smb")),

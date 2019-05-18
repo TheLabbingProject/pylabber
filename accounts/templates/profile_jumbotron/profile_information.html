@@ -1,0 +1,9 @@
+<div class="col">
+    <h5>
+        {{ profile.get_full_name }}
+    </h5>
+    <span class="badge badge-{{ badge_class|lookup:profile.position }}">{{ profile.get_position }}</span>
+    <p>
+        {{ profile.user.email }}
+    </p>
+</div>

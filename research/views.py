@@ -27,7 +27,7 @@ class StudyListView(LoginRequiredMixin, ListView):
 class StudyCreateView(LoginRequiredMixin, StudyListMixin, CreateView):
     model = Study
     template_name = "research/studies/study_create.html"
-    fields = ["name", "description", "collaborators"]
+    fields = ["title", "description", "collaborators"]
     success_url = reverse_lazy("research:study_list")
 
 

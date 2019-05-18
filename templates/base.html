@@ -2,110 +2,21 @@
 <html lang="en">
 
 <head>
-    {% load static %}
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/png" href="{% static "favicon.png" %}">
-
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
-    <!-- Bootstrap Table -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-
-    <!-- jsTree -->
-    {% comment %} <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/themes/default/style.min.css" /> {% endcomment %}
-
-    <!-- Tempus Dominus Bootstrap 4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
-
-    <title>
-        {% block title %} pylabber {% endblock title %}
-    </title>
-    {% block head-extra %}{% endblock head-extra %}
+    {% include "head.html" %}
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'home' %}">pylabber</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navigation">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'home' %}">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'research:study_list' %}">Studies</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'research:subject_list' %}">Subjects</a>
-                </li>
-                {% comment %} <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'research:data_summary' %}">Data</a>
-                </li> {% endcomment %}
-                {% comment %} <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'research:data_sources' %}">Data Sources</a>
-                </li> {% endcomment %}
-            </ul>
-        </div>
-        <div class="collapse navbar-collapse" id="userSettings">
-            {% if user.is_authenticated %}
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ user.username }}
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                        <a class="dropdown-item" href="{% url 'accounts:user_detail' user.id %}">User Profile</a>
-                        <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
-                    </div>
-                </li>
-            </ul>
-            {% else %}
-            <form class="form-inline ml-auto">
-                <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
-            </form>
-            {% endif %}
-        </div>
-    </nav>
+    <!-- Navigation -->
+    {% include "main_navigation.html" %}
+
+    <!-- Content -->    
     <div class="container-fluid m-2">
         {% block content %} {% endblock content %}
     </div>
-    <!-- jQuery 3, DataTables and Bootstrap 4 JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.4.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
 
-    <!-- Bootstrap Table -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-en-US.min.js"></script>
-
-    <!-- jsTree -->
-    {% comment %} <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.5/jstree.min.js"></script> {% endcomment %}
-
-    <!-- Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
-
-    <!-- Tempus Dominus Bootstrap 4 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>    
-    {% block javascript %} {% endblock javascript %}
-
+    <!-- Scripts -->
+    {% include "load_scripts.html" %}
+    {% block extra-scripts %} {% endblock extra-scripts %}
 </body>
 
 </html>

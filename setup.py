@@ -7,8 +7,11 @@ with open("README.md", "r") as fh:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-with ("requirements/common.txt") as fh:
+with open("requirements/common.txt") as fh:
     requirements = fh.read().splitlines()
+
+with open("requirements/dev.txt") as fh:
+    dev_requirements = fh.read().splitlines()
 
 setup(
     name="pylabber",
@@ -25,7 +28,7 @@ setup(
     author_email="z.baratz@gmail.com",
     keywords="django research neuroscience mri analysis",
     install_requires=requirements,
-    extras_require={"dev": ["flake8", "yapf"], "test": ["pytest"]},
+    extras_require={"dev": dev_requirements},
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",
@@ -35,5 +38,5 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
-    ]
+    ],
 )

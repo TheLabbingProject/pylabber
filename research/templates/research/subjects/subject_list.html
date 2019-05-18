@@ -21,7 +21,7 @@
     </div>
 {% endblock content %}
 
-{% block javascript %}
+{% block extra-scripts %}
     <script>
         $('tr').click(function() {
             var href = $(this).find('a').attr('href');
@@ -30,4 +30,4 @@
             }
         })
     </script>
-{% endblock javascript %}
+{% endblock extra-scripts %}

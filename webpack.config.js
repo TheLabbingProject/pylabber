@@ -5,7 +5,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     context: __dirname,
-    entry: './static/js/index',
+    entry: path.resolve('./static/js/index.js'),
     mode: 'development',
     output: {
         path: path.resolve('./static/bundles/'),
@@ -48,6 +48,7 @@ module.exports = {
         // alias: { vue: 'vue/dist/vue.js' }
         extensions: ['.js', '.vue', '.json'],
         alias: {
+            vue: 'vue/dist/vue.js',
             'vue$': 'vue/dist/vue.esm.js',
             '@': path.resolve('src'),
             '__STATIC__': path.resolve('static'),

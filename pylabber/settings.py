@@ -180,3 +180,7 @@ WEBPACK_LOADER = {
         "IGNORE": [".*\.hot-update.js", ".+\.map"],
     }
 }
+
+# pylabber configuration
+SUBJECT_MODEL = "research.Subject"
+

@@ -1,10 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from accounts import views
+from rest_framework import routers
 
-from . import views
 
 app_name = "accounts"
+router = routers.DefaultRouter()
+router.register(r"users", views.UserViewSet)
+router.register(r"profiles", views.ProfileViewSet)
+router.register(r"groups", views.GroupViewSet)
+
 
 urlpatterns = [
-    path("<int:pk>/", views.UserDetailView.as_view(), name="user_detail"),
-    path("<int:pk>/edit", views.ProfileUpdateView.as_view(), name="profile_update"),
+    path("accounts/", include(router.urls)),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

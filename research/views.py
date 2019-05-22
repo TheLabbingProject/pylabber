@@ -1,21 +1,61 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView, DetailView, CreateView  # , TemplateView
+from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
-
-# from django_dicom.models import Image
 from django_tables2 import RequestConfig
-
-# from django_smb.models import RemotePath
-# from django_smb.views import RemoteLocationCreateView, RemoteLocationListView
 from pylabber.utils import FilteredTableMixin
+from research.serializers.study_serializer import StudySerializer
+from research.serializers.subject_serializer import SubjectSerializer
 from .filters import SubjectListFilter
 from .forms import SubjectListFormHelper
 from .mixins import StudyListMixin
 from .models import Subject, Study
 from .tables import SubjectTable
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import authentication, filters, permissions, viewsets
+
+
+class DefaultsMixin:
+    """
+    Default settings for view authentication, permissions, filtering and pagination.
+    
+    """
+
+    authentication_classes = (
+        authentication.BasicAuthentication,
+        authentication.TokenAuthentication,
+    )
+    permission_classes = (permissions.IsAuthenticated,)
+    paginate_by = 25
+    paginate_by_param = "page_size"
+    max_paginate_by = 100
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    )
+
+
+class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that allows studies to be viewed or edited.
+    
+    """
+
+    queryset = Study.objects.all()
+    serializer_class = StudySerializer
+
+
+class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that allows subjects to be viewed or edited.
+    
+    """
+
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
 
 
 class StudyListView(LoginRequiredMixin, ListView):
@@ -160,14 +200,6 @@ class SubjectCreateView(LoginRequiredMixin, CreateView):
         "date_of_birth",
         "dominant_hand",
     ]
-
-
-# class DataSummaryView(LoginRequiredMixin, TemplateView):
-#     template_name = "research/data/data_nav.html"
-
-
-# class DataSourcesSummaryView(LoginRequiredMixin, TemplateView):
-#     template_name = "research/data_sources/data_sources_nav.html"
 
 
 # CREATE_SMB = "research/data_sources/smb/create_location.html"

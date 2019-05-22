@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     "django_dicom",
     "django_mri",
     "data_review",
-    # "django_smb",
     # "django_nipype",
     # "django_analysis",
     # Local

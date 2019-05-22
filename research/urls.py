@@ -9,5 +9,5 @@ router.register(r"subjects", views.SubjectViewSet)
 
 urlpatterns = [
     path("research/", include(router.urls)),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

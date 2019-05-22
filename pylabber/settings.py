@@ -34,12 +34,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
-# Note Bokeh_SECRET_KEY must also be used/set when starting up Bokeh daemon
-# Obtain your own key by typing "bokeh secret" in a terminal
-# the key goes below, and in the bokehserver.service file
-BOKEH_SECRET_KEY = env("BOKEH_SECRET_KEY")
-BOKEH_SIGN_SESSIONS = env("BOKEH_SIGN_SESSIONS")
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
@@ -63,11 +57,9 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "treebeard",
     "rest_framework",
-    "webpack_loader",
     # Extensions
     "django_dicom",
     "django_mri",
-    "data_review",
     # "django_nipype",
     # "django_analysis",
     # Local
@@ -75,8 +67,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -150,9 +140,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "dist"),
     os.path.join(BASE_DIR, "node_modules"),
-    os.path.normpath("../data_review/static"),
 )
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 
 # 3rd party application settings

@@ -34,6 +34,7 @@ urlpatterns = [
     path("api/", include("django_dicom.urls", namespace="dicom")),
     path("api/", include("research.urls", namespace="research")),
     path("api/", include("django_mri.urls", namespace="mri")),
+    path("auth/", include("rest_auth.urls")),
 ]
 
 if settings.DEBUG:

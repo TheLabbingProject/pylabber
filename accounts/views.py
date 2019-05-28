@@ -2,7 +2,10 @@ from django.contrib.auth.models import Group
 from accounts.models import Profile, User
 from accounts.serializers import GroupSerializer, ProfileSerializer, UserSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import authentication, filters, permissions, viewsets
+from rest_framework import viewsets
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 
 
 class DefaultsMixin:
@@ -11,19 +14,12 @@ class DefaultsMixin:
     
     """
 
-    authentication_classes = (
-        authentication.BasicAuthentication,
-        authentication.TokenAuthentication,
-    )
-    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
     paginate_by = 25
     paginate_by_param = "page_size"
     max_paginate_by = 100
-    filter_backends = (
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    )
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
 
 
 class UserViewSet(DefaultsMixin, viewsets.ModelViewSet):

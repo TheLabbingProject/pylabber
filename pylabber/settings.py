@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "treebeard",
     "rest_framework",
+    "rest_framework.authtoken",
+    "rest_auth",
     # Extensions
     "django_dicom",
     "django_mri",
@@ -156,6 +158,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
 }
+REST_AUTH_SERIALIZERS = {"USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer"}
 
 WEBPACK_LOADER = {
     "DEFAULT": {

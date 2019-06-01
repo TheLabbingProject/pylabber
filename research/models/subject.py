@@ -16,16 +16,18 @@ class Subject(TimeStampedModel):
     id_number = CharNullField(
         max_length=64, unique=True, validators=[digits_only], blank=True, null=True
     )
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
+    first_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50, blank=True, null=True)
     date_of_birth = models.DateField(
         verbose_name="Date of Birth", blank=True, null=True, validators=[not_future]
     )
     dominant_hand = models.CharField(
-        max_length=5, choices=DominantHand.choices(), blank=True
+        max_length=5, choices=DominantHand.choices(), blank=True, null=True
     )
-    sex = models.CharField(max_length=6, choices=Sex.choices(), blank=True)
-    gender = models.CharField(max_length=5, choices=Gender.choices(), blank=True)
+    sex = models.CharField(max_length=6, choices=Sex.choices(), blank=True, null=True)
+    gender = models.CharField(
+        max_length=5, choices=Gender.choices(), blank=True, null=True
+    )
 
     def __str__(self) -> str:
         return f"Subject #{self.id}"

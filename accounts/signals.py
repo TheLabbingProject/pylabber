@@ -1,7 +1,8 @@
-from django.conf import settings
-from django.dispatch import receiver
-from django.db.models.signals import post_save
 from accounts.models import Profile
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -26,3 +27,18 @@ def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
         except Exception as e:
             print("failed to create user profile with the following exception:")
             print(e)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    """
+    Automatically creates an authentication token for the user, as described in
+    `the DRF documentation <https://www.django-rest-framework.org/api-guide/authentication/#generating-tokens>`_.
+    
+    Parameters
+    ----------
+    created : bool, optional
+        Whether the instance is being created or updated, by default False
+    """
+    if created:
+        Token.objects.create(user=instance)

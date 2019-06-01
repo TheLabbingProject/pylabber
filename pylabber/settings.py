@@ -158,18 +158,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
 }
-REST_AUTH_SERIALIZERS = {"USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer"}
-
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "CACHE": not DEBUG,
-        "BUNDLE_DIR_NAME": "bundles/",
-        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
-        "POLL_INTERVAL": 0.1,
-        "TIMEOUT": None,
-        "IGNORE": [".*\.hot-update.js", ".+\.map"],
-    }
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer"
 }
+
 
 # pylabber configuration
 SUBJECT_MODEL = "research.Subject"

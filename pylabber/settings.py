@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     "crispy_forms",
     "django_tables2",
     "django_filters",
-    "django_celery_beat",
     "treebeard",
     "rest_framework",
     "rest_framework.authtoken",
@@ -165,4 +164,4 @@ REST_AUTH_SERIALIZERS = {
 
 # pylabber configuration
 SUBJECT_MODEL = "research.Subject"
-
+STUDY_GROUP_MODEL = "research.Group"

@@ -2,9 +2,9 @@ from pylabber.utils import ChoiceEnum
 
 
 class Sex(ChoiceEnum):
-    MALE = "Male"
-    FEMALE = "Female"
-    OTHER = "Other"
+    M = "Male"
+    F = "Female"
+    U = "Other"
 
 
 class Gender(ChoiceEnum):
@@ -14,6 +14,6 @@ class Gender(ChoiceEnum):
 
 
 class DominantHand(ChoiceEnum):
-    RIGHT = "Right"
-    LEFT = "Left"
-    AMBI = "Ambidextrous"
+    R = "Right"
+    L = "Left"
+    A = "Ambidextrous"

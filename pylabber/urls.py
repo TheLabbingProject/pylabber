@@ -21,43 +21,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
-from accounts.choices import Position
-from accounts.models import Profile, TITLE_ORDERING_SQL
+from rest_framework import routers
 
-BADGE_CLASS = {
-    Position.PI.name: "dark",
-    Position.POST.name: "primary",
-    Position.AFF.name: "secondary",
-    Position.PHD.name: "success",
-    Position.MSC.name: "info",
-    Position.MAN.name: "danger",
-    Position.RA.name: "warning",
-}
+
+router = routers.DefaultRouter()
 
 urlpatterns = [
-    path(
-        "",
-        TemplateView.as_view(
-            template_name="home.html",
-            extra_context={
-                "profiles": Profile.objects.extra(
-                    select={"position_order": TITLE_ORDERING_SQL},
-                    order_by=["position_order"],
-                ),
-                "badge_class": BADGE_CLASS,
-            },
-        ),
-        name="home",
-    ),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("accounts/", include("accounts.urls", namespace="accounts")),
-    path("dicom/", include("django_dicom.urls", namespace="dicom")),
-    path("mri/", include("django_mri.urls", namespace="mri")),
-    path("data_review/", include("data_review.urls", namespace="data_review")),
-    # path("smb/", include("django_smb.urls", namespace="smb")),
-    path("research/", include("research.urls", namespace="research")),
+    path("api/", include(router.urls)),
+    path("api/", include("accounts.urls", namespace="accounts")),
+    path("api/", include("django_dicom.urls", namespace="dicom")),
+    path("api/", include("research.urls", namespace="research")),
+    path("api/", include("django_mri.urls", namespace="mri")),
+    path("auth/", include("rest_auth.urls")),
 ]
 
 if settings.DEBUG:

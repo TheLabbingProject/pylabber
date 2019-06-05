@@ -13,6 +13,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserSerializer(UserDetailsSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name="accounts:user-detail")
     image = serializers.ImageField(source="profile.image")
     title = serializers.CharField(source="profile.title")
     position = serializers.CharField(source="profile.position")
@@ -22,6 +23,8 @@ class UserSerializer(UserDetailsSerializer):
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (
+            "url",
+            "id",
             "image",
             "title",
             "position",
@@ -36,14 +39,6 @@ class UserSerializer(UserDetailsSerializer):
         if profile_data:
             instance.profile.update(profile_data)
         return instance
-
-
-# class UserSerializer(serializers.HyperlinkedModelSerializer):
-#     url = serializers.HyperlinkedIdentityField(view_name="accounts:user-detail")
-
-#     class Meta:
-#         model = User
-#         fields = ("id", "url", "username", "email", "first_name", "last_name")
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):

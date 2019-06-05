@@ -1,4 +1,4 @@
-from accounts.models import Profile
+from accounts.models import User
 from research.models.study import Study
 from research.models.subject import Subject
 from rest_framework import serializers
@@ -10,9 +10,19 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
         view_name="research:subject-detail", queryset=Subject.objects.all(), many=True
     )
     collaborators = serializers.HyperlinkedRelatedField(
-        view_name="accounts:profile-detail", queryset=Profile.objects.all(), many=True
+        view_name="accounts:user-detail", queryset=User.objects.all(), many=True
     )
 
     class Meta:
         model = Study
-        fields = "__all__"
+        fields = (
+            "id",
+            "image",
+            "subjects",
+            "collaborators",
+            "url",
+            "title",
+            "description",
+            "created",
+            "modified",
+        )

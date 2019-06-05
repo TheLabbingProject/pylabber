@@ -1,20 +1,14 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView, DetailView, CreateView
-from django.views.generic.edit import UpdateView, DeleteView
-from django.urls import reverse_lazy
-from django_tables2 import RequestConfig
-from pylabber.utils import FilteredTableMixin
+from django_filters.rest_framework import DjangoFilterBackend
+from research.models.group import Group
+from research.models.study import Study
+from research.models.subject import Subject
 from research.serializers.study_serializer import StudySerializer
 from research.serializers.subject_serializer import SubjectSerializer
-from .filters import SubjectListFilter
-from .forms import SubjectListFormHelper
-from .mixins import StudyListMixin
-from .models import Subject, Study
-from .tables import SubjectTable
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import authentication, filters, permissions, viewsets
+from research.serializers.group_serializer import GroupSerializer
+from rest_framework import viewsets
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticated
 
 
 class DefaultsMixin:
@@ -23,19 +17,12 @@ class DefaultsMixin:
     
     """
 
-    authentication_classes = (
-        authentication.BasicAuthentication,
-        authentication.TokenAuthentication,
-    )
-    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
     paginate_by = 25
     paginate_by_param = "page_size"
     max_paginate_by = 100
-    filter_backends = (
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    )
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
 
 
 class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
@@ -56,6 +43,17 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+
+
+class GroupViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that allows study groups to be viewed or edited.
+    
+    """
+
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    filter_fields = ("study__id", "study__title")
 
 
 # Old views:

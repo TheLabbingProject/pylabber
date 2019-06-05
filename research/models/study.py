@@ -14,8 +14,8 @@ class Study(TitleDescriptionModel, TimeStampedModel):
 
     image = models.ImageField(upload_to="images/studies", blank=True)
 
-    subjects = models.ManyToManyField(Subject)
-    collaborators = models.ManyToManyField(get_user_model())
+    subjects = models.ManyToManyField(Subject, blank=True)
+    collaborators = models.ManyToManyField(get_user_model(), blank=True)
 
     class Meta:
         verbose_name_plural = "Studies"

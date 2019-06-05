@@ -9,12 +9,20 @@ class MiniStudySerializer(serializers.ModelSerializer):
         fields = ("id", "title")
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class GroupReadSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="research:group-detail")
     study = MiniStudySerializer()
-    # study = serializers.HyperlinkedRelatedField(
-    #     view_name="research:study-detail", queryset=Study.objects.all()
-    # )
+
+    class Meta:
+        model = Group
+        fields = ("title", "description", "url", "id", "study")
+
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name="research:group-detail")
+    study = serializers.HyperlinkedRelatedField(
+        view_name="research:study-detail", queryset=Study.objects.all()
+    )
 
     class Meta:
         model = Group

@@ -4,7 +4,7 @@ from research.models.study import Study
 from research.models.subject import Subject
 from research.serializers.study_serializer import StudySerializer
 from research.serializers.subject_serializer import SubjectSerializer
-from research.serializers.group_serializer import GroupSerializer
+from research.serializers.group_serializer import GroupSerializer, GroupReadSerializer
 from rest_framework import viewsets
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -52,8 +52,13 @@ class GroupViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
 
     queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+    # serializer_class = GroupSerializer
     filter_fields = ("study__id", "study__title")
+
+    def get_serializer_class(self):
+        if self.request.GET:
+            return GroupReadSerializer
+        return GroupSerializer
 
 
 # Old views:

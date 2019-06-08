@@ -56,7 +56,7 @@ class GroupViewSet(DefaultsMixin, viewsets.ModelViewSet):
     filter_fields = ("study__id", "study__title")
 
     def get_serializer_class(self):
-        if self.request.GET:
+        if self.request.method == "GET":
             return GroupReadSerializer
         return GroupSerializer
 

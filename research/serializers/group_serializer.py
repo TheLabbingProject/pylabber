@@ -4,9 +4,11 @@ from rest_framework import serializers
 
 
 class MiniStudySerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name="research:study-detail")
+
     class Meta:
         model = Study
-        fields = ("id", "title")
+        fields = ("id", "title", "url")
 
 
 class GroupReadSerializer(serializers.HyperlinkedModelSerializer):

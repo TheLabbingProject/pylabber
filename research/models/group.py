@@ -8,3 +8,6 @@ class Group(TitleDescriptionModel, TimeStampedModel):
     class Meta:
         unique_together = ("study", "title")
 
+    def __str__(self) -> str:
+        return f"{self.study.title}|{self.title}"
+

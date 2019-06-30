@@ -41,7 +41,7 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     
     """
 
-    queryset = Subject.objects.all()
+    queryset = Subject.objects.order_by("-id").all()
     serializer_class = SubjectSerializer
 
 
@@ -51,7 +51,7 @@ class GroupViewSet(DefaultsMixin, viewsets.ModelViewSet):
     
     """
 
-    queryset = Group.objects.all()
+    queryset = Group.objects.order_by("id").all()
     # serializer_class = GroupSerializer
     filter_fields = ("study__id", "study__title")
 

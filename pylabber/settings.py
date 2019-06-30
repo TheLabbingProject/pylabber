@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     # "django_analysis",
     # Local
     "research",
+    # "bokeh_integration.apps.BokehConfig",
 ]
 
 MIDDLEWARE = [

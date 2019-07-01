@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from research.filters.subject_filter import SubjectFilter
 from research.models.group import Group
 from research.models.study import Study
 from research.models.subject import Subject
@@ -43,6 +44,7 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     queryset = Subject.objects.order_by("-id").all()
     serializer_class = SubjectSerializer
+    filter_class = SubjectFilter
 
 
 class GroupViewSet(DefaultsMixin, viewsets.ModelViewSet):

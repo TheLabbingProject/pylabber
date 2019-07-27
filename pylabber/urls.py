@@ -28,13 +28,13 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("api/accounts/", include("django.contrib.auth.urls")),
     path("api/", include(router.urls)),
     path("api/", include("accounts.urls", namespace="accounts")),
     path("api/", include("django_dicom.urls", namespace="dicom")),
     path("api/", include("research.urls", namespace="research")),
     path("api/", include("django_mri.urls", namespace="mri")),
-    path("auth/", include("rest_auth.urls")),
+    path("api/auth/", include("rest_auth.urls")),
 ]
 
 if settings.DEBUG:

@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_auth",
+    "corsheaders",
     # Extensions
     "django_dicom",
     "django_mri",
@@ -70,6 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -161,6 +163,13 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer"
 }
+
+
+CORS_ORIGIN_WHITELIST = [
+    "https://www.pylabber.org",
+    "https://pylabber.org",
+    "http://localhost:8080",
+]
 
 
 # pylabber configuration

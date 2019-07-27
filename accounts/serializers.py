@@ -31,6 +31,7 @@ class UserSerializer(UserDetailsSerializer):
             "date_of_birth",
             "institute",
             "bio",
+            "is_staff",
         )
 
     def update(self, instance, validated_data):

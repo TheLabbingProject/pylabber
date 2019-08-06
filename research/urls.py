@@ -8,4 +8,10 @@ router.register(r"studies", views.StudyViewSet)
 router.register(r"subjects", views.SubjectViewSet)
 router.register(r"groups", views.GroupViewSet)
 
-urlpatterns = [path("research/", include(router.urls))]
+urlpatterns = [
+    path("research/", include(router.urls)),
+    path(
+        "research/subject_from_patient/<int:patient_id>/",
+        views.SubjectViewSet.as_view({"get": "by_dicom_patient"}),
+    ),
+]

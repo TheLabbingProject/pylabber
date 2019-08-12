@@ -16,8 +16,8 @@ class Subject(TimeStampedModel):
     id_number = CharNullField(
         max_length=64, unique=True, validators=[digits_only], blank=True, null=True
     )
-    first_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
+    first_name = models.CharField(max_length=64, blank=True, null=True)
+    last_name = models.CharField(max_length=64, blank=True, null=True)
     date_of_birth = models.DateField(
         verbose_name="Date of Birth", blank=True, null=True, validators=[not_future]
     )

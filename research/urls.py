@@ -6,8 +6,12 @@ app_name = "research"
 router = routers.DefaultRouter()
 router.register(r"studies", views.StudyViewSet)
 router.register(r"subjects", views.SubjectViewSet)
+router.register(r"groups", views.GroupViewSet)
 
 urlpatterns = [
     path("research/", include(router.urls)),
-    # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path(
+        "research/subject_from_patient/<int:patient_id>/",
+        views.SubjectViewSet.as_view({"get": "by_dicom_patient"}),
+    ),
 ]

@@ -7,4 +7,14 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Subject
-        fields = "__all__"
+        fields = (
+            "id",
+            "url",
+            "id_number",
+            "first_name",
+            "last_name",
+            "date_of_birth",
+            "dominant_hand",
+            "sex",
+            "gender",
+        )

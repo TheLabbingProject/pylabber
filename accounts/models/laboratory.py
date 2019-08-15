@@ -20,4 +20,5 @@ class Laboratory(TitleDescriptionModel, TimeStampedModel):
         return self.title
 
     def get_absolute_url(self) -> str:
-        return reverse("research:laboratory_detail", args=[str(self.id)])    
+        return reverse("research:laboratory_detail", args=[str(self.id)])
+

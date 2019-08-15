@@ -3,11 +3,13 @@ from django_mri.models.scan import Scan
 from django_filters.rest_framework import DjangoFilterBackend
 from research.filters.subject_filter import SubjectFilter
 from research.models.group import Group
+from research.models.laboratory import Laboratory
 from research.models.study import Study
 from research.models.subject import Subject
+from research.serializers.group_serializer import GroupSerializer, GroupReadSerializer
+from research.serializers.laboratory_serializer import LaboratorySerializer
 from research.serializers.study_serializer import StudySerializer
 from research.serializers.subject_serializer import SubjectSerializer
-from research.serializers.group_serializer import GroupSerializer, GroupReadSerializer
 from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.decorators import action
@@ -39,8 +41,20 @@ class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
     
     """
 
+    pagination_class = StandardResultsSetPagination
     queryset = Study.objects.all()
     serializer_class = StudySerializer
+
+
+class LaboratoryViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that allows studies to be viewed or edited.
+    
+    """
+
+    pagination_class = StandardResultsSetPagination
+    queryset = Laboratory.objects.all()
+    serializer_class = LaboratorySerializer
 
 
 class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):

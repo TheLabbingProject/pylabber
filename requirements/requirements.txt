@@ -11,7 +11,6 @@ black==18.9b0
 bleach==3.1.0
 bokeh==1.0.4
 bz2file==0.98
-celery==4.3.0
 certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
@@ -24,7 +23,6 @@ decorator==4.4.0
 defusedxml==0.5.0
 Django==2.2
 -e git+https://github.com/ZviBaratz/django_analysis.git@d6c309a281e931587cddfc8acf7d091e04cd9e02#egg=django_analysis
-django-celery-beat==1.4.0
 django-crispy-forms==1.7.2
 -e git+https://github.com/ZviBaratz/django_dicom.git@345669a2b7398f1d03f76cb8a0cf28ef2b475d62#egg=django_dicom
 django-environ==0.4.5

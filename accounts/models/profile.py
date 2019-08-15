@@ -1,21 +1,12 @@
-from accounts.choices import Title, Position
-from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+from accounts.models.choices import Title, Position
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-
-# Set the order by which to present lab members (users) in the home page
-# using a custom SQL statement.
-TITLE_ORDERING_SQL = "case when position='PI' then 1 when position='MAN' then 2 when position='PHD' then 3 when position='MSC' then 4 end"
-
-
-class User(AbstractUser):
-    pass
 
 
 class Profile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
+        get_user_model(), on_delete=models.CASCADE, related_name="profile"
     )
     image = models.ImageField(upload_to="images/profiles", blank=True)
     title = models.CharField(

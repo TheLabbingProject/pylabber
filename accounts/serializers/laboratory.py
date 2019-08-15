@@ -1,5 +1,5 @@
 from accounts.models import User
-from research.models.laboratory import Laboratory
+from accounts.models.laboratory import Laboratory
 from rest_framework import serializers
 
 
@@ -11,11 +11,4 @@ class LaboratorySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Laboratory
-        fields = (
-            "id",
-            "image",
-            "title",
-            "description",
-            "created",
-            "modified",
-        )
+        fields = ("id", "image", "title", "description", "created", "modified")

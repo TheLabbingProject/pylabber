@@ -1,15 +1,5 @@
-from accounts.models import Profile
-from django.contrib.auth.models import Group
 from rest_framework import serializers
 from rest_auth.serializers import UserDetailsSerializer
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name="accounts:group-detail")
-
-    class Meta:
-        model = Group
-        fields = ("url", "name")
 
 
 class UserSerializer(UserDetailsSerializer):
@@ -40,12 +30,3 @@ class UserSerializer(UserDetailsSerializer):
         if profile_data:
             instance.profile.update(profile_data)
         return instance
-
-
-class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name="accounts:profile-detail")
-    user = UserSerializer()
-
-    class Meta:
-        model = Profile
-        fields = "__all__"

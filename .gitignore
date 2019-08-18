@@ -45,3 +45,4 @@ htmlcov
 **.pkl
 docs/build/
 docs/source/_*/
+*/migrations/*

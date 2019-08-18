@@ -25,17 +25,3 @@ class Study(TitleDescriptionModel, TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse("research:study_detail", args=[str(self.id)])
-
-    def generate_dicom_tree(self) -> list:
-        """
-        Returns a list of dictionairies meant to be passed to jstree for
-        presentation in the template. Probably should be replaced with a
-        serializer once a RESTful API is set-up.
-        
-        Returns
-        -------
-        list
-            A list of dictionaries representing jstree nodes.
-        """
-
-        return [subject.to_tree() for subject in self.subjects.all()]

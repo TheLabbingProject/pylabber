@@ -47,28 +47,3 @@ class Subject(TimeStampedModel):
         """
 
         return f"{self.first_name} {self.last_name}"
-
-    def to_tree(self) -> dict:
-        """
-        Returns a dictionairy meant to be used by jstree in JSON format.
-        Probably should be replaced with a serializer. 
-        
-        Returns
-        -------
-        dict
-            A tree node represenation for jstree
-        """
-
-        return {
-            "id": str(self.id),
-            "text": self.get_full_name(),
-            "icon": "fas fa-user",
-            "children": [
-                {
-                    "id": f"{self.id}_mri",
-                    "icon": "fab fa-magento",
-                    "text": "MRI",
-                    "children": self.get_dicom_patient().to_tree(),
-                }
-            ],
-        }

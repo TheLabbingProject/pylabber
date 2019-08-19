@@ -7,6 +7,7 @@
 _pylabber_ is a collaborative open-source project meant to facilitate research.
 
 This [Django](https://www.djangoproject.com/) [project](https://docs.djangoproject.com/en/2.2/glossary/#term-project) provides the infrastructure for scientific work, and is built and maintained to be as flexible and as extendible as possible.
+So while at the moment it mainly supports neuroimaging, it's microservice architecture enables you to extend it as you see fit.
 
 Currently, the project hosts two [apps](https://docs.djangoproject.com/en/2.2/ref/applications/);
 _accounts_ and _research_.

@@ -5,7 +5,7 @@ import factory.fuzzy
 from accounts.tests.factories import UserFactory
 from django.utils import timezone
 from random import randint
-from ..models import Study, Subject, choices
+from research.models import Study, Subject, choices
 
 DIGITS = [str(i) for i in range(10)]
 DOMINANT_HAND_CHOICES = [option.name for option in choices.DominantHand]

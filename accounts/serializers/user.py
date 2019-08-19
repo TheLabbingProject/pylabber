@@ -3,6 +3,12 @@ from rest_auth.serializers import UserDetailsSerializer
 
 
 class UserSerializer(UserDetailsSerializer):
+    """
+    `Serializer <https://www.django-rest-framework.org/api-guide/serializers/>`_
+    class for the :class:`~accounts.models.user.User` model.
+    
+    """
+
     url = serializers.HyperlinkedIdentityField(view_name="accounts:user-detail")
     image = serializers.ImageField(source="profile.image")
     title = serializers.CharField(source="profile.title")

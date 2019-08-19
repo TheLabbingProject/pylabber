@@ -1,3 +1,9 @@
+"""
+Subclasses of the :class:`~pylabber.utils.ChoiceEnum` class used to represent
+raw and human-readable values for choices within the :mod:`accounts.models` module.
+
+"""
+
 from pylabber.utils import ChoiceEnum
 
 

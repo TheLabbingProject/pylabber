@@ -1,3 +1,9 @@
+"""
+`Validators <https://docs.djangoproject.com/en/2.2/ref/validators/>`_
+for django fields within the :mod:`research.models` module.
+
+"""
+
 from datetime import date
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator

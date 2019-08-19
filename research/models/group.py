@@ -3,6 +3,12 @@ from django_extensions.db.models import TitleDescriptionModel, TimeStampedModel
 
 
 class Group(TitleDescriptionModel, TimeStampedModel):
+    """
+    Represents a unique study group (i.e. a grouping of subjects according to
+    some experimental design in the context of a :class:`research.models.study.Study`).
+
+    """
+
     study = models.ForeignKey("research.Study", on_delete=models.CASCADE)
 
     class Meta:

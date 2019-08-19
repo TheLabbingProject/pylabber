@@ -4,6 +4,12 @@ from rest_framework import serializers
 
 
 class LaboratorySerializer(serializers.HyperlinkedModelSerializer):
+    """
+    `Serializer <https://www.django-rest-framework.org/api-guide/serializers/>`_
+    class for the :class:`~accounts.models.laboratory.Laboratory` model.
+    
+    """
+
     url = serializers.HyperlinkedIdentityField(view_name="research:laboratory-detail")
     members = serializers.HyperlinkedRelatedField(
         view_name="accounts:user-detail", queryset=User.objects.all(), many=True

@@ -6,7 +6,7 @@ from django_extensions.db.models import TitleDescriptionModel, TimeStampedModel
 
 class Laboratory(TitleDescriptionModel, TimeStampedModel):
     """
-    Represents a research laboratory.
+    A class to represents a research laboratory.
 
     """
 

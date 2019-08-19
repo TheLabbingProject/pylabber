@@ -2,7 +2,7 @@ import datetime
 import factory
 
 from accounts.models import Profile
-from accounts.choices import Title, Position
+from accounts.models.choices import Title, Position
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.utils import timezone

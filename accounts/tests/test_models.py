@@ -1,4 +1,4 @@
-from accounts.choices import Title
+from accounts.models.choices import Title
 from accounts.models import User, Profile
 from django.test import TestCase
 from .factories import UserFactory, TEST_PASSWORD

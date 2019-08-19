@@ -5,6 +5,12 @@ from rest_framework import serializers
 
 
 class StudySerializer(serializers.HyperlinkedModelSerializer):
+    """
+    `HyperlinkedModelSerializer <https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer>`_
+    for the :class:`~research.models.study.Study` model.
+    
+    """
+
     url = serializers.HyperlinkedIdentityField(view_name="research:study-detail")
     subjects = serializers.HyperlinkedRelatedField(
         view_name="research:subject-detail", queryset=Subject.objects.all(), many=True

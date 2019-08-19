@@ -40,5 +40,6 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     created : bool, optional
         Whether the instance is being created or updated, by default False
     """
+
     if created:
         Token.objects.create(user=instance)

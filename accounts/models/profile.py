@@ -5,16 +5,31 @@ from django.urls import reverse
 
 
 class Profile(models.Model):
+    """
+    A user profile, associated to each user using a OneToOne relationship and
+    created automatically usings signals. 
+    For more information see `this example <https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html>`_.
+    
+    """
+
+    # One-to-one relationship with the user model
     user = models.OneToOneField(
         get_user_model(), on_delete=models.CASCADE, related_name="profile"
     )
-    image = models.ImageField(upload_to="images/profiles", blank=True)
+
+    # Academic or any other kind of title
     title = models.CharField(
         max_length=20, choices=Title.choices(), default="", blank=True, null=True
     )
+
+    # The role of the reseacher in the lab
+    # TODO: As a researcher may be a member of multiple labs, this should
+    # be separated from the profile and defined a the context of a lab.
     position = models.CharField(
         max_length=20, choices=Position.choices(), default="", blank=True, null=True
     )
+
+    image = models.ImageField(upload_to="images/profiles", blank=True)
     date_of_birth = models.DateField(default=None, blank=True, null=True)
     institute = models.CharField(max_length=255, blank=True, null=True)
     bio = models.TextField(max_length=500, blank=True, null=True)

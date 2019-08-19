@@ -5,7 +5,7 @@ from django_filters import rest_framework as filters
 class SubjectFilter(filters.FilterSet):
     """
     Provides useful filtering options for the :class:`~research.models.subject.Subject`
-    class.
+    model.
     
     """
 

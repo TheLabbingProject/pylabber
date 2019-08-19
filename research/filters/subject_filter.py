@@ -1,5 +1,7 @@
-from research.models.subject import Subject
+from django_dicom.models.patient import Patient
+from django_mri.models.scan import Scan
 from django_filters import rest_framework as filters
+from research.models.subject import Subject
 
 
 class SubjectFilter(filters.FilterSet):
@@ -25,6 +27,7 @@ class SubjectFilter(filters.FilterSet):
             ("exact", "Exact"),
         ]
     )
+    dicom_patient = filters.NumberFilter(method="dicom_patient")
 
     class Meta:
         model = Subject
@@ -38,3 +41,28 @@ class SubjectFilter(filters.FilterSet):
             "born_before_date",
             "dominant_hand",
         )
+
+    def dicom_patient(self, queryset, name, value):
+        """
+        Find the subject that represents a particular DICOM
+        :class:`~django_dicom.models.patient.Patient` instance.
+        
+        Parameters
+        ----------
+        queryset : django.db.models.QuerySet
+            The :class:`~research.models.subject.Subject` queryset to filter.
+        name : str
+            The name of the model field to filter on.
+        value : int
+            DICOM :class:`~django_dicom.models.patient.Patient` ID.
+        """
+        if not value:
+            return queryset
+
+        dicom_patient = Patient.objects.get(id=value)
+        mri_scans = Scan.objects.filter(dicom__in=dicom_patient.series_set.all())
+        subject_ids = set(
+            mri_scans.order_by("subject").values_list("subject", flat=True)
+        )
+        return queryset.objects.get(id=subject_ids.pop())
+

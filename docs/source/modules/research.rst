@@ -31,14 +31,6 @@ research.apps module
    :undoc-members:
    :show-inheritance:
 
-research.signals module
------------------------
-
-.. automodule:: research.signals
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 research.urls module
 --------------------
 

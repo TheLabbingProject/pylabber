@@ -62,11 +62,8 @@ INSTALLED_APPS = [
     # Extensions
     "django_dicom",
     "django_mri",
-    # "django_nipype",
-    # "django_analysis",
     # Local
     "research",
-    # "bokeh_integration.apps.BokehConfig",
 ]
 
 MIDDLEWARE = [

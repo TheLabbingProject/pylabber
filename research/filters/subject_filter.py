@@ -27,7 +27,7 @@ class SubjectFilter(filters.FilterSet):
             ("exact", "Exact"),
         ]
     )
-    dicom_patient = filters.NumberFilter(method="dicom_patient")
+    dicom_patient = filters.NumberFilter(method="filter_by_dicom_patient")
 
     class Meta:
         model = Subject
@@ -40,9 +40,10 @@ class SubjectFilter(filters.FilterSet):
             "born_after_date",
             "born_before_date",
             "dominant_hand",
+            "dicom_patient",
         )
 
-    def dicom_patient(self, queryset, name, value):
+    def filter_by_dicom_patient(self, queryset, name, value):
         """
         Find the subject that represents a particular DICOM
         :class:`~django_dicom.models.patient.Patient` instance.
@@ -64,5 +65,5 @@ class SubjectFilter(filters.FilterSet):
         subject_ids = set(
             mri_scans.order_by("subject").values_list("subject", flat=True)
         )
-        return queryset.objects.get(id=subject_ids.pop())
+        return queryset.filter(id=subject_ids.pop())
 

@@ -11,5 +11,5 @@ class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     """
 
-    queryset = Study.objects.all()
+    queryset = Study.objects.order_by("title").all()
     serializer_class = StudySerializer

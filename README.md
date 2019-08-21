@@ -7,7 +7,6 @@
 _pylabber_ is a collaborative open-source project meant to facilitate research.
 
 This [Django](https://www.djangoproject.com/) [project](https://docs.djangoproject.com/en/2.2/glossary/#term-project) provides the infrastructure for scientific work, and is built and maintained to be as flexible and as extendible as possible.
-The architecture of pylabber follows the latest edge on microservice architectures.
 
 Currently, the project hosts two [apps](https://docs.djangoproject.com/en/2.2/ref/applications/);
 _accounts_ and _research_.
@@ -17,9 +16,7 @@ _accounts_ and _research_.
 
 This architecture is meant to be as abstract as possible, in order to allow for it to easily lend itself to a wide variety of research disciplines.
 
-At the moment, this codebase supports mainly neuroimaging research.
-
-_pylabber_ provides a [RESTful API](https://en.wikipedia.org/wiki/Representational_state_transfer) that may be adapted and integrated into your own field of research.
+At the moment, this codebase supports mainly neuroimaging research. However, _pylabber_ provides a [RESTful API](https://en.wikipedia.org/wiki/Representational_state_transfer) that may be adapted and integrated into your own field of research.
 
 ## Data Integration
 

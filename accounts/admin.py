@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User, Profile
+from accounts.models import Laboratory, Profile, User
 
 
 class ProfileInline(admin.StackedInline):
@@ -34,4 +34,9 @@ class UserAdmin(BaseUserAdmin):
         return super(UserAdmin, self).get_inline_instances(request, obj)
 
 
+class LaboratoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "description", "created", "modified")
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Laboratory, LaboratoryAdmin)

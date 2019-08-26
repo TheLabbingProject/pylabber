@@ -10,11 +10,20 @@ class LaboratorySerializer(serializers.HyperlinkedModelSerializer):
     
     """
 
-    url = serializers.HyperlinkedIdentityField(view_name="research:laboratory-detail")
+    url = serializers.HyperlinkedIdentityField(view_name="accounts:laboratory-detail")
     members = serializers.HyperlinkedRelatedField(
         view_name="accounts:user-detail", queryset=User.objects.all(), many=True
     )
 
     class Meta:
         model = Laboratory
-        fields = ("id", "image", "title", "description", "created", "modified")
+        fields = (
+            "id",
+            "url",
+            "image",
+            "title",
+            "description",
+            "members",
+            "created",
+            "modified",
+        )

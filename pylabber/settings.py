@@ -18,11 +18,11 @@ env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["*"]),
     SECRET_KEY=(str, "asdf5sag231sd$#%SADF2341a"),
-    BOKEH_SECRET_KEY=(str, ""),
-    BOKEH_SIGN_SESSIONS=(bool, True),
-    DB_NAME=(str, ""),
-    DB_USER=(str, ""),
+    DB_NAME=(str, "postgres"),
+    DB_USER=(str, "postgres"),
     DB_PASSWORD=(str, ""),
+    DB_HOST=(str, "localhost"),
+    DB_PORT=(int, 5432),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -51,10 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd Party
     "django_extensions",
-    "crispy_forms",
-    "django_tables2",
     "django_filters",
-    "treebeard",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_auth",
@@ -106,8 +103,8 @@ DATABASES = {
         "NAME": env("DB_NAME"),
         "USER": env("DB_USER"),
         "PASSWORD": env("DB_PASSWORD"),
-        "HOST": "localhost",
-        "PORT": "",
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
     }
 }
 

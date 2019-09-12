@@ -1,10 +1,7 @@
 Django==2.2
 djangorestframework==3.9.2
 django-extensions==2.1.6
-django-crispy-forms==1.7.2
-django-webpack-loader==0.6.0
 django-filter==2.1.0
-django-tables2==2.0.3
 numpy==1.15.4
 pandas==0.23.4
 python-dateutil==2.7.5
@@ -15,5 +12,5 @@ Pillow==5.4.0
 django-environ==0.4.5
 django-rest-auth==0.9.5
 django-cors-headers==3.0.2
-https://github.com/ZviBaratz/django_dicom/archive/master.zip
-https://github.com/ZviBaratz/django_mri/archive/master.zip
+django-dicom==0.0.1
+git+https://github.com/TheLabbingProject/django_mri.git

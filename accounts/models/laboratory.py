@@ -11,7 +11,9 @@ class Laboratory(TitleDescriptionModel, TimeStampedModel):
     """
 
     image = models.ImageField(upload_to="images/labs", blank=True, null=True)
-    members = models.ManyToManyField(get_user_model(), blank=True)
+    members = models.ManyToManyField(
+        get_user_model(), blank=True, through="accounts.LabMembership"
+    )
 
     class Meta:
         verbose_name_plural = "Laboratories"

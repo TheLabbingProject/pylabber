@@ -7,9 +7,9 @@ from django.urls import reverse
 class Profile(models.Model):
     """
     A user profile, associated to each user using a OneToOne relationship and
-    created automatically usings signals. 
+    created automatically usings signals.
     For more information see `this example <https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html>`_.
-    
+
     """
 
     # One-to-one relationship with the user model
@@ -43,7 +43,7 @@ class Profile(models.Model):
     def get_full_name(self) -> str:
         """
         Returns the full name of the user, including a title if any.
-        
+
         Returns
         -------
         str

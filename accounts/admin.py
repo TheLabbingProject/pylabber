@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from accounts.models import LabMembership, Laboratory, Profile, User
+from accounts.models import LaboratoryMembership, Laboratory, Profile, User
 
 
-class LabMembershipInLine(admin.TabularInline):
-    model = LabMembership
+class LaboratoryMembershipInLine(admin.TabularInline):
+    model = LaboratoryMembership
     extra = 1
 
 
@@ -14,11 +14,10 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = "Profile"
     fk_name = "user"
-    inlines = (LabMembershipInLine,)
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (ProfileInline,)
+    inlines = (ProfileInline, LaboratoryMembershipInLine)
     list_display = (
         "username",
         "email",
@@ -42,7 +41,7 @@ class UserAdmin(BaseUserAdmin):
 
 class LaboratoryAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "description", "created", "modified")
-    inlines = (LabMembershipInLine,)
+    inlines = (LaboratoryMembershipInLine,)
 
 
 admin.site.register(User, UserAdmin)

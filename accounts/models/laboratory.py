@@ -12,7 +12,7 @@ class Laboratory(TitleDescriptionModel, TimeStampedModel):
 
     image = models.ImageField(upload_to="images/labs", blank=True, null=True)
     members = models.ManyToManyField(
-        get_user_model(), blank=True, through="accounts.LabMembership"
+        get_user_model(), blank=True, through="accounts.LaboratoryMembership"
     )
 
     class Meta:

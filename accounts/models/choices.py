@@ -14,7 +14,7 @@ class Title(ChoiceEnum):
     PROF = "Prof."
 
 
-class Position(ChoiceEnum):
+class Role(ChoiceEnum):
     RA = "Research Assistant"
     MSC = "M.Sc. Student"
     PHD = "Ph.D. Candidate"

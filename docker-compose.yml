@@ -5,6 +5,8 @@ services:
     image: postgres
   web:
     build: .
+    env_file:
+      - ./.docker/env/django.development.env
     command: >
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&

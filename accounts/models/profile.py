@@ -1,4 +1,4 @@
-from accounts.models.choices import Title, Position
+from accounts.models.choices import Title
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -20,13 +20,6 @@ class Profile(models.Model):
     # Academic or any other kind of title
     title = models.CharField(
         max_length=20, choices=Title.choices(), default="", blank=True, null=True
-    )
-
-    # The role of the reseacher in the lab
-    # TODO: As a researcher may be a member of multiple labs, this should
-    # be separated from the profile and defined a the context of a lab.
-    position = models.CharField(
-        max_length=20, choices=Position.choices(), default="", blank=True, null=True
     )
 
     image = models.ImageField(upload_to="images/profiles", blank=True)

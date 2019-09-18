@@ -12,7 +12,6 @@ class UserSerializer(UserDetailsSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="accounts:user-detail")
     image = serializers.ImageField(source="profile.image")
     title = serializers.CharField(source="profile.title")
-    position = serializers.CharField(source="profile.position")
     date_of_birth = serializers.DateField(source="profile.date_of_birth")
     institute = serializers.CharField(source="profile.institute")
     bio = serializers.CharField(source="profile.bio")
@@ -23,11 +22,11 @@ class UserSerializer(UserDetailsSerializer):
             "id",
             "image",
             "title",
-            "position",
             "date_of_birth",
             "institute",
             "bio",
             "is_staff",
+            "laboratory_set",
         )
 
     def update(self, instance, validated_data):

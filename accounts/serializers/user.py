@@ -1,3 +1,5 @@
+from accounts.models.profile import Profile
+from accounts.models.user import User
 from rest_framework import serializers
 from rest_auth.serializers import UserDetailsSerializer
 
@@ -14,7 +16,7 @@ class UserSerializer(UserDetailsSerializer):
     title = serializers.CharField(source="profile.title")
     date_of_birth = serializers.DateField(source="profile.date_of_birth")
     institute = serializers.CharField(source="profile.institute")
-    bio = serializers.CharField(source="profile.bio")
+    bio = serializers.CharField(source="profile.bio", allow_blank=True)
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (
@@ -29,9 +31,11 @@ class UserSerializer(UserDetailsSerializer):
             "laboratory_set",
         )
 
-    def update(self, instance, validated_data):
-        profile_data = validated_data.pop("profile", {})
-        instance = super().update(instance, validated_data)
+    def update(self, username, data):
+        profile_data = data.pop("profile", {})
+        super().update(username, data)
         if profile_data:
-            instance.profile.update(profile_data)
-        return instance
+            profile = Profile.objects.filter(user__username=username)
+            profile.update(**profile_data)
+        updated_user = User.objects.get(username=username)
+        return updated_user

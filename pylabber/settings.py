@@ -10,20 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import environ
 import os
 
-import environ
 
 env = environ.Env(
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
     ALLOWED_HOSTS=(list, ["*"]),
     SECRET_KEY=(str, "asdf5sag231sd$#%SADF2341a"),
-    DB_NAME=(str, "postgres"),
+    DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),
     DB_PASSWORD=(str, ""),
     DB_HOST=(str, "localhost"),
     DB_PORT=(int, 5432),
 )
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -134,16 +135,7 @@ MEDIA_URL = "/media/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "dist"),
-    os.path.join(BASE_DIR, "node_modules"),
-)
 
-
-# 3rd party application settings
-CRISPY_TEMPLATE_PACK = "bootstrap4"
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

@@ -20,6 +20,7 @@ build/
 
 # Static files collected with "manage.py collectstatic"
 static/
+staticfiles/
 
 # JS modules
 node_modules/

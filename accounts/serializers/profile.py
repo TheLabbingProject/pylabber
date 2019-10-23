@@ -15,4 +15,4 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Profile
-        fields = "__all__"
+        fields = ("title", "image", "date_of_birth", "institute", "bio", "user", "url")

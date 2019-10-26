@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
@@ -10,7 +11,7 @@ class Subject(TimeStampedModel):
     """
     A model to represent a single research subject. Any associated data model
     should have this model's primary key as a relation.
-    
+
     """
 
     id_number = CharNullField(
@@ -28,6 +29,7 @@ class Subject(TimeStampedModel):
     gender = models.CharField(
         max_length=5, choices=Gender.choices(), blank=True, null=True
     )
+    custom_attributes = JSONField(blank=True, null=True)
 
     def __str__(self) -> str:
         return f"Subject #{self.id}"
@@ -39,7 +41,7 @@ class Subject(TimeStampedModel):
         """
         Returns a formatted string with the subject's full name (first name
         and then last name).
-        
+
         Returns
         -------
         str

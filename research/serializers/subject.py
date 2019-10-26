@@ -6,7 +6,7 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
     """
     `HyperlinkedModelSerializer <https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer>`_
     for the :class:`~research.models.subject.Subject` model.
-    
+
     """
 
     url = serializers.HyperlinkedIdentityField(view_name="research:subject-detail")
@@ -23,4 +23,5 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
             "dominant_hand",
             "sex",
             "gender",
+            "custom_attributes",
         )

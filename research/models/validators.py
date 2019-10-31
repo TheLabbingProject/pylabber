@@ -7,7 +7,6 @@ for django fields within the :mod:`research.models` module.
 from datetime import date
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
-from research.models.choices import CustomAttributeTypes
 
 digits_only = RegexValidator("^\d+$", message="Digits only!", code="invalid_number")
 

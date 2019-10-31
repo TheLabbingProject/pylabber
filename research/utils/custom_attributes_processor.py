@@ -4,6 +4,7 @@ class CustomAttributesProcessor:
         "Integer": int,
         "Float": float,
         "Boolean": bool,
+        "List": list,
         "Dictionary": dict,
     }
 

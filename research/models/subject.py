@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
 from pylabber.utils import CharNullField
+from research.utils.custom_attributes_processor import CustomAttributesProcessor
 from .choices import Sex, Gender, DominantHand
 from .validators import digits_only, not_future
 
@@ -49,3 +50,9 @@ class Subject(TimeStampedModel):
         """
 
         return f"{self.first_name} {self.last_name}"
+
+    def save(self, *args, **kwargs):
+        custom_attributes_processor = CustomAttributesProcessor(self.custom_attributes)
+        custom_attributes_processor.validate()
+        super().save(*args, **kwargs)
+

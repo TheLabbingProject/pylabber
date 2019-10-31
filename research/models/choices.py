@@ -24,3 +24,12 @@ class DominantHand(ChoiceEnum):
     R = "Right"
     L = "Left"
     A = "Ambidextrous"
+
+
+class CustomAttributeTypes(ChoiceEnum):
+    STR = "String"
+    INT = "Integer"
+    FLT = "Float"
+    BLN = "Boolean"
+    DCT = "Dictionary"
+

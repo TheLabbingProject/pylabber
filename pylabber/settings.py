@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import environ
 import os
 
+from django_mri.analysis.interfaces import interfaces
+
 
 env = environ.Env(
     DEBUG=(bool, True),
@@ -175,3 +177,6 @@ SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 
+# django_analysis_configuration
+ANALYSIS_INTERFACES = interfaces
+ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")

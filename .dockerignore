@@ -1,15 +1,35 @@
-node_modules
-npm-debug.log
-Dockerfile*
-docker-compose*
-.dockerignore
-.git
-.gitignore
-.env
-*/bin
-*/obj
+.DS_Store
+
+# Log files
+*.log
+
+# Virtual environmet
+venv
+
 README.md
 LICENSE
+
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Environment variables
+*.env
+
+# Git directory
+.git
+.gitignore
+
+# Development dependencies
+requirements-dev.txt
+
+# Editor directories and files
+.idea
+*.iml
 .vscode
-venv
+
+# Project documentation
+docs
+
+# Media folder
 media/*

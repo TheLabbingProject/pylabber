@@ -15,7 +15,6 @@ import os
 
 from django_mri.analysis.interfaces import interfaces
 
-
 env = environ.Env(
     DEBUG=(bool, True),
     ALLOWED_HOSTS=(list, ["*"]),
@@ -63,7 +62,7 @@ INSTALLED_APPS = [
     # Extensions
     "django_dicom",
     "django_mri",
-    "django_analysis",
+    # "django_analysis",
     # Local
     "research",
 ]

@@ -1,11 +1,18 @@
-FROM python:3.6
+FROM python:3.6 AS builder
 
-LABEL Author="Zvi Baratz" Name=pylabber Version=0.0.1
+LABEL Author="Zvi Baratz"
+LABEL Name=pylabber
+LABEL Version=0.0.1
+
+WORKDIR /app
+
+COPY . .
+COPY pylabber/.env /app/pylabber/
 
 EXPOSE 8000
 
-RUN mkdir /app
-WORKDIR /app
-COPY . /app
+RUN pip install -r requirements.txt
 
-RUN pip install -r requirements/common.txt
+CMD python manage.py makemigrations && \
+    python manage.py migrate && \
+    python manage.py runserver

@@ -1,10 +1,9 @@
-black==18.9b0
-coverage==4.5.3
-factory-boy==2.11.1
-Faker==1.0.1
-flake8==3.6.0
-ipython==7.4.0
-pytest==4.0.2
-sphinx==2.2.0
-sphinx-rtd-theme==0.4.3
-ipdb==0.12.2
+-r requirements.txt
+black==19.10b0
+coverage~=4.5
+factory-boy~=2.12
+flake8~=3.7
+ipython~=7.10
+pytest~=5.3
+sphinx~=2.2
+sphinx-rtd-theme~=0.4

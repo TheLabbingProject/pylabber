@@ -26,7 +26,7 @@ staticfiles/
 node_modules/
 
 # Uploaded files
-media
+media/*
 !media/.gitkeep
 
 # Development database

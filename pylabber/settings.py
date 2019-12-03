@@ -59,12 +59,12 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_auth",
     "corsheaders",
+    # Local
+    "research",
     # Extensions
     "django_dicom",
     "django_mri",
-    # "django_analysis",
-    # Local
-    "research",
+    "django_analyses",
 ]
 
 MIDDLEWARE = [
@@ -174,6 +174,6 @@ SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 
-# django_analysis_configuration
+# django_analyses_configuration
 ANALYSIS_INTERFACES = interfaces
 ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")

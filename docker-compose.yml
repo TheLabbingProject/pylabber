@@ -3,34 +3,17 @@ version: "3"
 services:
   postgres:
     image: "postgres:11"
-    hostname: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    volumes:
-      - $HOME/postgresql:/var/lib/postgresql
-    environment:
-      POSTGRES_DB: pylabber
-      POSTGRES_PASSWORD: admin
-
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    ports:
-      - 8080:80
-    volumes:
-      - $HOME/pgadmin/servers.json:/pgadmin4/servers.json
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin
-      PGADMIN_DEFAULT_PASSWORD: admin
 
   pylabber:
     build: .
     command: >
       sh -c "python manage.py makemigrations && \
              python manage.py migrate && \
-             python manage.py runserver"
+             echo \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@labbing.com', 'admin')\" | python manage.py shell && \
+             python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
+    environment:
+      FSLOUTPUTTYPE: "NIFTI_GZ"
     depends_on:
       - postgres

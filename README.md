@@ -22,11 +22,23 @@ At the moment, this codebase supports mainly neuroimaging research. However, _py
 
 Currently, _pylabber_ has only one available extension:
 
-- [_django_mri_](https://github.com/ZviBaratz/django_mri) - an abstraction over [_django_dicom_](https://github.com/ZviBaratz/django_dicom) meant to provide format agnostic tools to manage and interact with MRI data.
+- [_django_mri_](https://github.com/TheLabbingProject/django_mri) - an abstraction over [_django_dicom_](https://github.com/TheLabbingProject/django_dicom) meant to provide format agnostic tools to manage and interact with MRI data.
 
 ## Front-end
 
-For a front-end project built on top of _pylabber_, see [vuelabber](https://github.com/ZviBaratz/vuelabber).
+For a front-end project built on top of _pylabber_, see [vuelabber](https://github.com/TheLabbingProject/vuelabber).
+
+
+## Docker
+
+In order to set-up pylabber quickly and easily using [Docker](https://www.docker.com/), simply run:
+```
+docker-compose up --build -d
+```
+within the project's root directory. 
+
+You will then have a running container exposed on port 8000. In order to connect to the admin interface visit: `https://localhost:8000/admin` and sign-in as with "admin" as the username and password.
+
 
 ## About
 

@@ -15,6 +15,7 @@ class ProfileInline(admin.StackedInline):
     verbose_name_plural = "Profile"
     fk_name = "user"
 
+
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline, LaboratoryMembershipInLine)
     list_display = (

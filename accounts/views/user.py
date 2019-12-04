@@ -9,7 +9,7 @@ class UserViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows :class:`~accounts.models.user.User` instances to
     be viewed or edited.
-    
+
     """
 
     filter_class = UserFilter

@@ -31,7 +31,7 @@ class Profile(models.Model):
         return self.user.get_full_name()
 
     def get_absolute_url(self) -> str:
-        return reverse("accounts:user_detail", args=[str(self.user.id)])
+        return reverse("accounts:user", args=[str(self.user.id)])
 
     def get_full_name(self) -> str:
         """

@@ -33,7 +33,7 @@ class Subject(TimeStampedModel):
     gender = models.CharField(
         max_length=5, choices=Gender.choices(), blank=True, null=True
     )
-    custom_attributes = JSONField(blank=True, null=True)
+    custom_attributes = JSONField(blank=True, default=dict)
 
     def __str__(self) -> str:
         return f"Subject #{self.id}"

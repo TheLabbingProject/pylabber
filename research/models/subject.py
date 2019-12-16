@@ -63,4 +63,3 @@ class Subject(TimeStampedModel):
         subject_table = read_subject_table()
         this_subject = subject_table["Anonymized", "Patient ID"] == self.id_number
         return subject_table[this_subject]["Raw"].squeeze()
-

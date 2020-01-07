@@ -12,7 +12,8 @@ class SubjectModelTestCase(TestCase):
 
     def test_not_future_birthdate_validator(self):
         self.test_subject.date_of_birth = date.today() + timedelta(days=1)
-        self.error_Tester()
+        with self.assertRaises(ValidationError):
+            self.test_subject.full_clean()
 
     def test_only_digits_validator(self):
         self.test_subject.id_number = "a"
@@ -51,7 +52,6 @@ class SubjectModelTestCase(TestCase):
     def test_invalid_dominant_hand_choice(self):
         self.test_subject.dominant_hand = "R"
         self.assertRaises(ValidationError, self.test_subject.full_clean())
-        # self.error_Tester()
 
     def test_sex_choices(self):
         for choice in Sex:
@@ -63,7 +63,8 @@ class SubjectModelTestCase(TestCase):
 
     def test_invalid_sex_choice(self):
         self.test_subject.sex = "Z"
-        self.error_Tester()
+        with self.assertRaises(ValidationError):
+            self.test_subject.full_clean()
 
     def test_gender_choices(self):
         for choice in Gender:
@@ -75,7 +76,8 @@ class SubjectModelTestCase(TestCase):
 
     def test_invalid_gender_choice(self):
         self.test_subject.gender = "Z"
-        self.error_Tester()
+        with self.assertRaises(ValidationError):
+            self.test_subject.full_clean()
 
     def test_get_full_name(self):
         s = self.test_subject
@@ -86,10 +88,6 @@ class SubjectModelTestCase(TestCase):
         subject_id = self.test_subject.id
         expected = f"Subject #{subject_id}"
         self.assertEqual(str(self.test_subject), expected)
-
-    def error_Tester(self):
-        with self.assertRaises(ValidationError):
-            self.test_subject.full_clean()
 
 
 class StudyModelTestCase(TestCase):

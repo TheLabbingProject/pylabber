@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     # Extensions
     "django_dicom",
     "django_mri",
-    # "django_analyses",
+    "django_analyses",
 ]
 
 MIDDLEWARE = [

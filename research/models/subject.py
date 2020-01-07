@@ -33,7 +33,7 @@ class Subject(TimeStampedModel):
     gender = models.CharField(
         max_length=5, choices=Gender.choices(), blank=True, null=True
     )
-    custom_attributes = JSONField(blank=True, null=True)
+    custom_attributes = JSONField(blank=True, default=dict)
 
     def __str__(self) -> str:
         return f"Subject #{self.id}"
@@ -63,4 +63,3 @@ class Subject(TimeStampedModel):
         subject_table = read_subject_table()
         this_subject = subject_table["Anonymized", "Patient ID"] == self.id_number
         return subject_table[this_subject]["Raw"].squeeze()
-

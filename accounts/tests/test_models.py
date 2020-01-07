@@ -27,11 +27,6 @@ class ProfileModelTestCase(TestCase):
     def test_str(self):
         self.assertEqual(str(self.profile), self.user.get_full_name())
 
-    def test_get_absolute_url(self):
-        url = self.profile.get_absolute_url()
-        expected = f"/accounts/{self.user.id}/"
-        self.assertEqual(url, expected)
-
     def test_login(self):
         result = self.client.login(username=self.user.username, password=TEST_PASSWORD)
         self.assertTrue(result)

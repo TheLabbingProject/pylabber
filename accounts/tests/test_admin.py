@@ -27,7 +27,7 @@ class UserAdminTestCase(AdminTestCase):
         request.user = self.user
         inlines = self.user_admin.get_inline_instances(request, self.user)
         self.assertIsInstance(inlines[0], ProfileInline)
-        self.assertEqual(len(inlines), 1)
+        self.assertEqual(len(inlines), 2)
 
     def test_get_profile_inline_without_instance(self):
         request = MockRequest()

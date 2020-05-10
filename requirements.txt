@@ -1,5 +1,5 @@
-Django==2.*
-djangorestframework~=3.10
+Django==3.*
+djangorestframework~=3.11
 djangorestframework_camel_case~=1.1
 django-analyses>=0.0.3
 django-cors-headers~=3.2

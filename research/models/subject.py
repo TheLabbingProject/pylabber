@@ -5,10 +5,11 @@ from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
 from pylabber.utils import CharNullField
+from research.models.managers.subject import SubjectQuerySet
 from research.utils.custom_attributes_processor import CustomAttributesProcessor
 from research.utils.subject_table import read_subject_table
-from .choices import Sex, Gender, DominantHand
-from .validators import digits_only, not_future
+from research.models.choices import Sex, Gender, DominantHand
+from research.models.validators import not_future
 
 
 class Subject(TimeStampedModel):
@@ -18,9 +19,7 @@ class Subject(TimeStampedModel):
 
     """
 
-    id_number = CharNullField(
-        max_length=64, unique=True, validators=[digits_only], blank=True, null=True
-    )
+    id_number = CharNullField(max_length=64, unique=True, blank=True, null=True)
     first_name = models.CharField(max_length=64, blank=True, null=True)
     last_name = models.CharField(max_length=64, blank=True, null=True)
     date_of_birth = models.DateField(
@@ -34,6 +33,8 @@ class Subject(TimeStampedModel):
         max_length=5, choices=Gender.choices(), blank=True, null=True
     )
     custom_attributes = JSONField(blank=True, default=dict)
+
+    objects = SubjectQuerySet.as_manager()
 
     def __str__(self) -> str:
         return f"Subject #{self.id}"

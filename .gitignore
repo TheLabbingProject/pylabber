@@ -46,7 +46,10 @@ htmlcov
 **.pkl
 docs/build/
 docs/source/_*/
+logs/*
 
 # Other calculations for the project
 param_test.xlsx
 params_calculation.ipynb
+
+

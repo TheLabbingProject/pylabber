@@ -131,11 +131,67 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# Media directory
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+
+MEDIA_ROOT = os.path.join("/media/veracrypt1/media")
 MEDIA_URL = "/media/"
+
+# Static directory
+# https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-STATIC_ROOT
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
+
+
+# Date format
+# https://docs.djangoproject.com/en/dev/ref/settings/#date-format
+DATE_FORMAT = "d/m/Y"
+
+# Time format
+# https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TIME_FORMAT
+TIME_FORMAT = "H:i:s"
+
+# Logging
+
+LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
+LOGGING = {
+    "version": 1,
+    "formatters": {
+        "normal": {"format": "{asctime} {name} {levelname} {message}", "style": "{"},
+    },
+    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue",},},
+    "handlers": {
+        "debug_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "debug.log"),
+            "maxBytes": 2048000,
+            "backupCount": 5,
+            "formatter": "normal",
+            "filters": ["require_debug_true"],
+        },
+        "warning_file": {
+            "level": "WARNING",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "warnings.log"),
+            "maxBytes": 2048000,
+            "backupCount": 2,
+            "formatter": "normal",
+        },
+        "console": {"level": "WARNING", "class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        "data": {
+            "handlers": ["debug_file", "warning_file", "console"],
+            "level": "DEBUG",
+        },
+        "data_import": {
+            "handlers": ["debug_file", "warning_file", "console"],
+            "level": "DEBUG",
+        },
+    },
+}
 
 
 REST_FRAMEWORK = {
@@ -163,9 +219,8 @@ REST_AUTH_SERIALIZERS = {
 
 
 CORS_ORIGIN_WHITELIST = [
-    "https://www.pylabber.org",
-    "https://pylabber.org",
     "http://localhost:8080",
+    "http://10.0.0.8:8080",
 ]
 
 
@@ -174,6 +229,6 @@ SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 
-# django_analyses_configuration
+# django_analyses configuration
 ANALYSIS_INTERFACES = interfaces
 ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")

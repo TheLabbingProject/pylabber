@@ -14,11 +14,12 @@ import environ
 import os
 
 from django_mri.analysis.interfaces import interfaces
+from pathlib import Path
 
 env = environ.Env(
     DEBUG=(bool, True),
     ALLOWED_HOSTS=(list, ["*"]),
-    SECRET_KEY=(str, "asdf5sag231sd$#%SADF2341a"),
+    SECRET_KEY=(str, "s0m3-$upEr=S3cre7"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),
     DB_PASSWORD=(str, ""),
@@ -28,19 +29,12 @@ env = environ.Env(
 )
 environ.Env.read_env()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = str(Path(__file__).parent.parent.absolute())
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
-
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+
 
 # Application definition
 
@@ -140,7 +134,7 @@ MEDIA_URL = "/media/"
 # Static directory
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-STATIC_ROOT
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
 
@@ -153,7 +147,6 @@ DATE_FORMAT = "d/m/Y"
 TIME_FORMAT = "H:i:s"
 
 # Logging
-
 LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     "version": 1,

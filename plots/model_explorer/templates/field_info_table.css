@@ -1,0 +1,26 @@
+#field-info {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#field-info td,
+#field-info th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#field-info tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#field-info tr:hover {
+  background-color: #ddd;
+}
+
+#field-info th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
+}

@@ -1,7 +1,4 @@
-from bokeh.embed import server_session
-from bokeh.util.token import generate_session_id
 from django.contrib import admin
-from pylabber.plotting.providers import Providers
 from research.models.study import Study
 from research.models.subject import Subject
 

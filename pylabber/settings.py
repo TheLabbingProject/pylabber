@@ -128,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Media directory
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 
-MEDIA_ROOT = os.path.join("/media/veracrypt1/media")
+MEDIA_ROOT = env("MEDIA_ROOT")
 MEDIA_URL = "/media/"
 
 # Static directory
@@ -213,7 +213,7 @@ REST_AUTH_SERIALIZERS = {
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
-    "http://10.0.0.8:8080",
+    "https://localhost:8080",
 ]
 
 
@@ -225,3 +225,6 @@ RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 # django_analyses configuration
 ANALYSIS_INTERFACES = interfaces
 ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")
+
+# django_dicom configuration
+DICOM_IMPORT_MODE = "normal"

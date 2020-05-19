@@ -225,6 +225,32 @@ RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 # django_analyses configuration
 ANALYSIS_INTERFACES = interfaces
 ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")
+EXTRA_INPUT_DEFINITION_SERIALIZERS = {
+    "ScanInputDefinition": (
+        "django_mri.serializers.input.scan_input_definition",
+        "ScanInputDefinitionSerializer",
+    ),
+    "NiftiInputDefinition": (
+        "django_mri.serializers.input.nifti_input_definition",
+        "NiftiInputDefinitionSerializer",
+    ),
+}
+EXTRA_INPUT_SERIALIZERS = {
+    "ScanInput": ("django_mri.serializers.input.scan_input", "ScanInputSerializer",),
+    "NiftiInput": ("django_mri.serializers.input.nifti_input", "NiftiInputSerializer",),
+}
+EXTRA_OUTPUT_DEFINITION_SERIALIZERS = {
+    "NiftiOutputDefinition": (
+        "django_mri.serializers.output.nifti_output_definition",
+        "NiftiOutputDefinitionSerializer",
+    ),
+}
+EXTRA_OUTPUT_SERIALIZERS = {
+    "NiftiOutput": (
+        "django_mri.serializers.output.nifti_output",
+        "NiftiOutputSerializer",
+    )
+}
 
 # django_dicom configuration
 DICOM_IMPORT_MODE = "normal"

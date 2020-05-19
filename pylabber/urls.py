@@ -2,7 +2,8 @@
 *pylabber* URL Configuration
 ----------------------------
 
-The `urlpatterns <https://docs.djangoproject.com/en/2.0/topics/http/urls/>`_ list routes URLs to views.
+The `urlpatterns <https://docs.djangoproject.com/en/2.0/topics/http/urls/>`_ list routes
+URLs to views.
 
 Examples:
 * Function views

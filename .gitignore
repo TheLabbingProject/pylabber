@@ -18,12 +18,15 @@ build/
 *.egg-info
 *.spec
 
+# Static files collected with "manage.py collectstatic"
+static/
+staticfiles/
+
 # JS modules
 node_modules/
 
 # Uploaded files
-media
-!media/.gitkeep
+media/
 
 # Development database
 db.sqlite3
@@ -40,9 +43,6 @@ htmlcov
 # Testing artifacts
 .tox/
 
-# Collected static assets
-static/
-
 # Other
 *.pem
 *.log
@@ -52,3 +52,9 @@ docs/source/_*/
 */migrations/*
 !*/migrations/__init__.py
 logs/
+
+# Other calculations for the project
+param_test.xlsx
+params_calculation.ipynb
+
+

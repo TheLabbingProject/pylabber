@@ -11,10 +11,13 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
+      - run:
+          command: sudo apt-get update && sudo apt-get install -y python3.7-dev python3.8-dev
+          name: Install required versions of Python.
       - run: pip install tox
       - run:
           command: tox
-          name: Test
+          name: Test using tox.
 
 workflows:
   main:

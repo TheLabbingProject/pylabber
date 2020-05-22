@@ -20,10 +20,6 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run:
-          command: |
-            sudo apt update && sudo apt upgrade -y
-          name: Update package manager repositories
       - run: pip install tox
       - run:
           command: tox

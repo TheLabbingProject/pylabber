@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Study, Subject
+from research.models.study import Study
+from research.models.subject import Subject
 
 
 class SubjectsInline(admin.TabularInline):
@@ -36,6 +37,7 @@ class StudiesAdmin(admin.ModelAdmin):
 
 class SubjectAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "id_number",
         "first_name",
         "last_name",
@@ -43,6 +45,11 @@ class SubjectAdmin(admin.ModelAdmin):
         "date_of_birth",
         "dominant_hand",
     )
+    list_filter = ("sex",)
+
+    def changelist_view(self, request, extra_context=None):
+        response = super().changelist_view(request, extra_context=extra_context)
+        return response
 
 
 admin.site.register(Study, StudiesAdmin)

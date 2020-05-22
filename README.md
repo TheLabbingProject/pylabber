@@ -30,17 +30,17 @@ Currently, _pylabber_ has only one available extension:
 
 For a front-end project built on top of _pylabber_, see [vuelabber](https://github.com/TheLabbingProject/vuelabber).
 
-
 ## Docker
 
 In order to set-up pylabber quickly and easily using [Docker](https://www.docker.com/), simply run:
+
 ```
 docker-compose up --build -d
 ```
-within the project's root directory. 
+
+within the project's root directory.
 
 You will then have a running container exposed on port 8000. In order to connect to the admin interface visit: `https://localhost:8000/admin` and sign-in as with "admin" as the username and password.
-
 
 ## About
 

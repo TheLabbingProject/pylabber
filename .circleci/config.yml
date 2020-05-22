@@ -15,6 +15,7 @@ jobs:
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
       - python/load-cache

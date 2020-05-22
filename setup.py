@@ -15,7 +15,7 @@ with open("requirements-dev.txt") as fh:
 
 setup(
     name="pylabber",
-    version="0.0.2",
+    version="0.0.2-alpha2",
     packages=find_packages(),
     include_package_data=True,
     scripts=["manage.py"],

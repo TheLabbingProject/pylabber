@@ -18,15 +18,11 @@ build/
 *.egg-info
 *.spec
 
-# Static files collected with "manage.py collectstatic"
-static/
-staticfiles/
-
 # JS modules
 node_modules/
 
 # Uploaded files
-media/*
+media
 !media/.gitkeep
 
 # Development database
@@ -39,6 +35,13 @@ db.sqlite3
 
 # Coverage reports
 htmlcov
+.coverage
+
+# Testing artifacts
+.tox/
+
+# Collected static assets
+static/
 
 # Other
 *.pem
@@ -46,3 +49,6 @@ htmlcov
 **.pkl
 docs/build/
 docs/source/_*/
+*/migrations/*
+!*/migrations/__init__.py
+logs/

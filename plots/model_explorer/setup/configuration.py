@@ -1,0 +1,2 @@
+PROJECT_NAME = "pylabber"
+BASE_PATH_ENV = "PYLBBER_DIR"

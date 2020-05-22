@@ -5,19 +5,30 @@ orbs:
 
 jobs:
   build-and-test:
-    executor: python/default
+    build:
+      working_directory: ~/pylabber
+      docker:
+        - image: circleci/python:3.8
+          environment:
+            PIPENV_VENV_IN_PROJECT: true
+            DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+        - image: circleci/postgres:11
+          environment:
+            POSTGRES_USER: root
+            POSTGRES_DB: circle_test
     steps:
       - checkout
       - python/load-cache
       - python/install-deps
       - python/save-cache
       - run:
-          command: sudo apt-get update && sudo apt-get install -y python3.7-dev python3.8-dev
-          name: Install required versions of Python.
+          command: |
+            sudo apt update && sudo apt upgrade -y
+          name: Update package manager repositories
       - run: pip install tox
       - run:
           command: tox
-          name: Test using tox.
+          name: Test using tox
 
 workflows:
   main:

@@ -15,24 +15,6 @@ class SubjectModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             self.test_subject.full_clean()
 
-    def test_only_digits_validator(self):
-        self.test_subject.id_number = "a"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "234234d23"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "23.234423"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "1/1234423"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "11123442+"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "111*34423"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "1117^4423"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-        self.test_subject.id_number = "111034-33"
-        self.assertRaises(ValidationError, self.test_subject.full_clean)
-
     def test_null_char_field(self):
         subject_one = SubjectFactory(id_number=None)
         subject_one.save()
@@ -50,8 +32,9 @@ class SubjectModelTestCase(TestCase):
                 self.fail(f"Failed to set dominant hand to {choice.value}")
 
     def test_invalid_dominant_hand_choice(self):
-        self.test_subject.dominant_hand = "R"
-        self.assertRaises(ValidationError, self.test_subject.full_clean())
+        self.test_subject.dominant_hand = "Right"
+        with self.assertRaises(ValidationError):
+            self.test_subject.full_clean()
 
     def test_sex_choices(self):
         for choice in Sex:

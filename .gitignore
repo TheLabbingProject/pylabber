@@ -1,0 +1,54 @@
+.DS_Store
+
+# Virtual environment directory
+venv/
+
+# Cache directories and byte-code files
+*.py[cod]
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints
+
+# Environment variables
+.env
+
+# Distribution directories and files
+dist/
+build/
+*.egg-info
+*.spec
+
+# JS modules
+node_modules/
+
+# Uploaded files
+media
+!media/.gitkeep
+
+# Development database
+db.sqlite3
+
+# Editor directories and files
+.idea
+.vscode
+.vs
+
+# Coverage reports
+htmlcov
+.coverage
+
+# Testing artifacts
+.tox/
+
+# Collected static assets
+static/
+
+# Other
+*.pem
+*.log
+**.pkl
+docs/build/
+docs/source/_*/
+*/migrations/*
+!*/migrations/__init__.py
+logs/

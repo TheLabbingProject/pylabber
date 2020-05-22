@@ -5,17 +5,16 @@ orbs:
 
 jobs:
   build-and-test:
-    build:
-      working_directory: ~/pylabber
-      docker:
-        - image: circleci/python:3.8
-          environment:
-            PIPENV_VENV_IN_PROJECT: true
-            DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
-        - image: circleci/postgres:11
-          environment:
-            POSTGRES_USER: root
-            POSTGRES_DB: circle_test
+    working_directory: ~/pylabber
+    docker:
+      - image: circleci/python:3.8
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+      - image: circleci/postgres:11
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
     steps:
       - checkout
       - python/load-cache

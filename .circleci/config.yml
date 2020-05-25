@@ -10,6 +10,9 @@ jobs:
       - image: themattrix/tox
         environment:
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+          DB_NAME: circle_test
+          DB_USER: root
+          DB_PASSWORD: password
       - image: circleci/postgres:11
         environment:
           POSTGRES_USER: root

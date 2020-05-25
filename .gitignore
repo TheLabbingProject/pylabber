@@ -51,7 +51,10 @@ docs/build/
 docs/source/_*/
 */migrations/*
 !*/migrations/__init__.py
-logs/
+
+# Logs
+logs/*
+!logs/.gitkeep
 
 # Other calculations for the project
 param_test.xlsx

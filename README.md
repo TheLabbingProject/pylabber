@@ -9,7 +9,7 @@
 
 _pylabber_ is a collaborative open-source initiative meant to facilitate research.
 
-This repository hosts the [Django](https://www.djangoproject.com/) [project](https://docs.djangoproject.com/en/2.2/glossary/#term-project) providing the infrastructure for domain-specific [reusable](https://docs.djangoproject.com/en/3.0/intro/reusable-apps/#reusability-matters) Django [apps](https://docs.djangoproject.com/en/2.2/ref/applications/). Integration is generally achieved through _pylabber_'s own:
+This repository hosts the [Django](https://www.djangoproject.com/) [project](https://docs.djangoproject.com/en/2.2/glossary/#term-project) which provides the infrastructure for extenal, domain-specific [reusable](https://docs.djangoproject.com/en/3.0/intro/reusable-apps/#reusability-matters) Django [apps](https://docs.djangoproject.com/en/2.2/ref/applications/). Integration is generally achieved through _pylabber_'s own:
 
 - _accounts_ - Manages users (researchers) and labs.
 - _research_ - Manages studies, study groups, and subjects.
@@ -20,6 +20,12 @@ _pylabber_ is extended by:
 
 - [_django_mri_](https://github.com/TheLabbingProject/django_mri) - Format agnostic tools to manage and analyze MRI data.
 - [_django_analyses_](https://github.com/TheLabbingProject/django_analyses) - A database-supported pipeline engine.
+
+## Requirements
+
+_pylabber_ requires [PostgreSQL](https://www.postgresql.org/) as a [database engine](https://docs.djangoproject.com/en/3.0/ref/databases/).
+
+Extensions may depend on external toolkits (e.g. [_django_mri_](https://github.com/TheLabbingProject/django_mri) requires [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki), [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), [SPM](https://www.fil.ion.ucl.ac.uk/spm/), etc.).
 
 ## Front-end
 

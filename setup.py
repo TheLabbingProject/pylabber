@@ -1,4 +1,3 @@
-# import os
 from setuptools import find_packages, setup
 
 
@@ -38,7 +37,7 @@ setup(
     dependency_links=dependency_links,
     extras_require={"dev": dev_requirements},
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 2 - Alpha",
         "Environment :: Web Environment",
         "Framework :: Django :: 2.2",
         "Intended Audience :: Science/Research",

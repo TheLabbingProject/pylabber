@@ -1,6 +1,7 @@
 [![Join the chat at https://gitter.im/pylabber/community](https://badges.gitter.im/pylabber/community.svg)](https://gitter.im/pylabber/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![PyPI version](https://img.shields.io/pypi/v/pylabber.svg)](https://pypi.python.org/pypi/pylabber/)
 [![PyPI status](https://img.shields.io/pypi/status/pylabber.svg)](https://pypi.python.org/pypi/pylabber/)
+[![TheLabbingProject](https://circleci.com/gh/TheLabbingProject/pylabber.svg?style=shield)](https://app.circleci.com/pipelines/github/TheLabbingProject/pylabber)
 
 # _pylabber_
 

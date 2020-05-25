@@ -128,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Media directory
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 
-MEDIA_ROOT = env("MEDIA_ROOT")
+MEDIA_ROOT = env("MEDIA_ROOT") or os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 # Static directory

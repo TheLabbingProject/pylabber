@@ -39,6 +39,7 @@ db.sqlite3
 # Coverage reports
 htmlcov
 .coverage
+coverage.xml
 
 # Testing artifacts
 .tox/

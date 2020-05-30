@@ -2,6 +2,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/pylabber.svg)](https://pypi.python.org/pypi/pylabber/)
 [![PyPI status](https://img.shields.io/pypi/status/pylabber.svg)](https://pypi.python.org/pypi/pylabber/)
 [![TheLabbingProject](https://circleci.com/gh/TheLabbingProject/pylabber.svg?style=shield)](https://app.circleci.com/pipelines/github/TheLabbingProject/pylabber)
+[![codecov.io](https://codecov.io/gh/TheLabbingProject/pylabber/coverage.svg?branch=master)](https://codecov.io/github/TheLabbingProject/pylabber?branch=master)
 
 # _pylabber_
 

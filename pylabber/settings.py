@@ -114,14 +114,16 @@ LOGOUT_REDIRECT_URL = "/"
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
-SIMILARITY_VALIDATOR = (
-    "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-)
+VALIDATION_MODULE = "django.contrib.auth.password_validation"
+SIMILARITY_VALIDATOR = f"{VALIDATION_MODULE}.UserAttributeSimilarityValidator"
+MINIMUM_LENGTH_VALIDATOR = f"{VALIDATION_MODULE}.MinimumLengthValidator"
+COMMON_PASSWORD_VALIDATOR = f"{VALIDATION_MODULE}.CommonPasswordValidator"
+NUMERIC_PASSWORD_VALIDATOR = f"{VALIDATION_MODULE}.NumericPasswordValidator"
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": SIMILARITY_VALIDATOR},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {"NAME": MINIMUM_LENGTH_VALIDATOR},
+    {"NAME": COMMON_PASSWORD_VALIDATOR},
+    {"NAME": NUMERIC_PASSWORD_VALIDATOR},
 ]
 
 
@@ -151,9 +153,14 @@ LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     "version": 1,
     "formatters": {
-        "normal": {"format": "{asctime} {name} {levelname} {message}", "style": "{"},
+        "normal": {
+            "format": "{asctime} {name} {levelname} {message}",
+            "style": "{",
+        },
     },
-    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue",},},
+    "filters": {
+        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
+    },
     "handlers": {
         "debug_file": {
             "level": "DEBUG",
@@ -190,10 +197,13 @@ LOGGING = {
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ],
-    "DEFAULT_PAGINATION_CLASS": "pylabber.views.pagination.StandardResultsSetPagination",
+    "DEFAULT_PAGINATION_CLASS": "pylabber.views.pagination.StandardResultsSetPagination",  # noqa: E501
     "PAGE_SIZE": 20,
     # djangorestframework-camel-case settings
     "DEFAULT_RENDERER_CLASSES": (
@@ -217,6 +227,8 @@ REST_AUTH_SERIALIZERS = {
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "https://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://127.0.0.1:8080",
     "http://localhost:5006",
 ]
 
@@ -240,8 +252,14 @@ EXTRA_INPUT_DEFINITION_SERIALIZERS = {
     ),
 }
 EXTRA_INPUT_SERIALIZERS = {
-    "ScanInput": ("django_mri.serializers.input.scan_input", "ScanInputSerializer",),
-    "NiftiInput": ("django_mri.serializers.input.nifti_input", "NiftiInputSerializer",),
+    "ScanInput": (
+        "django_mri.serializers.input.scan_input",
+        "ScanInputSerializer",
+    ),
+    "NiftiInput": (
+        "django_mri.serializers.input.nifti_input",
+        "NiftiInputSerializer",
+    ),
 }
 EXTRA_OUTPUT_DEFINITION_SERIALIZERS = {
     "NiftiOutputDefinition": (
@@ -257,4 +275,4 @@ EXTRA_OUTPUT_SERIALIZERS = {
 }
 
 # django_dicom configuration
-DICOM_IMPORT_MODE = "normal"
+DICOM_IMPORT_MODE = "minimal"

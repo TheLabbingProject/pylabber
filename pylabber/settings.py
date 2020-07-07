@@ -205,6 +205,9 @@ REST_FRAMEWORK = {
         "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    ),
 }
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer"
@@ -214,6 +217,7 @@ REST_AUTH_SERIALIZERS = {
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "https://localhost:8080",
+    "http://localhost:5006",
 ]
 
 

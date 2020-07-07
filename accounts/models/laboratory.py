@@ -17,6 +17,7 @@ class Laboratory(TitleDescriptionModel, TimeStampedModel):
 
     class Meta:
         verbose_name_plural = "Laboratories"
+        ordering = ("title",)
 
     def __str__(self) -> str:
         return self.title

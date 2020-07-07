@@ -26,6 +26,7 @@ env = environ.Env(
     DB_HOST=(str, "localhost"),
     DB_PORT=(int, 5432),
     RAW_SUBJECT_TABLE_PATH=(str, "subjects.xlsx"),
+    APP_IP=(str, "127.0.0.1"),
 )
 environ.Env.read_env()
 
@@ -225,10 +226,8 @@ REST_AUTH_SERIALIZERS = {
 
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:8080",
-    "https://localhost:8080",
-    "http://127.0.0.1:8080",
-    "https://127.0.0.1:8080",
+    f"http://{env('APP_IP')}:8080",
+    f"https://{env('APP_IP')}:8080",
     "http://localhost:5006",
 ]
 

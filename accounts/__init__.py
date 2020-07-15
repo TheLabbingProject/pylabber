@@ -1,7 +1,6 @@
 """
-An account managing app for *pylabber*. A User instance represents a
-researcher and may be associated with one or more labs and added as a
-collaborator in one or more studies.
+Manages researcher (:class:`~accounts.models.user.User`) and
+:class:`~accounts.models.laboratory.Laboratory` accounts.
 
 """
 

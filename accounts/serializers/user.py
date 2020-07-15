@@ -1,3 +1,7 @@
+"""
+Definition of the :class:`~accounts.serializers.user.UserSerializer` class.
+"""
+
 from accounts.models.profile import Profile
 from accounts.models.user import User
 from rest_framework import serializers
@@ -11,7 +15,9 @@ class UserSerializer(UserDetailsSerializer):
     class for the :class:`~accounts.models.user.User` model.
     """
 
-    url = serializers.HyperlinkedIdentityField(view_name="accounts:user-detail")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="accounts:user-detail"
+    )
     profile = ProfileSerializer()
 
     class Meta(UserDetailsSerializer.Meta):
@@ -23,7 +29,23 @@ class UserSerializer(UserDetailsSerializer):
             "laboratory_set",
         )
 
-    def update(self, username, data):
+    def update(self, username, data: dict):
+        """
+        Update a user's personal information, including profile data.
+
+        Parameters
+        ----------
+        username : ~accounts.models.user.User
+            User to be updated
+        data : dict
+            User information
+
+        Returns
+        -------
+        ~accounts.models.user.User
+            Updated user instance
+        """
+
         profile_data = data.pop("profile", {})
         super().update(username, data)
         if profile_data:

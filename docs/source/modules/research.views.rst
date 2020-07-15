@@ -1,6 +1,14 @@
 research.views package
 ======================
 
+Module contents
+---------------
+
+.. automodule:: research.views
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,15 +32,6 @@ research.views.subject module
 -----------------------------
 
 .. automodule:: research.views.subject
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: research.views
    :members:
    :undoc-members:
    :show-inheritance:

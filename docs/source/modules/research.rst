@@ -1,6 +1,14 @@
 research package
 ================
 
+Module contents
+---------------
+
+.. automodule:: research
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -9,7 +17,6 @@ Subpackages
    research.filters
    research.models
    research.serializers
-   research.tests
    research.views
 
 Submodules
@@ -35,15 +42,6 @@ research.urls module
 --------------------
 
 .. automodule:: research.urls
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: research
    :members:
    :undoc-members:
    :show-inheritance:

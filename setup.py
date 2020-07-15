@@ -12,7 +12,9 @@ with open("requirements.txt") as fh:
         if not requirement.startswith("git+")
     ]
     dependency_links = [
-        requirement for requirement in requirements if requirement.startswith("git+")
+        requirement
+        for requirement in requirements
+        if requirement.startswith("git+")
     ]
 
 with open("requirements-dev.txt") as fh:
@@ -20,7 +22,7 @@ with open("requirements-dev.txt") as fh:
 
 setup(
     name="pylabber",
-    version="0.0.2-alpha2",
+    version="0.1.0",
     packages=find_packages(),
     include_package_data=True,
     scripts=["manage.py"],
@@ -39,11 +41,10 @@ setup(
     classifiers=[
         "Development Status :: 2 - Alpha",
         "Environment :: Web Environment",
-        "Framework :: Django :: 2.2",
+        "Framework :: Django :: 3",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],

@@ -39,9 +39,9 @@ setup(
     dependency_links=dependency_links,
     extras_require={"dev": dev_requirements},
     classifiers=[
-        "Development Status :: 2 - Alpha",
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
-        "Framework :: Django :: 3",
+        "Framework :: Django :: 3.0",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",

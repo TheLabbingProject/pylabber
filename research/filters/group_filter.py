@@ -1,3 +1,7 @@
+"""
+Definition of the :class:`~research.filters.group.GroupFilter` class.
+"""
+
 from django_filters import rest_framework as filters
 from research.models.group import Group
 from research.models.study import Study
@@ -5,9 +9,9 @@ from research.models.study import Study
 
 class GroupFilter(filters.FilterSet):
     """
-    Provides useful filtering options for the :class:`~research.models.subject.Subject`
-    model.
-    
+    Provides useful filtering options for the
+    :class:`~research.models.subject.Subject` model.
+
     """
 
     description = filters.LookupChoiceFilter(

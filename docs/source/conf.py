@@ -54,6 +54,7 @@ EXCLUDED_MEMBERS = (
     "auth_token",
     "objects",
     "user_id",
+    "study_id",
     "Meta",
 )
 

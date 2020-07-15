@@ -1,6 +1,14 @@
 accounts.models package
 =======================
 
+Module contents
+---------------
+
+.. automodule:: accounts.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,15 +40,6 @@ accounts.models.user module
 ---------------------------
 
 .. automodule:: accounts.models.user
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: accounts.models
    :members:
    :undoc-members:
    :show-inheritance:

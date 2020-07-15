@@ -1,6 +1,14 @@
 accounts.views package
 ======================
 
+Module contents
+---------------
+
+.. automodule:: accounts.views
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,15 +40,6 @@ accounts.views.user module
 --------------------------
 
 .. automodule:: accounts.views.user
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: accounts.views
    :members:
    :undoc-members:
    :show-inheritance:

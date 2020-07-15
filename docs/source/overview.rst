@@ -1,22 +1,29 @@
 Overview
 ========
 
-*pylabber* is a collaborative open-source project meant to facilitate research.
+The project's root directory contains the :mod:`pylabber` module, which holds
+the applications settings and `URL configurations`_, as well as two native
+apps:
 
-This `Django <https://www.djangoproject.com>`_ 
-`project <https://docs.djangoproject.com/en/2.2/glossary/#term-project>`_ 
-provides the infrastructure for scientific work, and is built and maintained to 
-be as flexible and as extendible as possible.
+   * :mod:`~accounts`: Manages :class:`~accounts.models.user.User` (i.e.
+     researcher) and :class:`~accounts.models.laboratory.Laboratory` accounts.
+   * :mod:`~research`: Manages the most elementary "research entities";
+     :class:`~research.models.subject.Subject`,
+     :class:`~research.models.study.Study`, and
+     :class:`~research.models.group.Group`.
 
-Currently, the project hosts two `apps <https://docs.djangoproject.com/en/2.2/ref/applications/>`_;
-*accounts* and *research*.
+The basic models_ detailed above are meant to be integrated with external,
+`reusable apps`_, providing domain-specific data models and functionality over
+them.
 
-- *accounts* manages users (researchers) and labs.
-- *research* manages studies, study groups, and subjects.
+.. image:: static/schema.png
+    :alt: Database schema
 
+For a list of integrated reusable apps see :ref:`existing_apps:Existing Apps`.
 
-This architecture is meant to be as abstract as possible, in order to allow for
-it to easily lend itself to a wide variety of research disciplines.
-
-*pylabber* provides a `RESTful API <https://en.wikipedia.org/wiki/Representational_state_transfer>`_
-that may be adapted and integrated into your own field of research.
+.. _models:
+   https://docs.djangoproject.com/en/3.0/topics/db/models/
+.. _reusable apps:
+   https://docs.djangoproject.com/en/3.0/intro/reusable-apps/
+.. _URL configurations:
+   https://docs.djangoproject.com/en/3.0/topics/http/urls/

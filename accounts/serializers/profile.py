@@ -1,16 +1,22 @@
-from accounts.models import Profile
+"""
+Definition of the :class:`~accounts.serializers.profile.ProfileSerializer`
+class.
+"""
 
-# from accounts.serializers.user import UserSerializer
+from accounts.models import Profile
 from rest_framework import serializers
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     """
-    `Serializer <https://www.django-rest-framework.org/api-guide/serializers/>`_
+    `Serializer
+    <https://www.django-rest-framework.org/api-guide/serializers/>`_
     class for the :class:`~accounts.models.profile.Profile` model.
     """
 
-    url = serializers.HyperlinkedIdentityField(view_name="accounts:profile-detail")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="accounts:profile-detail"
+    )
 
     class Meta:
         model = Profile

@@ -9,15 +9,10 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import django
 
-# import inspect
+import django
 import os
 import sys
-
-# from django.utils.encoding import force_text
-# from django.utils.html import strip_tags
 
 sys.path.insert(0, os.path.abspath("../../"))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pylabber.settings")
@@ -26,7 +21,7 @@ django.setup()
 # -- Project information -----------------------------------------------------
 
 project = "pylabber"
-copyright = "2019, Zvi Baratz"
+copyright = "2020, Zvi Baratz"
 author = "Zvi Baratz"
 
 # The full version, including alpha/beta/rc tags
@@ -40,10 +35,38 @@ release = "0.1.0"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "sphinx.ext.coverage",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.autosectionlabel",
 ]
+
+EXCLUDED_MEMBERS = (
+    "id",
+    "DoesNotExist",
+    "MultipleObjectsReturned",
+    "get_next_by_date_joined",
+    "get_previous_by_date_joined",
+    "get_next_by_created",
+    "get_previous_by_created",
+    "get_next_by_modified",
+    "get_previous_by_modified",
+    "auth_token",
+    "objects",
+    "user_id",
+    "study_id",
+    "Meta",
+)
+
+autodoc_default_options = {
+    "exclude-members": ", ".join(EXCLUDED_MEMBERS),
+    "undoc-members": False,
+    "member-order": "groupwise",
+}
+
+# Allow safely referencing sections between documents.
+# See: https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.html#confval-autosectionlabel_prefix_document
+autosectionlabel_prefix_document = True
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -72,54 +95,12 @@ html_static_path = []
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "django": ("http://django.readthedocs.org/en/latest/", None),
-    "django_filters": ("https://django-filter.readthedocs.io/en/master/", None),
-    "django_extensions": ("https://django-extensions.readthedocs.io/en/latest/", None),
+    "django_filters": (
+        "https://django-filter.readthedocs.io/en/master/",
+        None,
+    ),
+    "django_extensions": (
+        "https://django-extensions.readthedocs.io/en/latest/",
+        None,
+    ),
 }
-
-# Automatic documentation for model fields, adapted from https://djangosnippets.org/snippets/2533/
-
-
-# def process_docstring(app, what, name, obj, options, lines):
-#     # This causes import errors if left outside the function
-#     from django.db import models
-
-#     # Only look at objects that inherit from Django's base model class
-#     if inspect.isclass(obj) and issubclass(obj, models.Model):
-#         # Grab the field list from the meta class
-#         fields = obj._meta.get_fields()
-
-#         for field in fields:
-#             # Decode and strip any html out of the field's help text
-#             help_text = strip_tags(force_text(field.help_text))
-
-#             # Decode and capitalize the verbose name, for use if there isn't
-#             # any help text
-#             verbose_name = force_text(field.verbose_name).capitalize()
-
-#             if help_text:
-#                 # Add the model field to the end of the docstring as a param
-#                 # using the help text as the description
-#                 lines.append(u":param %s: %s" % (field.attname, help_text))
-#             else:
-#                 # Add the model field to the end of the docstring as a param
-#                 # using the verbose name as the description
-#                 lines.append(u":param %s: %s" % (field.attname, verbose_name))
-
-#             # Add the field's type to the docstring
-#             if isinstance(field, models.ForeignKey):
-#                 to = field.rel.to
-#                 lines.append(
-#                     u":type %s: %s to :class:`~%s.%s`"
-#                     % (field.attname, type(field).__name__, to.__module__, to.__name__)
-#                 )
-#             else:
-#                 lines.append(u":type %s: %s" % (field.attname, type(field).__name__))
-
-#     # Return the extended docstring
-#     return lines
-
-
-# def setup(app):
-#     # Register the docstring processor with sphinx
-#     app.connect("autodoc-process-docstring", process_docstring)
-

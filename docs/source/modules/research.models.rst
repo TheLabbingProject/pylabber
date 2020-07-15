@@ -1,6 +1,14 @@
 research.models package
 =======================
 
+Module contents
+---------------
+
+.. automodule:: research.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -40,15 +48,6 @@ research.models.validators module
 ---------------------------------
 
 .. automodule:: research.models.validators
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: research.models
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,10 +1,10 @@
-research.filters package
+accounts.filters package
 ========================
 
 Module contents
 ---------------
 
-.. automodule:: research.filters
+.. automodule:: accounts.filters
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,10 +12,10 @@ Module contents
 Submodules
 ----------
 
-research.filters.subject\_filter module
----------------------------------------
+accounts.filters.user module
+------------------------------
 
-.. automodule:: research.filters.subject_filter
+.. automodule:: accounts.filters.user
    :members:
    :undoc-members:
    :show-inheritance:

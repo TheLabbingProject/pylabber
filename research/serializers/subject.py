@@ -1,15 +1,23 @@
+"""
+Definition of the :class:`~research.serializers.subject.SubjectSerializer` class.
+"""
+
 from research.models.subject import Subject
 from rest_framework import serializers
 
 
 class SubjectSerializer(serializers.HyperlinkedModelSerializer):
     """
-    `HyperlinkedModelSerializer <https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer>`_
-    for the :class:`~research.models.subject.Subject` model.
+    HyperlinkedModelSerializer_ for the
+    :class:`~research.models.subject.Subject` model.
 
+    .. _HyperlinkedModelSerializer:
+       https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
-    url = serializers.HyperlinkedIdentityField(view_name="research:subject-detail")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="research:subject-detail"
+    )
 
     class Meta:
         model = Subject

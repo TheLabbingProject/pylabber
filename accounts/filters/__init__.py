@@ -1,5 +1,5 @@
 """
-Filters for :ref:`the app's models <modules/research.models:research.models
+Filters for :ref:`the app's models <modules/accounts.models:accounts.models
 package>`.
 
 See Also
@@ -16,5 +16,4 @@ See Also
    https://django-filter.readthedocs.io/en/stable/guide/rest_framework.html
 """
 
-from research.filters.subject_filter import SubjectFilter
-from research.filters.group_filter import GroupFilter
+from accounts.filters.user import UserFilter

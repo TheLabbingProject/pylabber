@@ -1,3 +1,7 @@
+"""
+Definition of the :class:`~accounts.views.user.UserViewSet` class.
+"""
+
 from accounts.filters.user import UserFilter
 from accounts.serializers.user import UserSerializer
 from django.contrib.auth import get_user_model

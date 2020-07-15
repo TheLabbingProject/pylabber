@@ -1,14 +1,18 @@
-Welcome to *pylabber*'s documentation!
+Welcome to pylabber's documentation!
 ======================================
 
-The purpose of *pylabber* is to give researchers the power to manage and share
-their data in an open and easy manner. No more hard-drives with valuable data
-forgotten in random laboratories' drawers, no more in-house, untested and
-unmaintained scripts to inefficiently query your data, stored locally in some
-makeshift directory structure. It is meant to give a unified and community-
-based solution for all of the vacuous technical work researchers often have
-to overcome instead of doing **research**.
+*pylabber* is a Django_ project designed to provide the core functionality
+required to conduct neuroscientific research.
 
+.. seealso::
+   For more information about Django applications and the difference between
+   projects and apps see the documentation's `getting started`_ page, as well
+   as the `projects and applications`_ section.
+
+   .. _getting started:
+      https://docs.djangoproject.com/en/3.0/intro/
+   .. _projects and applications:
+      https://docs.djangoproject.com/en/3.0/ref/applications/#projects-and-applications
 
 .. toctree::
    :maxdepth: 2
@@ -16,6 +20,7 @@ to overcome instead of doing **research**.
 
    overview
    usage/installation
+   existing_apps
    modules/modules
 
 Indices and tables
@@ -24,3 +29,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. _Django:
+   https://www.djangoproject.com/

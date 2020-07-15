@@ -16,7 +16,7 @@ The basic models_ detailed above are meant to be integrated with external,
 `reusable apps`_, providing domain-specific data models and functionality over
 them.
 
-.. image:: static/schema.png
+.. image:: images/schema.png
     :alt: Database schema
 
 For a list of integrated reusable apps see :ref:`existing_apps:Existing Apps`.

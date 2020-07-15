@@ -13,6 +13,7 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 1
 
    research.filters
    research.models

@@ -1,3 +1,7 @@
+"""
+Definition of the :class:`~research.filters.subject.SubjectFilter` class.
+"""
+
 from django_dicom.models.patient import Patient
 from django_mri.models.scan import Scan
 from django_filters import rest_framework as filters
@@ -6,9 +10,9 @@ from research.models.subject import Subject
 
 class SubjectFilter(filters.FilterSet):
     """
-    Provides useful filtering options for the :class:`~research.models.subject.Subject`
-    model.
-    
+    Provides useful filtering options for the
+    :class:`~research.models.subject.Subject` model.
+
     """
 
     born_after_date = filters.DateFilter("date_of_birth", lookup_expr="gte")
@@ -47,7 +51,7 @@ class SubjectFilter(filters.FilterSet):
         """
         Find the subject that represents a particular DICOM
         :class:`~django_dicom.models.patient.Patient` instance.
-        
+
         Parameters
         ----------
         queryset : django.db.models.QuerySet
@@ -61,7 +65,9 @@ class SubjectFilter(filters.FilterSet):
             return queryset
 
         dicom_patient = Patient.objects.get(id=value)
-        mri_scans = Scan.objects.filter(dicom__in=dicom_patient.series_set.all())
+        mri_scans = Scan.objects.filter(
+            dicom__in=dicom_patient.series_set.all()
+        )
         subject_ids = set(
             mri_scans.order_by("subject").values_list("subject", flat=True)
         )

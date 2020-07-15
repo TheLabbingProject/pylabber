@@ -104,3 +104,8 @@ intersphinx_mapping = {
         None,
     ),
 }
+
+# Sphinx expects the master file to be "contents.rst"
+# Fix based on
+# https://stackoverflow.com/questions/56336234/build-fail-sphinx-error-contents-rst-not-found
+master_doc = "index"

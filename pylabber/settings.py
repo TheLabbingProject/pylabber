@@ -164,14 +164,9 @@ LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     "version": 1,
     "formatters": {
-        "normal": {
-            "format": "{asctime} {name} {levelname} {message}",
-            "style": "{",
-        },
+        "normal": {"format": "{asctime} {name} {levelname} {message}", "style": "{",},
     },
-    "filters": {
-        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
-    },
+    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
     "handlers": {
         "debug_file": {
             "level": "DEBUG",
@@ -265,14 +260,8 @@ EXTRA_INPUT_DEFINITION_SERIALIZERS = {
     ),
 }
 EXTRA_INPUT_SERIALIZERS = {
-    "ScanInput": (
-        "django_mri.serializers.input.scan_input",
-        "ScanInputSerializer",
-    ),
-    "NiftiInput": (
-        "django_mri.serializers.input.nifti_input",
-        "NiftiInputSerializer",
-    ),
+    "ScanInput": ("django_mri.serializers.input.scan_input", "ScanInputSerializer",),
+    "NiftiInput": ("django_mri.serializers.input.nifti_input", "NiftiInputSerializer",),
 }
 EXTRA_OUTPUT_DEFINITION_SERIALIZERS = {
     "NiftiOutputDefinition": (
@@ -289,3 +278,6 @@ EXTRA_OUTPUT_SERIALIZERS = {
 
 # django_dicom
 DICOM_IMPORT_MODE = "minimal"
+
+# For external usage of APP_IP
+APP_IP = env("APP_IP")

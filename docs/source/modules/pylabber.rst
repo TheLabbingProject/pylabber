@@ -1,6 +1,14 @@
 pylabber package
 ================
 
+Module contents
+---------------
+
+.. automodule:: pylabber
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -40,15 +48,6 @@ pylabber.wsgi module
 --------------------
 
 .. automodule:: pylabber.wsgi
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: pylabber
    :members:
    :undoc-members:
    :show-inheritance:

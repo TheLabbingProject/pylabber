@@ -1,3 +1,7 @@
+"""
+Definition of the :class:`~accounts.views.group.GroupViewSet` class.
+"""
+
 from accounts.serializers.group import GroupSerializer
 from django.contrib.auth.models import Group
 from pylabber.views.defaults import DefaultsMixin

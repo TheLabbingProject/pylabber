@@ -14,10 +14,11 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 1
 
+   accounts.filters
    accounts.models
    accounts.serializers
-   accounts.tests
    accounts.views
 
 Submodules

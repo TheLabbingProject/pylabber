@@ -147,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Media directory
-MEDIA_ROOT = env("MEDIA_ROOT")
+MEDIA_ROOT = env("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
 MEDIA_URL = "/media/"
 
 # Static directory

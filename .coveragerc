@@ -5,6 +5,7 @@ omit = ../*migrations*
     run_tests.py
     *tests*
     venv/**
+    tox/**
 
 source = .
 branch = True

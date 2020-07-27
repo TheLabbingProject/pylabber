@@ -244,7 +244,7 @@ CORS_ORIGIN_WHITELIST = [
     f"http://{env('APP_IP')}:8080",
     f"https://{env('APP_IP')}:8080",
     "http://localhost:5006",
-    "http://6a4ee662a81e.ngrok.io",
+    "https://vuelabber.herokuapp.com",
 ]
 
 

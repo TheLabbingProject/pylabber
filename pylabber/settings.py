@@ -35,7 +35,6 @@ env = environ.Env(
     APP_IP=(str, "localhost"),
 )
 environ.Env.read_env()
-django_heroku.settings(locals())
 
 # The base directory of the project. Used to infer the locations of directories
 # required by the application (static files, logs, etc).
@@ -295,3 +294,6 @@ DICOM_IMPORT_MODE = "minimal"
 
 # For external usage of APP_IP
 APP_IP = env("APP_IP")
+
+# Load Heroku environment settings.
+django_heroku.settings(locals())

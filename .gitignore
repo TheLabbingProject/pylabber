@@ -61,4 +61,6 @@ logs/*
 param_test.xlsx
 params_calculation.ipynb
 
-
+# Default media directory
+media/*
+!media/.gitkeep

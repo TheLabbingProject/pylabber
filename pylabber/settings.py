@@ -33,6 +33,7 @@ env = environ.Env(
     DB_PORT=(int, 5432),
     RAW_SUBJECT_TABLE_PATH=(str, "subjects.xlsx"),
     APP_IP=(str, "localhost"),
+    TESTING_MODE=(bool, False),
 )
 environ.Env.read_env()
 
@@ -294,6 +295,8 @@ DICOM_IMPORT_MODE = "minimal"
 
 # For external usage of APP_IP
 APP_IP = env("APP_IP")
+
+TESTING_MODE = env("TESTING_MODE")
 
 # Load Heroku environment settings.
 django_heroku.settings(locals())

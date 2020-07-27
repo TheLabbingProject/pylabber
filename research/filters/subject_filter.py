@@ -72,4 +72,3 @@ class SubjectFilter(filters.FilterSet):
             mri_scans.order_by("subject").values_list("subject", flat=True)
         )
         return queryset.filter(id=subject_ids.pop())
-

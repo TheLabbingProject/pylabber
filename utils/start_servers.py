@@ -15,6 +15,8 @@ COMMANDS = {
         f"127.0.0.1:{PORTS['vue']}",
         "--allow-websocket-origin",
         f"localhost:{PORTS['vue']}",
+        "--allow-websocket-origin",
+        "*",
         "--websocket-max-message-size",
         "10000",
         "plots/series/series_viewer",
@@ -37,4 +39,6 @@ def start_server(service_name: str) -> subprocess.Popen:
 
 
 def start_servers() -> dict:
-    return {service_name: start_server(service_name) for service_name in COMMANDS}
+    return {
+        service_name: start_server(service_name) for service_name in COMMANDS
+    }

@@ -25,9 +25,6 @@ staticfiles/
 # JS modules
 node_modules/
 
-# Uploaded files
-media/
-
 # Development database
 db.sqlite3
 

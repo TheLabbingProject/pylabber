@@ -2,8 +2,9 @@
 Filters for :ref:`the app's models <modules/accounts.models:accounts.models
 package>`.
 
-See Also
---------
+Notes
+-----
+For more information, see:
 
     * `Django REST Framework`_ `filtering documentation`_.
     * django-filter_'s documentation for `Integration with DRF`_.

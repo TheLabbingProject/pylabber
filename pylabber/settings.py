@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import environ
 import os
 
-from django_mri.analysis.interfaces import interfaces
+from django_mri.analysis.mri_interfaces import interfaces
 from pathlib import Path
 
 
@@ -31,7 +31,7 @@ env = environ.Env(
     DB_HOST=(str, "localhost"),
     DB_PORT=(int, 5432),
     RAW_SUBJECT_TABLE_PATH=(str, "subjects.xlsx"),
-    APP_IP=(str, "127.0.0.1"),
+    APP_IP=(str, "localhost"),
 )
 environ.Env.read_env()
 
@@ -164,9 +164,14 @@ LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     "version": 1,
     "formatters": {
-        "normal": {"format": "{asctime} {name} {levelname} {message}", "style": "{",},
+        "normal": {
+            "format": "{asctime} {name} {levelname} {message}",
+            "style": "{",
+        },
     },
-    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
+    "filters": {
+        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
+    },
     "handlers": {
         "debug_file": {
             "level": "DEBUG",
@@ -260,8 +265,14 @@ EXTRA_INPUT_DEFINITION_SERIALIZERS = {
     ),
 }
 EXTRA_INPUT_SERIALIZERS = {
-    "ScanInput": ("django_mri.serializers.input.scan_input", "ScanInputSerializer",),
-    "NiftiInput": ("django_mri.serializers.input.nifti_input", "NiftiInputSerializer",),
+    "ScanInput": (
+        "django_mri.serializers.input.scan_input",
+        "ScanInputSerializer",
+    ),
+    "NiftiInput": (
+        "django_mri.serializers.input.nifti_input",
+        "NiftiInputSerializer",
+    ),
 }
 EXTRA_OUTPUT_DEFINITION_SERIALIZERS = {
     "NiftiOutputDefinition": (

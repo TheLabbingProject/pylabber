@@ -11,8 +11,11 @@ from accounts.serializers.profile import ProfileSerializer
 
 class UserSerializer(UserDetailsSerializer):
     """
-    `Serializer <https://www.django-rest-framework.org/api-guide/serializers/>`_
-    class for the :class:`~accounts.models.user.User` model.
+    Serializer class for the :class:`~accounts.models.user.User` model.
+
+    References
+    ----------
+    * https://www.django-rest-framework.org/api-guide/serializers/
     """
 
     url = serializers.HyperlinkedIdentityField(

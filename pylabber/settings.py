@@ -8,6 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import django_heroku
 import environ
 import os
 
@@ -34,6 +35,7 @@ env = environ.Env(
     APP_IP=(str, "localhost"),
 )
 environ.Env.read_env()
+django_heroku.settings(locals())
 
 # The base directory of the project. Used to infer the locations of directories
 # required by the application (static files, logs, etc).
@@ -243,6 +245,7 @@ CORS_ORIGIN_WHITELIST = [
     f"http://{env('APP_IP')}:8080",
     f"https://{env('APP_IP')}:8080",
     "http://localhost:5006",
+    "http://6a4ee662a81e.ngrok.io",
 ]
 
 

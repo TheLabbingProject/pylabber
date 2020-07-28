@@ -21,13 +21,16 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+          name: Install libpq-dev
+          command: apt update && apt install -y libpq-dev
       - python/load-cache
       - python/install-deps
       - python/save-cache
       - run: pip install tox
       - run:
-          command: tox
           name: Test using tox
+          command: tox
       - codecov/upload:
           file: coverage.xml
           flags: unittests

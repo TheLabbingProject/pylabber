@@ -14,7 +14,7 @@ gunicorn==20.0.4
 nipype~=1.5
 numpy~=1.19
 pandas~=0.25
-Pillow~=6.2
+Pillow>=7.1.0
 psycopg2-binary~=2.8
 xlrd~=1.2
 git+https://github.com/TheLabbingProject/django_analyses.git@master#egg=django_analyses

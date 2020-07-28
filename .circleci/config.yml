@@ -21,14 +21,16 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - run: apk add --update postgresql-dev
+      - run:
+          name: Install postgresql-dev
+          command: apk add --update postgresql-dev
       - python/load-cache
       - python/install-deps
       - python/save-cache
       - run: pip install tox
       - run:
-          command: tox
           name: Test using tox
+          command: tox
       - codecov/upload:
           file: coverage.xml
           flags: unittests

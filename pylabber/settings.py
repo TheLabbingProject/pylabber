@@ -300,4 +300,4 @@ TESTING_MODE = env("TESTING_MODE")
 
 # Load Heroku environment settings.
 if not DEBUG:
-    django_heroku.settings(locals(), logging=not DEBUG, databases=not DEBUG)
+    django_heroku.settings(locals())

@@ -300,3 +300,8 @@ TESTING_MODE = env("TESTING_MODE")
 
 # Load Heroku environment settings.
 django_heroku.settings(locals())
+
+# Fix OperationalError raised after heroky integration.
+# See https://github.com/heroku/heroku-buildpack-pgbouncer/issues/118
+del DATABASES["default"]["OPTIONS"]["sslmode"]
+

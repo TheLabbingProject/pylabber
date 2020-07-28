@@ -161,6 +161,7 @@ os.makedirs(STATIC_ROOT, exist_ok=True)
 STATIC_URL = "/static/"
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+os.makedirs(STATICFILES_DIRS, exist_ok=True)
 
 # AWS S3 configuration
 if os.getenv("USE_S3"):

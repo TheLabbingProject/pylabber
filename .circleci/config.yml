@@ -20,7 +20,7 @@ jobs:
           POSTGRES_DB: circle_test
           POSTGRES_PASSWORD: password
     steps:
-      - run: sudo apt install libpq-dev
+      - run: apk update && apk add postgresql-dev
       - checkout
       - python/load-cache
       - python/install-deps

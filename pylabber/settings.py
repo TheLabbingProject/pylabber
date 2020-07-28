@@ -24,7 +24,7 @@ from pathlib import Path
 # directory.
 env = environ.Env(
     DEBUG=(bool, True),
-    ALLOWED_HOSTS=(list, ["*"]),
+    ALLOWED_HOSTS=(list, ["pylabber.herokuapp.com"]),
     SECRET_KEY=(str, "s0m3-$upEr=S3cre7"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),
@@ -271,6 +271,7 @@ CORS_ORIGIN_WHITELIST = [
     f"https://{env('APP_IP')}:8080",
     "http://localhost:5006",
     "https://vuelabber.herokuapp.com",
+    "https://pylabber.herokuapp.com",
 ]
 
 

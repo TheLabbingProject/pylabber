@@ -23,8 +23,8 @@ from pathlib import Path
 # Environment variables are expected to be set in a .env file within this
 # directory.
 env = environ.Env(
-    DEBUG=(bool, True),
-    ALLOWED_HOSTS=(list, ["pylabber.herokuapp.com"]),
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, [""]),
     SECRET_KEY=(str, "s0m3-$upEr=S3cre7"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),

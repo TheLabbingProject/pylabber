@@ -20,8 +20,8 @@ jobs:
           POSTGRES_DB: circle_test
           POSTGRES_PASSWORD: password
     steps:
-      - run: apk update && apk add postgresql-dev
       - checkout
+      - run: apk add --update postgresql-dev
       - python/load-cache
       - python/install-deps
       - python/save-cache

@@ -157,6 +157,7 @@ MEDIA_URL = "/media/"
 
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+os.makedirs(STATIC_ROOT, exist_ok=True)
 STATIC_URL = "/static/"
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)

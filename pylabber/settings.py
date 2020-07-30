@@ -186,6 +186,9 @@ if os.getenv("USE_S3"):
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
     DEFAULT_FILE_STORAGE = "pylabber.storage_backends.MediaStorage"
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Date format
 DATE_FORMAT = "d/m/Y"
 

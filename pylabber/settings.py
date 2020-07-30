@@ -351,4 +351,5 @@ TESTING_MODE = env("TESTING_MODE")
 
 # Load Heroku environment settings.
 if not DEBUG:
+    DEBUG_PROPAGATE_EXCEPTIONS = True
     django_heroku.settings(locals())

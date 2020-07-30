@@ -58,6 +58,7 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 # List of applications used by the project.
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     "accounts.apps.AccountsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -173,6 +174,7 @@ if os.getenv("USE_S3"):
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_S3_REGION_NAME = "eu-central-1"
+
     # s3 static settings
     # AWS_LOCATION = "static"
     # STATIC_LOCATION = "static"
@@ -181,6 +183,7 @@ if os.getenv("USE_S3"):
     # STATICFILES_DIRS = [
     #     os.path.join(BASE_DIR, "mysite/static"),
     # ]
+
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = "media"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
@@ -244,7 +247,7 @@ else:
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
-        "handlers": {"console": {"class": "logging.StreamHandler",},},
+        "handlers": {"console": {"class": "logging.StreamHandler"}},
         "loggers": {
             "django": {
                 "handlers": ["console"],

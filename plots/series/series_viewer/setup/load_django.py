@@ -12,7 +12,7 @@ def prepare_environment() -> None:
     # https://docs.djangoproject.com/en/3.0/topics/settings/#envvar-DJANGO_SETTINGS_MODULE
     os.environ["DJANGO_SETTINGS_MODULE"] = f"{PROJECT_NAME}.settings"
 
-    # This settings is required to prevent an async call error from django (==3.0.6).
+    # This settings is required to prevent an async call error from django.
     # See: https://stackoverflow.com/a/59774008/4416932
     os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 

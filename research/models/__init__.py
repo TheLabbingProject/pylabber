@@ -9,3 +9,6 @@ between the different models, see the :ref:`overview:Overview`.
 from research.models.group import Group
 from research.models.study import Study
 from research.models.subject import Subject
+from research.models.task import Task
+from research.models.event import Event
+from research.models.measurements.measurement_definition import MeasurementDefinition

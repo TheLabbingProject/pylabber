@@ -24,7 +24,7 @@ from pathlib import Path
 # directory.
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, [""]),
+    ALLOWED_HOSTS=(str, [""]),
     SECRET_KEY=(str, "s0m3-$upEr=S3cre7"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),

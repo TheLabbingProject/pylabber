@@ -164,14 +164,9 @@ LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     "version": 1,
     "formatters": {
-        "normal": {
-            "format": "{asctime} {name} {levelname} {message}",
-            "style": "{",
-        },
+        "normal": {"format": "{asctime} {name} {levelname} {message}", "style": "{",},
     },
-    "filters": {
-        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
-    },
+    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
     "handlers": {
         "debug_file": {
             "level": "DEBUG",
@@ -249,6 +244,7 @@ CORS_ORIGIN_WHITELIST = [
 # research
 SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"
+MEASUREMENT_MODEL = "research.ScanMeasurement"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 
 # django_analyses
@@ -265,14 +261,8 @@ EXTRA_INPUT_DEFINITION_SERIALIZERS = {
     ),
 }
 EXTRA_INPUT_SERIALIZERS = {
-    "ScanInput": (
-        "django_mri.serializers.input.scan_input",
-        "ScanInputSerializer",
-    ),
-    "NiftiInput": (
-        "django_mri.serializers.input.nifti_input",
-        "NiftiInputSerializer",
-    ),
+    "ScanInput": ("django_mri.serializers.input.scan_input", "ScanInputSerializer",),
+    "NiftiInput": ("django_mri.serializers.input.nifti_input", "NiftiInputSerializer",),
 }
 EXTRA_OUTPUT_DEFINITION_SERIALIZERS = {
     "NiftiOutputDefinition": (

@@ -12,11 +12,3 @@ class MeasurementDefinition(Event):
     Represents an experimental measurement definition.
     """
 
-    measurement = models.ForeignKey(
-        get_measurement_model(),
-        on_delete=models.PROTECT,
-        related_name="measurements",
-        blank=True,
-        null=True,
-    )
-

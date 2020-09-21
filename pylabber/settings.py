@@ -24,7 +24,7 @@ from pathlib import Path
 # directory.
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, [""]),
+    ALLOWED_HOSTS=(list, ["*"]),
     SECRET_KEY=(str, "s0m3-$upEr=S3cre7"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),
@@ -51,7 +51,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 # Debug mode switch (should be set to *True* in development and *False* in
 # production).
-DEBUG = env("DEBUG")
+DEBUG = env("DEBUG", default=True)
 
 # List of safe hosts to serve.
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")

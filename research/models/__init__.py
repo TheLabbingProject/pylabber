@@ -11,4 +11,4 @@ from research.models.study import Study
 from research.models.subject import Subject
 from research.models.task import Task
 from research.models.event import Event
-from research.models.measurements.measurement_definition import MeasurementDefinition
+from research.models.measurement_definition import MeasurementDefinition

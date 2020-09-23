@@ -16,7 +16,9 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
        https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
-    url = serializers.HyperlinkedIdentityField(view_name="research:subject-detail")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="research:subject-detail"
+    )
     mri_session_set = SessionSerializer(many=True)
 
     class Meta:

@@ -284,7 +284,7 @@ CORS_ORIGIN_WHITELIST = [
 # research
 SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"
-MEASUREMENT_MODEL = "django_mri.MeasurementDefinition"
+MEASUREMENT_MODEL = "research.MeasurementDefinition"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 
 # django_analyses

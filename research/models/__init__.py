@@ -12,3 +12,4 @@ from research.models.subject import Subject
 from research.models.task import Task
 from research.models.event import Event
 from research.models.measurement_definition import MeasurementDefinition
+from research.models.procedure import Procedure

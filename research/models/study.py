@@ -57,4 +57,4 @@ class Study(TitleDescriptionModel, TimeStampedModel):
             URL
         """
 
-        return reverse("research:study_detail", args=[str(self.id)])
+        return reverse("research:study-detail", args=[str(self.id)])

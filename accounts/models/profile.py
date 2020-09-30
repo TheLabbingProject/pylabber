@@ -76,7 +76,7 @@ class Profile(models.Model):
         str
             URL
         """
-        return reverse("accounts:user_detail", args=[str(self.user.id)])
+        return reverse("accounts:user-detail", args=[str(self.user.id)])
 
     def get_full_name(self) -> str:
         """

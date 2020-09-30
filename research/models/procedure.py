@@ -11,4 +11,4 @@ class Procedure(models.Model):
     Represents a procedure.
     """
 
-    events = models.ManyToManyField(Event, through="ListItem")
+    events = models.ManyToManyField(Event, through="research.ProcedureStep")

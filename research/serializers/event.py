@@ -1,14 +1,14 @@
 """
-Definition of the :class:`~research.serializers.task.TaskSerializer` class.
+Definition of the :class:`~research.serializers.event.EventSerializer` class.
 """
 
-from research.models.task import Task
+from research.models.event import Event
 from rest_framework import serializers
 
 
-class TaskSerializer(serializers.HyperlinkedModelSerializer):
+class EventSerializer(serializers.HyperlinkedModelSerializer):
     """
-    HyperlinkedModelSerializer_ for the :class:`~research.models.task.Task`
+    HyperlinkedModelSerializer_ for the :class:`~research.models.event.Event`
     model.
 
     .. _HyperlinkedModelSerializer:
@@ -16,11 +16,11 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     """
 
     url = serializers.HyperlinkedIdentityField(
-        view_name="research:task-detail"
+        view_name="research:event-detail"
     )
 
     class Meta:
-        model = Task
+        model = Event
         fields = (
             "id",
             "url",

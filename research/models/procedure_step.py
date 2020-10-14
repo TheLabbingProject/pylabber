@@ -2,6 +2,7 @@
 Definition of the :class:`~research.models.ProcedureStep`
 """
 from django.db import models
+from django.urls import reverse
 
 
 class ProcedureStep(models.Model):
@@ -9,8 +10,13 @@ class ProcedureStep(models.Model):
     Represents an item in the :class:`~research.models.Event` list of :class:`~research.models.Procedure` model.
     """
 
+    #: An index to indicate the location in the procedure's ordered list.
     index = models.PositiveIntegerField()
+
+    #: The event related to the current item.
     event = models.ForeignKey("research.Event", on_delete=models.CASCADE)
+
+    #: The procedure related to this item.
     procedure = models.ForeignKey(
         "research.Procedure", on_delete=models.PROTECT
     )
@@ -18,24 +24,21 @@ class ProcedureStep(models.Model):
     class Meta:
         ordering = ("index",)
 
-    def save(self, *args, **kwargs):
+    def get_absolute_url(self):
         """
-        Overrides the model's :meth:`~django.db.models.Model.save` method to
-        provide custom validation.
+        Returns the canonical URL for this instance.
 
-        Hint
-        ----
-        For more information, see Django's documentation on `overriding model
-        methods`_.
+        References
+        ----------
+        * `get_absolute_url()`_
 
-        .. _overriding model methods:
-           https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
+        .. _get_absolute_url():
+            https://docs.djangoproject.com/en/3.0/ref/models/instances/#get-absolute-url
+
+        Returns
+        -------
+        str
+            URL
         """
-        if self.index == 0:
-            events = self.procedure.events
-            if events.all():
-                max_index = max(events.values_list("index",))
-                if max_index > 0:
-                    self.index = max_index
-            else:
-                self.index = 1
+
+        return reverse("research:procedure_step-detail", args=[str(self.id)])

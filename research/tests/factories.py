@@ -5,7 +5,16 @@ import factory.fuzzy
 from accounts.tests.factories import UserFactory
 from django.utils import timezone
 from random import randint
-from research.models import Study, Subject, choices
+from research.models import (
+    Study,
+    Subject,
+    Task,
+    Event,
+    MeasurementDefinition,
+    Procedure,
+    ProcedureStep,
+    choices,
+)
 
 DIGITS = [str(i) for i in range(10)]
 DOMINANT_HAND_CHOICES = [option.name for option in choices.DominantHand]
@@ -39,7 +48,54 @@ class StudyFactory(factory.django.DjangoModelFactory):
     def created(self):
         return timezone.now() - datetime.timedelta(days=randint(5, 50))
 
-    modified = factory.lazy_attribute(lambda o: o.created + datetime.timedelta(days=4))
+    modified = factory.lazy_attribute(
+        lambda o: o.created + datetime.timedelta(days=4)
+    )
 
     subjects = factory.RelatedFactory(SubjectFactory)
     collaborators = factory.RelatedFactory(UserFactory)
+
+
+class EventFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Event
+        strategy = factory.BUILD_STRATEGY
+
+    title = factory.Faker("sentence", nb_words=2)
+    description = factory.Faker("paragraph", nb_sentences=4)
+
+
+class TaskFactory(EventFactory):
+    class Meta:
+        model = Task
+        strategy = factory.BUILD_STRATEGY
+
+
+class MeasurementDefinitionFactory(EventFactory):
+    class Meta:
+        model = MeasurementDefinition
+        strategy = factory.BUILD_STRATEGY
+
+
+class ProcedureStepFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ProcedureStep
+        strategy = factory.BUILD_STRATEGY
+
+    event = factory.SubFactory(EventFactory)
+    index = factory.Faker("random_int", min=0)
+
+
+class ProcedureFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Procedure
+        strategy = factory.BUILD_STRATEGY
+
+    title = factory.Faker("sentence", nb_words=2)
+    description = factory.Faker("paragraph", nb_sentences=4)
+
+    events = factory.RelatedFactory(
+        ProcedureStepFactory, factory_related_name="procedure"
+    )
+    index = 0
+

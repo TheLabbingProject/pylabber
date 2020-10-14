@@ -19,7 +19,7 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="research:subject-detail"
     )
-    mri_session_set = SessionSerializer(many=True)
+    mri_session_set = SessionSerializer(many=True, required=False)
 
     class Meta:
         model = Subject

@@ -11,5 +11,5 @@ class ProcedureStepViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     """
 
-    queryset = ProcedureStep.objects.order_by("title").all()
+    queryset = ProcedureStep.objects.all()
     serializer_class = ProcedureStepSerializer

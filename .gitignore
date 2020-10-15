@@ -47,8 +47,6 @@ coverage.xml
 **.pkl
 docs/build/
 docs/source/_*/
-*/migrations/*
-!*/migrations/__init__.py
 
 # Logs
 logs/*

@@ -59,7 +59,7 @@ class Procedure(TitleDescriptionModel):
         * `get_absolute_url()`_
 
         .. _get_absolute_url():
-            https://docs.djangoproject.com/en/3.0/ref/models/instances/#get-absolute-url
+           https://docs.djangoproject.com/en/3.0/ref/models/instances/#get-absolute-url
 
         Returns
         -------

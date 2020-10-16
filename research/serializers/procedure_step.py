@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~ProcedureStepSerializer` class.
+Definition of the :class:`ProcedureStepSerializer` class.
 """
 
 from research.models.procedure_step import ProcedureStep

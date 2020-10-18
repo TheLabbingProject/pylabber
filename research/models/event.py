@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.models.event.Event` model.
+Definition of the :class:`Event` model.
 """
 
 from django_extensions.db.models import TitleDescriptionModel

@@ -13,8 +13,11 @@ class MockRequest:
 
 
 class LoggedInTestCase(APITestCase):
+    """
+    TestCase setup with an authenticated user.
+    """
+
     def setUp(self):
-        # self.user = UserFactory(password=TEST_PASSWORD)
         self.user = User.objects.create_user(
             username="test", email="test@test.test", password=TEST_PASSWORD
         )
@@ -22,4 +25,4 @@ class LoggedInTestCase(APITestCase):
         self.login()
 
     def login(self):
-        self.client.login(username=self.user.username, password=TEST_PASSWORD)
+        self.client.force_authenticate(self.user)

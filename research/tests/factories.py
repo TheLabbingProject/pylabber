@@ -97,5 +97,4 @@ class ProcedureFactory(factory.django.DjangoModelFactory):
     events = factory.RelatedFactory(
         ProcedureStepFactory, factory_related_name="procedure"
     )
-    index = 0
 

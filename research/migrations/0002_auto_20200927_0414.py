@@ -58,7 +58,6 @@ class Migration(migrations.Migration):
                         blank=True, null=True, verbose_name="description"
                     ),
                 ),
-                ("index", models.PositiveIntegerField()),
             ],
             options={"ordering": ("title",),},
         ),
@@ -126,7 +125,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"ordering": ("index",),},
+            options={
+                "ordering": ("index",),
+                "unique_together": ("procedure", "index"),
+            },
         ),
         migrations.AddField(
             model_name="procedure",
@@ -138,4 +140,4 @@ class Migration(migrations.Migration):
     ]
     # Added this part in order to control the models creation
     # (Session model is related to MeasurementDefinition in this case)
-    run_before = [("django_mri", "__first__")]
+    run_before = [("django_mri", "0009_auto_20200929_0818")]

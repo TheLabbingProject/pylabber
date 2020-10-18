@@ -28,5 +28,4 @@ class ProcedureModelTestCase(TestCase):
     def test_add_event(self):
         self.test_procedure.add_event(TaskFactory.create())
         self.test_procedure.add_event(MeasurementDefinitionFactory.create())
-        self.assertEqual(len(self.test_procedure.events.all()), 2)
-        self.assertEqual(self.test_procedure.index, 2)
+        self.assertEqual(self.test_procedure.events.count(), 2)

@@ -44,6 +44,38 @@ research.models.subject module
    :undoc-members:
    :show-inheritance:
 
+research.models.procedure module
+--------------------------------
+
+.. automodule:: research.models.procedure
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+research.models.event module
+----------------------------
+
+.. automodule:: research.models.event
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+research.models.task module
+---------------------------
+
+.. automodule:: research.models.task
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+research.models.measurement_definition module
+---------------------------------------------
+
+.. automodule:: research.models.measurement_definition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 research.models.validators module
 ---------------------------------
 

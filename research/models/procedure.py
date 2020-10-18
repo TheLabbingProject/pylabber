@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.models.procedure.Procedure` model.
+Definition of the :class:`Procedure` model.
 """
 
 from django.db import models
@@ -16,8 +16,6 @@ class Procedure(TitleDescriptionModel):
 
     #: Represents an ordered list of events in a procedure.
     events = models.ManyToManyField(Event, through="research.ProcedureStep")
-    #: A variable to order the events in the list.
-    index = models.PositiveIntegerField()
 
     class Meta:
         ordering = ("title",)
@@ -25,30 +23,12 @@ class Procedure(TitleDescriptionModel):
     def __str__(self):
         return f"{self.title}|{self.description}"
 
-    @property
-    def curr_index(self):
+    def add_event(self, event: Event, index: int = None):
         """
-        Calculates the relevant index for the current added event.
-        """
-
-        self.index += 1
-        return self.index
-
-    def add_event(self, event: Event):
-        """
-        Performs an event addition, 
-        using the curr_index and the maximum of indices.
+        Performs an event addition.
         """
 
-        if len(self.events.all()) > 0:
-            (max_index,) = max(self.events.values_list("procedurestep__index"))
-            self.index = max_index + 1
-            curr_index = self.index
-        else:
-            curr_index = self.curr_index
-        ProcedureStep.objects.create(
-            index=curr_index, event=event, procedure=self
-        )
+        ProcedureStep.objects.create(index=index, event=event, procedure=self)
 
     def get_absolute_url(self):
         """

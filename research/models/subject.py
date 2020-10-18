@@ -92,7 +92,7 @@ class Subject(TimeStampedModel):
             URL
         """
 
-        return reverse("research:subject_detail", args=[str(self.id)])
+        return reverse("research:subject-detail", args=[str(self.id)])
 
     def save(self, *args, **kwargs):
         """

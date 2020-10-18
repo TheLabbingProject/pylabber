@@ -47,8 +47,6 @@ coverage.xml
 **.pkl
 docs/build/
 docs/source/_*/
-*/migrations/*
-!*/migrations/__init__.py
 
 # Logs
 logs/*
@@ -57,6 +55,8 @@ logs/*
 # Other calculations for the project
 param_test.xlsx
 params_calculation.ipynb
+subjects.xlsx
+subjects_script.ipynb
 
 # Default media directory
 media/*

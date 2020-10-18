@@ -3,6 +3,7 @@ Definition of the :class:`~research.serializers.subject.SubjectSerializer` class
 """
 
 from research.models.subject import Subject
+from django_mri.serializers import SessionSerializer
 from rest_framework import serializers
 
 
@@ -18,6 +19,7 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="research:subject-detail"
     )
+    mri_session_set = SessionSerializer(many=True, required=False)
 
     class Meta:
         model = Subject
@@ -32,4 +34,5 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
             "sex",
             "gender",
             "custom_attributes",
+            "mri_session_set",
         )

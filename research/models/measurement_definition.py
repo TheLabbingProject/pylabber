@@ -1,8 +1,7 @@
 """
-Definition of the :class:`~research.models.MeasurementDefinition` model.
+Definition of the :class:`MeasurementDefinition` model.
 """
 
-from django.db import models
 from django.urls import reverse
 from research.models.event import Event
 

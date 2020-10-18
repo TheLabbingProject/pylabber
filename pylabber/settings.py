@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "rest_auth",
     "corsheaders",
     "storages",
+    "django_celery_results",
     # Local
     "research",
     # Extensions
@@ -197,6 +198,9 @@ DATE_FORMAT = "d/m/Y"
 
 # Time format
 TIME_FORMAT = "H:i:s"
+
+USE_TZ = True
+TIME_ZONE = "Asia/Jerusalem"
 
 # Logging
 LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
@@ -353,3 +357,11 @@ TESTING_MODE = env("TESTING_MODE")
 if not DEBUG:
     DEBUG_PROPAGATE_EXCEPTIONS = True
     django_heroku.settings(locals())
+
+
+# Celery
+
+if USE_TZ:
+    CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_TASK_TRACK_STARTED = True

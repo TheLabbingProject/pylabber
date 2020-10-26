@@ -1,1 +1,5 @@
-from pylabber.utils.utils import CharNullField, ChoiceEnum
+from pylabber.utils.utils import (
+    CharNullField,
+    ChoiceEnum,
+    SubjectDataHandler,
+)

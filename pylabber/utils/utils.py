@@ -5,6 +5,8 @@ General utility classes and functions for the *pylabber*
 
 from django.db import models
 from enum import Enum
+from questionnaire_reader import QuestionnaireReader
+import msoffcrypto, io
 
 
 class ChoiceEnum(Enum):
@@ -72,3 +74,28 @@ class CharNullField(models.CharField):
         else:
             # Otherwise, just pass the value.
             return value
+
+
+class SubjectDataHandler:
+    @classmethod
+    def __init__(cls, path):
+        cls.questionnaire = QuestionnaireReader(path=path)
+
+    def open_password_protected_excel(
+        self, filename: str, password: str
+    ) -> io.BytesIO:
+        """
+        A method to open a password protected excel.
+
+        Returns
+        -------
+        io.BytesIO
+            Decrypted excel.
+        """
+
+        f = msoffcrypto.OfficeFile(open(filename, "rb"))
+        f.load_key(password=password)
+        decrypted = io.BytesIO()
+        f.decrypt(decrypted)
+
+        return decrypted

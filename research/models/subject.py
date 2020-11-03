@@ -167,9 +167,6 @@ class Subject(TimeStampedModel):
         )
 
         # Getting the questionnaire data from the sheets document.
-        # questionnaire = QuestionnaireReader(
-        #     path=settings.QUESTIONNAIRE_DATA_PATH
-        # ).data
         questionnaire = self.subject_data.questionnaire.data
 
         # Getting the data to intersect subject_id to questionnaire number.

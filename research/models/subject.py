@@ -4,7 +4,6 @@ Definition of the :class:`~research.models.subject.Subject` model.
 
 import pandas as pd
 
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
@@ -59,7 +58,7 @@ class Subject(TimeStampedModel):
     )
 
     #: Custom attributes dictionary.
-    custom_attributes = JSONField(blank=True, default=dict)
+    custom_attributes = models.JSONField(blank=True, default=dict)
 
     objects = SubjectQuerySet.as_manager()
 

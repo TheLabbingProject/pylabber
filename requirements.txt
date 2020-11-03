@@ -24,3 +24,4 @@ git+https://github.com/TheLabbingProject/django_analyses.git@master#egg=django_a
 git+https://github.com/TheLabbingProject/django_dicom.git@master#egg=django_dicom
 git+https://github.com/TheLabbingProject/django_mri.git@master#egg=django_mri
 git+https://github.com/ZviBaratz/dicom_parser.git@master#egg=dicom_parser
+git+https://github.com/TheLabbingProject/questionnaire_reader.git@master#egg=questionnaire_reader

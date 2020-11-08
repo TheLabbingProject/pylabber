@@ -8,7 +8,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
-from pylabber.utils import CharNullField, SubjectDataHandler
+from pylabber.utils import CharNullField
 from research.models.managers.subject import SubjectQuerySet
 from research.utils.custom_attributes_processor import (
     CustomAttributesProcessor,
@@ -61,8 +61,6 @@ class Subject(TimeStampedModel):
 
     #: Custom attributes dictionary.
     custom_attributes = models.JSONField(blank=True, default=dict)
-
-    _subject_data = None
 
     objects = SubjectQuerySet.as_manager()
 
@@ -130,6 +128,26 @@ class Subject(TimeStampedModel):
 
         return f"{self.first_name} {self.last_name}"
 
+    def get_personal_information(self) -> pd.Series:
+        """
+        Temporary method to use an external table to retrieve subject
+        personal information.
+
+        Returns
+        -------
+        pd.Series
+            Subject personal information
+        """
+
+        subject_table = read_subject_table()
+        subject_table["Questionnaire", "Questionnaire"].fillna(
+            "", inplace=True
+        )
+        this_subject = (
+            subject_table["Anonymized", "Patient ID"] == self.id_number
+        )
+        return subject_table[this_subject]
+
     def get_raw_information(self) -> pd.Series:
         """
         Temporary method to use an external table to retrieve subject
@@ -140,12 +158,8 @@ class Subject(TimeStampedModel):
         pd.Series
             Subject information
         """
-
-        subject_table = read_subject_table()
-        this_subject = (
-            subject_table["Anonymized", "Patient ID"] == self.id_number
-        )
-        return subject_table[this_subject]["Raw"].squeeze()
+        this_subject = self.get_personal_information()
+        return this_subject["Raw"].squeeze()
 
     def get_questionnaire_data(self):
         """
@@ -157,46 +171,20 @@ class Subject(TimeStampedModel):
             Subject and Questionnaire information.
         """
 
-        # Getting the raw and anonymized data.
-        anonymized = pd.read_excel(
-            settings.RAW_SUBJECT_TABLE_PATH,
-            sheet_name="Subjects",
-            header=[0, 1],
-            converters={("Raw", "Patient ID"): str},
-            index_col=0,
-        )
-
         # Getting the questionnaire data from the sheets document.
-        questionnaire = self.subject_data.questionnaire.data
+        questionnaire = QuestionnaireReader(
+            path=settings.QUESTIONNAIRE_DATA_PATH
+        ).data
 
-        # Getting the data to intersect subject_id to questionnaire number.
-        decrypted_excel = self.subject_data.open_password_protected_excel(
-            settings.SUBJECT_IDS_TABLE, settings.SUBJECTS_PASSWORD
-        )
-        subjects_id = pd.read_excel(decrypted_excel, converters={"ID": str})
-
-        # Merging tables to get the anonymized_id and questionnaire number.
-        output = anonymized.merge(
-            subjects_id,
-            how="left",
-            left_on=anonymized["Raw"]["Patient ID"],
-            right_on="ID",
-        )
+        subject_data = self.get_personal_information()
 
         # Merging tables to get the questionnaire data.
-        output = output.merge(
+        output = pd.merge(
+            subject_data,
             questionnaire,
-            how="left",
-            left_on="Questionnaire",
+            how="inner",
+            left_on=subject_data["Questionnaire", "Questionnaire"],
             right_on=questionnaire.index,
         )
 
         return output[self.id_number == output["Anonymized", "Patient ID"]]
-
-    @property
-    def subject_data(self) -> pd.Series:
-        if self._subject_data is None:
-            self._subject_data = SubjectDataHandler(
-                path=settings.QUESTIONNAIRE_DATA_PATH
-            )
-        return self._subject_data

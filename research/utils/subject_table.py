@@ -8,6 +8,9 @@ def read_subject_table() -> pd.DataFrame:
         settings.RAW_SUBJECT_TABLE_PATH,
         sheet_name="Subjects",
         header=[0, 1],
-        converters={("Raw", "Patient ID"): str},
+        converters={
+            ("Raw", "Patient ID"): str,
+            ("Questionnaire", "Questionnaire"): str,
+        },
     )
 

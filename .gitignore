@@ -56,7 +56,6 @@ logs/*
 param_test.xlsx
 params_calculation.ipynb
 subjects.xlsx
-subjects_ID.xlsx
 scan_method_comparison.ipynb
 subjects_script.ipynb
 

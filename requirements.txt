@@ -24,7 +24,6 @@ psycopg2-binary~=2.8
 scikit-learn~=0.23
 whitenoise~=5.1
 xlrd~=1.2
-msoffcrypto-tool~=4.11.0
 git+https://github.com/TheLabbingProject/django_analyses.git@master#egg=django_analyses
 git+https://github.com/TheLabbingProject/django_dicom.git@master#egg=django_dicom
 git+https://github.com/TheLabbingProject/django_mri.git@master#egg=django_mri

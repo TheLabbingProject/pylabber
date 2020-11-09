@@ -14,3 +14,15 @@ def read_subject_table() -> pd.DataFrame:
         },
     )
 
+
+def merge_subject_and_questionnaire_data(
+    subject_data, questionnaire_data
+) -> pd.DataFrame:
+    return pd.merge(
+        subject_data,
+        questionnaire_data,
+        how="inner",
+        left_on=subject_data["Questionnaire", "Questionnaire"],
+        right_on=questionnaire_data.index,
+    )
+

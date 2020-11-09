@@ -2,13 +2,32 @@ from datetime import date, timedelta
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from ..factories import SubjectFactory
+from research.utils.subject_table import (
+    read_subject_table,
+    merge_subject_and_questionnaire_data,
+)
+from questionnaire_reader import QuestionnaireReader
 from research.models.choices import DominantHand, Sex, Gender
-
+import pandas as pd
 
 class SubjectModelTestCase(TestCase):
     def setUp(self):
         self.test_subject = SubjectFactory()
         self.test_subject.save()
+
+        df = pd.read_excel(settings.RAW_SUBJECT_TABLE_PATH, sheet_name="Subjects", header=[0, 1], index_col=0)
+
+        subject_details = { 
+             ("Anonymized", "Patient ID"): 'ABC123', 
+             ("Anonymized", "First Name"): 'Noam', 
+             ("Anonymized", "Last Name"): 'Aharony', 
+             ("Raw", "Patient ID"): "11111", 
+             ("Raw", "First Name"): "Name", 
+             ("Raw", "Last Name"): "Last", 
+        }
+
+        for item in subject_details:
+            df[item].iloc[0] = subject_details[item] 
 
     def test_not_future_birthdate_validator(self):
         self.test_subject.date_of_birth = date.today() + timedelta(days=1)
@@ -71,3 +90,24 @@ class SubjectModelTestCase(TestCase):
         subject_id = self.test_subject.id
         expected = f"Subject #{subject_id}"
         self.assertEqual(str(self.test_subject), expected)
+
+    def test_get_personal_information(self):
+        result = self.test_subject.get_personal_information()
+        result = result[[item for item in ]]
+
+        excpected = {
+            ("Anonymized", "Patient ID"): "ABC123",
+            ("Anonymized", "First Name"): "Noam",
+            ("Anonymized", "Last Name"): "Aharony",
+            ("Raw", "Patient ID"): "11111",
+            ("Raw", "First Name"): "Name",
+            ("Raw", "Last Name"): "Last",
+        }
+
+        
+
+    def test_get_raw_information(self):
+        pass
+
+    def test_get_questionnaire_data(self):
+        pass

@@ -32,6 +32,7 @@ env = environ.Env(
     DB_HOST=(str, "localhost"),
     DB_PORT=(int, 5432),
     RAW_SUBJECT_TABLE_PATH=(str, "subjects.xlsx"),
+    QUESTIONNAIRE_DATA_PATH=(str, ""),
     APP_IP=(str, "localhost"),
     TESTING_MODE=(bool, False),
 )
@@ -309,6 +310,7 @@ SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"
 MEASUREMENT_MODEL = "research.MeasurementDefinition"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
+QUESTIONNAIRE_DATA_PATH = env("QUESTIONNAIRE_DATA_PATH")
 
 # django_analyses
 ANALYSIS_INTERFACES = interfaces

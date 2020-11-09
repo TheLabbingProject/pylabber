@@ -4,6 +4,7 @@ Definition of the :class:`~research.models.subject.Subject` model.
 
 import pandas as pd
 
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
@@ -12,9 +13,13 @@ from research.models.managers.subject import SubjectQuerySet
 from research.utils.custom_attributes_processor import (
     CustomAttributesProcessor,
 )
-from research.utils.subject_table import read_subject_table
+from research.utils.subject_table import (
+    read_subject_table,
+    merge_subject_and_questionnaire_data,
+)
 from research.models.choices import Sex, Gender, DominantHand
 from research.models.validators import not_future
+from questionnaire_reader import QuestionnaireReader
 
 
 class Subject(TimeStampedModel):
@@ -126,6 +131,26 @@ class Subject(TimeStampedModel):
 
         return f"{self.first_name} {self.last_name}"
 
+    def get_personal_information(self) -> pd.Series:
+        """
+        Temporary method to use an external table to retrieve subject
+        personal information.
+
+        Returns
+        -------
+        pd.Series
+            Subject personal information
+        """
+
+        subject_table = read_subject_table()
+        subject_table["Questionnaire", "Questionnaire"].fillna(
+            "", inplace=True
+        )
+        this_subject = (
+            subject_table["Anonymized", "Patient ID"] == self.id_number
+        )
+        return subject_table[this_subject]
+
     def get_raw_information(self) -> pd.Series:
         """
         Temporary method to use an external table to retrieve subject
@@ -136,9 +161,29 @@ class Subject(TimeStampedModel):
         pd.Series
             Subject information
         """
+        this_subject = self.get_personal_information()
+        return this_subject["Raw"].squeeze()
 
-        subject_table = read_subject_table()
-        this_subject = (
-            subject_table["Anonymized", "Patient ID"] == self.id_number
+    def get_questionnaire_data(self):
+        """
+        A method to link between a subject to it's questionnaire data.
+
+        Returns
+        -------
+        pd.Series
+            Subject and Questionnaire information.
+        """
+
+        # Getting the questionnaire data from the sheets document.
+        questionnaire = QuestionnaireReader(
+            path=settings.QUESTIONNAIRE_DATA_PATH
+        ).data
+
+        subject_data = self.get_personal_information()
+
+        # Merging tables to get the questionnaire data.
+        output = merge_subject_and_questionnaire_data(
+            subject_data, questionnaire
         )
-        return subject_table[this_subject]["Raw"].squeeze()
+
+        return output[self.id_number == output["Anonymized", "Patient ID"]]

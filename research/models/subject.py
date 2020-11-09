@@ -13,7 +13,10 @@ from research.models.managers.subject import SubjectQuerySet
 from research.utils.custom_attributes_processor import (
     CustomAttributesProcessor,
 )
-from research.utils.subject_table import read_subject_table
+from research.utils.subject_table import (
+    read_subject_table,
+    merge_subject_and_questionnaire_data,
+)
 from research.models.choices import Sex, Gender, DominantHand
 from research.models.validators import not_future
 from questionnaire_reader import QuestionnaireReader
@@ -179,12 +182,8 @@ class Subject(TimeStampedModel):
         subject_data = self.get_personal_information()
 
         # Merging tables to get the questionnaire data.
-        output = pd.merge(
-            subject_data,
-            questionnaire,
-            how="inner",
-            left_on=subject_data["Questionnaire", "Questionnaire"],
-            right_on=questionnaire.index,
+        output = merge_subject_and_questionnaire_data(
+            subject_data, questionnaire
         )
 
         return output[self.id_number == output["Anonymized", "Patient ID"]]

@@ -10,24 +10,30 @@ from questionnaire_reader import QuestionnaireReader
 from research.models.choices import DominantHand, Sex, Gender
 import pandas as pd
 
+
 class SubjectModelTestCase(TestCase):
     def setUp(self):
         self.test_subject = SubjectFactory()
         self.test_subject.save()
 
-        df = pd.read_excel(settings.RAW_SUBJECT_TABLE_PATH, sheet_name="Subjects", header=[0, 1], index_col=0)
+        df = pd.read_excel(
+            settings.RAW_SUBJECT_TABLE_PATH,
+            sheet_name="Subjects",
+            header=[0, 1],
+            index_col=0,
+        )
 
-        subject_details = { 
-             ("Anonymized", "Patient ID"): 'ABC123', 
-             ("Anonymized", "First Name"): 'Noam', 
-             ("Anonymized", "Last Name"): 'Aharony', 
-             ("Raw", "Patient ID"): "11111", 
-             ("Raw", "First Name"): "Name", 
-             ("Raw", "Last Name"): "Last", 
+        subject_details = {
+            ("Anonymized", "Patient ID"): "ABC123",
+            ("Anonymized", "First Name"): "Noam",
+            ("Anonymized", "Last Name"): "Aharony",
+            ("Raw", "Patient ID"): "11111",
+            ("Raw", "First Name"): "Name",
+            ("Raw", "Last Name"): "Last",
         }
 
         for item in subject_details:
-            df[item].iloc[0] = subject_details[item] 
+            df[item].iloc[0] = subject_details[item]
 
     def test_not_future_birthdate_validator(self):
         self.test_subject.date_of_birth = date.today() + timedelta(days=1)
@@ -92,19 +98,19 @@ class SubjectModelTestCase(TestCase):
         self.assertEqual(str(self.test_subject), expected)
 
     def test_get_personal_information(self):
-        result = self.test_subject.get_personal_information()
-        result = result[[item for item in ]]
+        # @TODO: Finish the personal information test.
+        # result = self.test_subject.get_personal_information()
+        # result = result[[item for item in ]]
 
-        excpected = {
-            ("Anonymized", "Patient ID"): "ABC123",
-            ("Anonymized", "First Name"): "Noam",
-            ("Anonymized", "Last Name"): "Aharony",
-            ("Raw", "Patient ID"): "11111",
-            ("Raw", "First Name"): "Name",
-            ("Raw", "Last Name"): "Last",
-        }
-
-        
+        # excpected = {
+        #     ("Anonymized", "Patient ID"): "ABC123",
+        #     ("Anonymized", "First Name"): "Noam",
+        #     ("Anonymized", "Last Name"): "Aharony",
+        #     ("Raw", "Patient ID"): "11111",
+        #     ("Raw", "First Name"): "Name",
+        #     ("Raw", "Last Name"): "Last",
+        # }
+        pass
 
     def test_get_raw_information(self):
         pass

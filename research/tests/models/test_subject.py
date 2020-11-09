@@ -9,6 +9,7 @@ from research.utils.subject_table import (
 from questionnaire_reader import QuestionnaireReader
 from research.models.choices import DominantHand, Sex, Gender
 import pandas as pd
+from django.conf import settings
 
 
 class SubjectModelTestCase(TestCase):

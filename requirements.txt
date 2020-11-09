@@ -13,7 +13,8 @@ django-heroku==0.3.1
 django-model-utils==4.*
 django-rest-auth~=0.9
 django-storages~=1.9
-django_celery_results~=1.2
+# django_celery_results~=1.2
+git+https://github.com/celery/django-celery-results.git@master#egg=django-cekery-results
 gunicorn==20.0.4
 nibabel~=3.1
 nipype~=1.5

@@ -67,6 +67,9 @@ class Subject(TimeStampedModel):
 
     objects = SubjectQuerySet.as_manager()
 
+    class Meta:
+        ordering = ("-id",)
+
     def __str__(self) -> str:
         """
         Returns the string representation of this instance.

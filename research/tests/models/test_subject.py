@@ -1,15 +1,11 @@
+import pandas as pd
+
 from datetime import date, timedelta
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from ..factories import SubjectFactory
-from research.utils.subject_table import (
-    read_subject_table,
-    merge_subject_and_questionnaire_data,
-)
-from questionnaire_reader import QuestionnaireReader
 from research.models.choices import DominantHand, Sex, Gender
-import pandas as pd
-from django.conf import settings
+from ..factories import SubjectFactory
 
 
 class SubjectModelTestCase(TestCase):

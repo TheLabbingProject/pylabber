@@ -7,7 +7,7 @@ from django.urls import reverse
 
 class ProcedureStep(models.Model):
     """
-    Represents an item in the :class:`~research.models.Event` list of 
+    Represents an item in the :class:`~research.models.Event` list of
     :class:`~research.models.Procedure` model.
     """
 

@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.filters.group.GroupFilter` class.
+Definition of the :class:`GroupFilter` class.
 """
 
 from django_filters import rest_framework as filters
@@ -26,4 +26,3 @@ class GroupFilter(filters.FilterSet):
     class Meta:
         model = Group
         fields = ("id", "title", "description")
-

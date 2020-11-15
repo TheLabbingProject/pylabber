@@ -11,5 +11,8 @@ class EventViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     """
 
-    queryset = Event.objects.order_by("title").all()
+    queryset = Event.objects.select_subclasses()
     serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.order_by("title").select_subclasses()

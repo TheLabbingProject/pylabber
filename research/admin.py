@@ -11,6 +11,7 @@ from research.models.task import Task
 class SubjectsInline(admin.TabularInline):
     model = Study.subjects.through
     verbose_name_plural = "Subjects"
+    extra = 0
     readonly_fields = (
         "id_number",
         "first_name",
@@ -38,12 +39,13 @@ class SubjectsInline(admin.TabularInline):
 class CollaboratorsInline(admin.TabularInline):
     model = Study.collaborators.through
     verbose_name_plural = "Collaborators"
+    extra = 0
 
 
 class StudiesAdmin(admin.ModelAdmin):
-    inlines = (SubjectsInline, CollaboratorsInline)
-    list_display = ("title", "description", "procedure", "created")
-    exclude = ("subjects", "collaborators")
+    inlines = CollaboratorsInline, SubjectsInline
+    list_display = "title", "description", "created"
+    exclude = "subjects", "collaborators"
 
 
 class SubjectAdmin(admin.ModelAdmin):
@@ -97,21 +99,19 @@ class ProcedureStepInline(admin.TabularInline):
         return instance.event.description
 
 
+class StudyInline(admin.TabularInline):
+    model = Study.procedures.through
+    verbose_name_plural = "Studies"
+    extra = 0
+
+
 class ProcedureAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "title",
-        "description",
-    )
-    inlines = (ProcedureStepInline,)
+    list_display = "id", "title", "description"
+    inlines = ProcedureStepInline, StudyInline
 
 
 class MeasurementDefinitionAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "title",
-        "description",
-    )
+    list_display = "id", "title", "description"
 
 
 class TaskAdmin(admin.ModelAdmin):

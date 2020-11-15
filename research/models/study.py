@@ -25,10 +25,8 @@ class Study(TitleDescriptionModel, TimeStampedModel):
     #: Researchers collaborating on this study.
     collaborators = models.ManyToManyField(get_user_model(), blank=True)
 
-    #: The experimental procedure of this study.
-    procedure = models.ForeignKey(
-        "research.Procedure", on_delete=models.PROTECT, blank=True, null=True,
-    )
+    #: The experimental procedures associated with this study.
+    procedures = models.ManyToManyField("research.Procedure", blank=True)
 
     class Meta:
         verbose_name_plural = "Studies"

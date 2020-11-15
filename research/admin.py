@@ -42,7 +42,7 @@ class CollaboratorsInline(admin.TabularInline):
 
 class StudiesAdmin(admin.ModelAdmin):
     inlines = (SubjectsInline, CollaboratorsInline)
-    list_display = ("title", "description", "created")
+    list_display = ("title", "description", "procedure", "created")
     exclude = ("subjects", "collaborators")
 
 

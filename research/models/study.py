@@ -29,6 +29,7 @@ class Study(TitleDescriptionModel, TimeStampedModel):
     procedures = models.ManyToManyField("research.Procedure", blank=True)
 
     class Meta:
+        ordering = ("title",)
         verbose_name_plural = "Studies"
 
     def __str__(self) -> str:

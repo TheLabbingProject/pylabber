@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.filters.subject.SubjectFilter` class.
+Definition of the :class:`SubjectFilter` class.
 """
 
 from django_dicom.models.patient import Patient

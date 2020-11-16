@@ -1,15 +1,15 @@
 """
-Definition of the :class:`ProcedureFilter` class.
+Definition of the :class:`StudyFilter` class.
 """
 
 from django_filters import rest_framework as filters
-from research.models.procedure import Procedure
+from research.models.study import Study
 
 
-class ProcedureFilter(filters.FilterSet):
+class StudyFilter(filters.FilterSet):
     """
     Provides useful filtering options for the
-    :class:`~research.models.procedure.Procedure` model.
+    :class:`~research.models.study.Study` model.
 
     """
 
@@ -29,5 +29,9 @@ class ProcedureFilter(filters.FilterSet):
     )
 
     class Meta:
-        model = Procedure
-        fields = "id", "title", "description", "study"
+        model = Study
+        fields = (
+            "id",
+            "title",
+            "description",
+        )

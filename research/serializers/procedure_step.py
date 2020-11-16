@@ -23,7 +23,7 @@ class ProcedureStepSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ProcedureStep
-        fields = "index", "event", "procedure"
+        fields = "id", "index", "event", "procedure"
 
     def get_event(self, instance):
         event = Event.objects.select_subclasses().get(id=instance.id)

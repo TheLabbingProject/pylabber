@@ -3,6 +3,7 @@ Definition of the :class:`EventFilter` class.
 """
 
 from django_filters import rest_framework as filters
+from research.filters.utils import LOOKUP_CHOICES
 from research.models.event import Event
 
 
@@ -13,20 +14,8 @@ class EventFilter(filters.FilterSet):
 
     """
 
-    title = filters.LookupChoiceFilter(
-        lookup_choices=[
-            ("contains", "Contains (case-sensitive)"),
-            ("icontains", "Contains (case-insensitive)"),
-            ("exact", "Exact"),
-        ]
-    )
-    description = filters.LookupChoiceFilter(
-        lookup_choices=[
-            ("contains", "Contains (case-sensitive)"),
-            ("icontains", "Contains (case-insensitive)"),
-            ("exact", "Exact"),
-        ]
-    )
+    title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
+    description = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
 
     class Meta:
         model = Event

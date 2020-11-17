@@ -17,13 +17,9 @@ class MiniStudySerializer(serializers.ModelSerializer):
        https://www.django-rest-framework.org/api-guide/serializers/#modelserializer
     """
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="research:study-detail"
-    )
-
     class Meta:
         model = Study
-        fields = ("id", "title", "url")
+        fields = "id", "title"
 
 
 class GroupReadSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,14 +31,11 @@ class GroupReadSerializer(serializers.HyperlinkedModelSerializer):
        https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="research:group-detail"
-    )
     study = MiniStudySerializer()
 
     class Meta:
         model = Group
-        fields = "title", "description", "url", "id", "study"
+        fields = "title", "description", "id", "study"
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -54,13 +47,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
        https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="research:group-detail"
-    )
-    study = serializers.HyperlinkedRelatedField(
-        view_name="research:study-detail", queryset=Study.objects.all()
-    )
+    study = serializers.PrimaryKeyRelatedField(queryset=Study.objects.all())
 
     class Meta:
         model = Group
-        fields = "title", "description", "url", "id", "study"
+        fields = "id", "title", "description", "study"

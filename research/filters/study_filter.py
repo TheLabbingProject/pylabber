@@ -30,8 +30,4 @@ class StudyFilter(filters.FilterSet):
 
     class Meta:
         model = Study
-        fields = (
-            "id",
-            "title",
-            "description",
-        )
+        fields = "id", "title", "description"

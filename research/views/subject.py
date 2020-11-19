@@ -22,8 +22,15 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
 
     filter_class = SubjectFilter
-    queryset = Subject.objects.order_by("-id").all()
+    queryset = Subject.objects.order_by("id").all()
     serializer_class = SubjectSerializer
+    ordering_fields = (
+        "id",
+        "id_number",
+        "first_name",
+        "last_name",
+        "date_of_birth",
+    )
 
     def get_queryset(self):
         # TODO: Implement filtering according to the user's collaborations

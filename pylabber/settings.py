@@ -304,7 +304,6 @@ CORS_ORIGIN_WHITELIST = [
     "https://pylabber.herokuapp.com",
 ]
 
-
 # research
 SUBJECT_MODEL = "research.Subject"
 STUDY_GROUP_MODEL = "research.Group"

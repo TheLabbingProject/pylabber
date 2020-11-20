@@ -3,6 +3,7 @@ Definition of the :class:`~research.serializers.study.StudySerializer` class.
 """
 
 from accounts.models import User
+from research.models.procedure import Procedure
 from research.models.study import Study
 from research.models.subject import Subject
 from rest_framework import serializers
@@ -30,6 +31,9 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
         queryset=User.objects.all(),
         many=True,
     )
+    procedures = serializers.PrimaryKeyRelatedField(
+        queryset=Procedure.objects.all(), allow_null=True, many=True
+    )
 
     class Meta:
         model = Study
@@ -43,4 +47,5 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
             "description",
             "created",
             "modified",
+            "procedures",
         )

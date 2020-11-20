@@ -17,5 +17,11 @@ router.register(
     r"measurement", views.MeasurementDefinitionViewSet, basename="measurement"
 )
 
-urlpatterns = [path("research/", include(router.urls))]
-
+urlpatterns = [
+    path(
+        "research/procedure/items/",
+        views.ProcedureViewSet.as_view({"get": "get_items"}),
+        name="get_items",
+    ),
+    path("research/", include(router.urls)),
+]

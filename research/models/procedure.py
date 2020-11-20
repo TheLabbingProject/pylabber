@@ -11,7 +11,7 @@ from django_extensions.db.models import TitleDescriptionModel
 
 class Procedure(TitleDescriptionModel):
     """
-    Represents a procedure.
+    Represents an experimental procedure.
     """
 
     #: Represents an ordered list of events in a procedure.

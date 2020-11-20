@@ -18,3 +18,18 @@ class ProcedureSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Procedure
         fields = "id", "title", "description"
+
+
+class ProcedureItemsSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Alternative serializer for the
+    :class:`~research.models.procedure.Procedure` model used to generate items
+    for select widgets in the frontend.
+    """
+
+    value = serializers.IntegerField(source="id")
+    text = serializers.CharField(source="title")
+
+    class Meta:
+        model = Procedure
+        fields = "value", "text"

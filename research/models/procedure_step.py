@@ -1,6 +1,7 @@
 """
-Definition of the :class:`ProcedureStep`.
+Definition of the :class:`ProcedureStep` model.
 """
+from django.db import IntegrityError
 from django.db import models
 from django.urls import reverse
 
@@ -23,13 +24,26 @@ class ProcedureStep(models.Model):
     )
 
     class Meta:
-        ordering = ("index",)
+        ordering = "procedure", "index"
         unique_together = ("procedure", "index")
+
+    def __str__(self) -> str:
+        """
+        Returns the string representation of this instance.
+
+        Returns
+        -------
+        str
+            This instance's string representation
+        """
+
+        return f"[{self.procedure.title}] #{self.index}:\t{self.event.title}"
 
     def save(self, *args, **kwargs) -> None:
         """
         Overrides the model's :meth:`~django.db.models.Model.save` method to
-        provide custom validation.
+        provide automatic index management. By default will assign an
+        incrementing index value.
 
         Hint
         ----
@@ -40,22 +54,21 @@ class ProcedureStep(models.Model):
            https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
         """
 
+        # If no index is assigned, append to the procedure as a new last step.
         if self.index is None:
-            steps = ProcedureStep.objects.filter(procedure=self.procedure)
-            if steps:
-                max_index = steps.order_by("-index").first().index
-                self.index = max_index + 1
-            else:
-                self.index = 0
+            self.index = self.procedure.max_index + 1
+        elif self.index > self.procedure.max_index + 1:
+            self.index = 0
         try:
             super().save(*args, **kwargs)
         except IntegrityError:
-            step = ProcedureStep.objects.get(
+            current_step = ProcedureStep.objects.get(
                 procedure=self.procedure, index=self.index
             )
-            step.index = models.F("index") + 1
-            step.save()
+            current_step.index += 1
+            current_step.save()
             super().save(*args, **kwargs)
+        # TODO: Fix automatic index management
 
     def get_absolute_url(self):
         """

@@ -21,7 +21,12 @@ urlpatterns = [
     path(
         "research/procedure/items/",
         views.ProcedureViewSet.as_view({"get": "get_items"}),
-        name="get_items",
+        name="get_procedure_items",
+    ),
+    path(
+        "research/event/items/",
+        views.EventViewSet.as_view({"get": "get_items"}),
+        name="get_event_items",
     ),
     path("research/", include(router.urls)),
 ]

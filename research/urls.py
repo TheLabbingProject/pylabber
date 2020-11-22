@@ -28,5 +28,10 @@ urlpatterns = [
         views.EventViewSet.as_view({"get": "get_items"}),
         name="get_event_items",
     ),
+    path(
+        "research/measurement/items/",
+        views.MeasurementDefinitionViewSet.as_view({"get": "get_items"}),
+        name="get_measurement_definition_items",
+    ),
     path("research/", include(router.urls)),
 ]

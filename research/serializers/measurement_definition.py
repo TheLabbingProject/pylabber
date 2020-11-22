@@ -19,3 +19,23 @@ class MeasurementDefinitionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = MeasurementDefinition
         fields = "id", "title", "description"
+
+
+class MeasurementDefinitionItemsSerializer(
+    serializers.HyperlinkedModelSerializer
+):
+    """
+    HyperlinkedModelSerializer_ for the
+    :class:`~research.models.measurement_definition.MeasurementDefinition`
+    model.
+
+    .. _HyperlinkedModelSerializer:
+       https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
+    """
+
+    value = serializers.IntegerField(source="id")
+    text = serializers.CharField(source="title")
+
+    class Meta:
+        model = MeasurementDefinition
+        fields = "value", "text"

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd Party
+    "django_celery_beat",
     "django_extensions",
     "django_filters",
     "rest_framework",
@@ -367,3 +368,4 @@ if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_TASK_TRACK_STARTED = True
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"

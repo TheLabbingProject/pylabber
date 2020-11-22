@@ -57,8 +57,8 @@ class ProcedureStep(models.Model):
         # If no index is assigned, append to the procedure as a new last step.
         if self.index is None:
             self.index = self.procedure.max_index + 1
-        elif self.index > self.procedure.max_index + 1:
-            self.index = 0
+        # elif self.index > self.procedure.max_index + 1:
+        #     self.index = 0
         try:
             super().save(*args, **kwargs)
         except IntegrityError:

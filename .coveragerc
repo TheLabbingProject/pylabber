@@ -6,6 +6,7 @@ omit = ../*migrations*
     *tests*
     venv/**
     tox/**
+    .tox/**
 
 source = .
 branch = True

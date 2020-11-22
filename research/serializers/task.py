@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.serializers.task.TaskSerializer` class.
+Definition of the :class:`TaskSerializer` class.
 """
 
 from research.models.task import Task
@@ -15,15 +15,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
        https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="research:task-detail"
-    )
-
     class Meta:
         model = Task
-        fields = (
-            "id",
-            "url",
-            "title",
-            "description",
-        )
+        fields = "id", "title", "description"

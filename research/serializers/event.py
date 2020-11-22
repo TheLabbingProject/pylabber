@@ -1,29 +1,57 @@
 """
-Definition of the :class:`~research.serializers.event.EventSerializer` class.
+Definition of the :class:`EventSerializer` class.
 """
 
+from django_analyses.serializers.utils.polymorphic import PolymorphicSerializer
 from research.models.event import Event
+from research.models.event_types import EventTypes
+from research.serializers.measurement_definition import (
+    MeasurementDefinitionSerializer,
+)
+from research.serializers.task import TaskSerializer
 from rest_framework import serializers
+from rest_framework.serializers import Serializer
 
 
-class EventSerializer(serializers.HyperlinkedModelSerializer):
+SERIALIZERS = {
+    EventTypes.MEASUREMENT.value: MeasurementDefinitionSerializer,
+    EventTypes.TASK.value: TaskSerializer,
+}
+
+
+class BaseEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = "id", "title", "description"
+
+
+class EventSerializer(PolymorphicSerializer):
     """
-    HyperlinkedModelSerializer_ for the :class:`~research.models.event.Event`
+    PolymorphicSerializer for the :class:`~research.models.event.Event`
     model.
-
-    .. _HyperlinkedModelSerializer:
-       https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
-
-    url = serializers.HyperlinkedIdentityField(
-        view_name="research:event-detail"
-    )
 
     class Meta:
         model = Event
-        fields = (
-            "id",
-            "url",
-            "title",
-            "description",
-        )
+        fields = "id", "title", "description"
+
+    def get_serializer(self, input_type: str) -> Serializer:
+        try:
+            return SERIALIZERS.get(input_type, BaseEventSerializer)
+        except KeyError:
+            raise ValueError(f'Serializer for "{input_type}" does not exist')
+
+
+class EventItemsSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Alternative serializer for the
+    :class:`~research.models.event.Event` model used to generate items
+    for select widgets in the frontend.
+    """
+
+    value = serializers.IntegerField(source="id")
+    text = serializers.CharField(source="title")
+
+    class Meta:
+        model = Event
+        fields = "value", "text"

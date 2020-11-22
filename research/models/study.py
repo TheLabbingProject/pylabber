@@ -25,7 +25,11 @@ class Study(TitleDescriptionModel, TimeStampedModel):
     #: Researchers collaborating on this study.
     collaborators = models.ManyToManyField(get_user_model(), blank=True)
 
+    #: The experimental procedures associated with this study.
+    procedures = models.ManyToManyField("research.Procedure", blank=True)
+
     class Meta:
+        ordering = ("title",)
         verbose_name_plural = "Studies"
 
     def __str__(self) -> str:

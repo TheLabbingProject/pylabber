@@ -20,10 +20,9 @@ class ProcedureModelTestCase(TestCase):
         self.assertEqual(result, expected)
 
     def test_str(self):
-        expected = (
-            f"{self.test_procedure.title}|{self.test_procedure.description}"
-        )
-        self.assertEqual(str(self.test_procedure), expected)
+        expected = self.test_procedure.title
+        value = str(self.test_procedure)
+        self.assertEqual(value, expected)
 
     def test_add_event(self):
         self.test_procedure.add_event(TaskFactory.create())

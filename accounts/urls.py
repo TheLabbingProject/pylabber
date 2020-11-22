@@ -12,4 +12,11 @@ router.register(r"profile", views.ProfileViewSet)
 router.register(r"user", views.UserViewSet)
 
 
-urlpatterns = [path("accounts/", include(router.urls))]
+urlpatterns = [
+    path("accounts/", include(router.urls)),
+    path(
+        "accounts/institutionList/",
+        views.UserViewSet.as_view({"get": "get_institutions"}),
+        name="get_institutions",
+    ),
+]

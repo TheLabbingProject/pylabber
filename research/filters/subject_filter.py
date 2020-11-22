@@ -1,10 +1,11 @@
 """
-Definition of the :class:`~research.filters.subject.SubjectFilter` class.
+Definition of the :class:`SubjectFilter` class.
 """
 
+from django.db.models import Q
 from django_dicom.models.patient import Patient
-from django_mri.models.scan import Scan
 from django_filters import rest_framework as filters
+from django_mri.models.scan import Scan
 from research.models.subject import Subject
 
 
@@ -32,6 +33,9 @@ class SubjectFilter(filters.FilterSet):
         ]
     )
     dicom_patient = filters.NumberFilter(method="filter_by_dicom_patient")
+    sex = filters.CharFilter(method="filter_nullable_charfield")
+    gender = filters.CharFilter(method="filter_nullable_charfield")
+    dominant_hand = filters.CharFilter(method="filter_nullable_charfield")
 
     class Meta:
         model = Subject
@@ -72,3 +76,10 @@ class SubjectFilter(filters.FilterSet):
             mri_scans.order_by("subject").values_list("subject", flat=True)
         )
         return queryset.filter(id=subject_ids.pop())
+
+    def filter_nullable_charfield(self, queryset, name, value):
+        if value == "null":
+            return queryset.filter(
+                Q(**{f"{name}__isnull": True}) | Q(**{f"{name}__exact": ""})
+            )
+        return queryset.filter(**{name: value})

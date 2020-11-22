@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.serializers.study.StudySerializer` class.
+Definition of the :class:`StudySerializer` class.
 """
 
 from accounts.models import User
@@ -32,7 +32,10 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
         many=True,
     )
     procedures = serializers.PrimaryKeyRelatedField(
-        queryset=Procedure.objects.all(), allow_null=True, many=True
+        queryset=Procedure.objects.all(),
+        allow_null=True,
+        many=True,
+        required=False,
     )
 
     class Meta:

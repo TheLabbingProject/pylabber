@@ -1,5 +1,5 @@
 from django.test import TestCase
-from tests.factories import (
+from research.tests.factories import (
     ProcedureFactory,
     ProcedureStepFactory,
 )

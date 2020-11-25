@@ -348,6 +348,9 @@ EXTRA_OUTPUT_SERIALIZERS = {
     )
 }
 
+# django_mri
+DATA_SHARE_ROOT = "/mnt/"
+
 # django_dicom
 DICOM_IMPORT_MODE = "minimal"
 

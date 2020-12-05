@@ -372,3 +372,4 @@ if USE_TZ:
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_RESULT_EXPIRES = 0

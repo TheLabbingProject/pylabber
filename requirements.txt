@@ -2,6 +2,7 @@ bokeh~=2.0
 boto3~=1.14
 bs4~=0.0
 celery~=5.0
+dicom_parser==0.1.5
 Django~=3.1
 djangorestframework~=3.12
 djangorestframework_camel_case~=1.1
@@ -28,5 +29,4 @@ git+https://github.com/celery/django-celery-results.git@master#egg=django-celery
 git+https://github.com/TheLabbingProject/django_analyses.git@master#egg=django_analyses
 git+https://github.com/TheLabbingProject/django_dicom.git@master#egg=django_dicom
 git+https://github.com/TheLabbingProject/django_mri.git@master#egg=django_mri
-git+https://github.com/ZviBaratz/dicom_parser.git@master#egg=dicom_parser
 git+https://github.com/TheLabbingProject/questionnaire_reader.git@main#egg=questionnaire_reader

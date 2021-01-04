@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~research.models.subject.Subject` model.
+Definition of the :class:`Subject` model.
 """
 
 import pandas as pd

@@ -201,8 +201,13 @@ DATE_FORMAT = "d/m/Y"
 # Time format
 TIME_FORMAT = "H:i:s"
 
+# Datetime format
+DATETIME_FORMAT = f"{DATE_FORMAT} {TIME_FORMAT}"
+
+# Time zone
 USE_TZ = True
 TIME_ZONE = "Asia/Jerusalem"
+
 
 # Logging
 LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
@@ -300,7 +305,9 @@ REST_AUTH_SERIALIZERS = {
 CORS_ORIGIN_WHITELIST = [
     f"http://{env('APP_IP')}:8080",
     f"https://{env('APP_IP')}:8080",
+    "http://127.0.0.1:8080",
     "http://localhost:5006",
+    "http://127.0.0.1:5006",
     "https://vuelabber.herokuapp.com",
     "https://pylabber.herokuapp.com",
 ]

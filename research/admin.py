@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from research.models.event import Event
 from research.models.measurement_definition import MeasurementDefinition
 from research.models.procedure import Procedure
@@ -58,7 +59,8 @@ class SubjectAdmin(admin.ModelAdmin):
         "date_of_birth",
         "dominant_hand",
     )
-    list_filter = ("sex",)
+    search_fields = "id_number", "first_name", "last_name"
+    list_filter = "sex", "dominant_hand"
 
     def changelist_view(self, request, extra_context=None):
         response = super().changelist_view(

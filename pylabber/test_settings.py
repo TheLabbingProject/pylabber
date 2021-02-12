@@ -1,4 +1,5 @@
 import os
+
 from .settings import *
 
 RAW_SUBJECT_TABLE_PATH = os.path.join(

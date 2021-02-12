@@ -3,8 +3,9 @@ General utility classes and functions for the *pylabber*
 `project <https://docs.djangoproject.com/en/2.2/ref/applications/#projects-and-applications>`_.
 """
 
-from django.db import models
 from enum import Enum
+
+from django.db import models
 
 
 class ChoiceEnum(Enum):

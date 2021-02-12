@@ -8,13 +8,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-import django_heroku
-import environ
 import os
-
-from django_mri.analysis.mri_interfaces import interfaces
 from pathlib import Path
 
+import django_heroku
+import environ
+from django_mri.analysis.mri_interfaces import interfaces
+
+# from django_mri.analysis.visualizers import MRI_VISUALIZERS
 
 ###############
 # Environment #
@@ -37,6 +38,9 @@ env = environ.Env(
     TESTING_MODE=(bool, False),
 )
 environ.Env.read_env()
+
+# Fix notebook support for Django 3.0
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 # The base directory of the project. Used to infer the locations of directories
 # required by the application (static files, logs, etc).
@@ -322,6 +326,7 @@ QUESTIONNAIRE_DATA_PATH = env("QUESTIONNAIRE_DATA_PATH")
 # django_analyses
 ANALYSIS_INTERFACES = interfaces
 ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")
+# ANALYSIS_VISUALIZERS = MRI_VISUALIZERS
 EXTRA_INPUT_DEFINITION_SERIALIZERS = {
     "ScanInputDefinition": (
         "django_mri.serializers.input.scan_input_definition",

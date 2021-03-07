@@ -6,16 +6,16 @@ required to conduct neuroscientific research.
 
 .. seealso::
    For more information about Django applications and the difference between
-   projects and apps see the documentation's `getting started`_ page, as well
-   as the `projects and applications`_ section.
+   projects and apps see Django's `Getting Started`_ page, as well as the
+   `Projects and Applications`_ section.
 
-   .. _getting started:
+   .. _Getting Started:
       https://docs.djangoproject.com/en/3.0/intro/
-   .. _projects and applications:
+   .. _Projects and Applications:
       https://docs.djangoproject.com/en/3.0/ref/applications/#projects-and-applications
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    overview

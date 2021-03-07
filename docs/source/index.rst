@@ -21,6 +21,7 @@ required to conduct neuroscientific research.
    overview
    usage/installation
    existing_apps
+   faq
    modules/modules
 
 Indices and tables

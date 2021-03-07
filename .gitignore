@@ -69,3 +69,6 @@ notebooks/
 
 # NetCDF archives
 **.nc
+
+# MRIQC workflow directory
+work/

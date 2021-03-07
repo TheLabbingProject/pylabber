@@ -10,9 +10,10 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-import django
 import os
 import sys
+
+import django
 
 sys.path.insert(0, os.path.abspath("../../"))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pylabber.settings")
@@ -101,6 +102,12 @@ intersphinx_mapping = {
     ),
     "django_extensions": (
         "https://django-extensions.readthedocs.io/en/latest/",
+        None,
+    ),
+    "django_mri": ("https://django-mri.readthedocs.io/en/latest/", None),
+    "django_dicom": ("https://django-dicom.readthedocs.io/en/latest/", None),
+    "django_analyses": (
+        "https://django-analyses.readthedocs.io/en/latest/",
         None,
     ),
 }

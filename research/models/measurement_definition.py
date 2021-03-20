@@ -29,4 +29,3 @@ class MeasurementDefinition(Event):
         """
 
         return reverse("research:measurement-detail", args=[str(self.id)])
-

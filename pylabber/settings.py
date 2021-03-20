@@ -245,7 +245,7 @@ if DEBUG:
                 "backupCount": 2,
                 "formatter": "normal",
             },
-            "console": {"level": "WARNING", "class": "logging.StreamHandler"},
+            "console": {"level": "INFO", "class": "logging.StreamHandler"},
         },
         "loggers": {
             "data": {
@@ -255,6 +255,10 @@ if DEBUG:
             "data_import": {
                 "handlers": ["debug_file", "warning_file", "console"],
                 "level": "DEBUG",
+            },
+            "analysis_exection": {
+                "handlers": ["console", "debug_file", "warning_file"],
+                "level": "INFO",
             },
         },
     }

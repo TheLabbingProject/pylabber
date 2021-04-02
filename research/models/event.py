@@ -2,9 +2,9 @@
 Definition of the :class:`Event` model.
 """
 
+from django.urls import reverse
 from django_extensions.db.models import TitleDescriptionModel
 from model_utils.managers import InheritanceManager
-from django.urls import reverse
 
 
 class Event(TitleDescriptionModel):
@@ -27,7 +27,7 @@ class Event(TitleDescriptionModel):
             String representation
         """
 
-        return f"{self.title}|{self.description}"
+        return self.title
 
     def get_absolute_url(self):
         """

@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "storages",
     "django_celery_results",
+    "django_admin_inline_paginator",
     # Local
     "research",
     # Extensions

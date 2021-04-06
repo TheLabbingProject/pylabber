@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from django_mri.models.session import Session
 
 from research.models.event import Event
 from research.models.measurement_definition import MeasurementDefinition
@@ -7,6 +10,57 @@ from research.models.procedure_step import ProcedureStep
 from research.models.study import Study
 from research.models.subject import Subject
 from research.models.task import Task
+from research.utils.html import Html
+
+DOWNLOAD_BUTTON = '<span style="padding-left:20px;"><a href={url} type="button" class="button" id="{file_format}-download-button">{text}</a></span>'  # noqa: E501
+
+
+class SessionInLine(admin.TabularInline):
+    model = Session
+    verbose_name_plural = "MRI Sessions"
+    fields = (
+        "id_link",
+        "time",
+        "measurement",
+        "scan_count",
+        "comments",
+        "download",
+    )
+    readonly_fields = "id_link", "time", "scan_count", "download"
+    extra = 0
+    can_delete = False
+
+    class Media:
+        css = {"all": ("research/css/hide_admin_original.css",)}
+
+    def has_add_permission(self, request, instance: Session):
+        return False
+
+    def id_link(self, instance: Session) -> str:
+        model_name = instance.__class__.__name__
+        pk = instance.id
+        return Html.admin_link(model_name, pk)
+
+    def scan_count(self, instance: Session) -> int:
+        return instance.scan_set.count()
+
+    def download(self, instance: Session) -> str:
+        links = ""
+        url = reverse("mri:session_nifti_zip", args=(instance.id,))
+        button = DOWNLOAD_BUTTON.format(
+            url=url, file_format="nifti", text="NIfTI"
+        )
+        links += button
+        first_scan = instance.scan_set.first()
+        if first_scan.dicom:
+            url = reverse("mri:session_dicom_zip", args=(instance.id,))
+            button = DOWNLOAD_BUTTON.format(
+                url=url, file_format="dicom", text="DICOM"
+            )
+            links += button
+        return mark_safe(links)
+
+    id_link.short_description = "ID"
 
 
 class SubjectsInline(admin.TabularInline):
@@ -61,6 +115,7 @@ class SubjectAdmin(admin.ModelAdmin):
     )
     search_fields = "id_number", "first_name", "last_name"
     list_filter = "sex", "dominant_hand"
+    inlines = (SessionInLine,)
 
     def changelist_view(self, request, extra_context=None):
         response = super().changelist_view(

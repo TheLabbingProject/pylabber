@@ -113,7 +113,7 @@ class SubjectAdmin(admin.ModelAdmin):
         "date_of_birth",
         "dominant_hand",
     )
-    search_fields = "id_number", "first_name", "last_name"
+    search_fields = "id", "id_number", "first_name", "last_name"
     list_filter = "sex", "dominant_hand"
     inlines = (SessionInLine,)
 

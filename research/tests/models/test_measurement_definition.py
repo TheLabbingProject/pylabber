@@ -1,6 +1,7 @@
 from django.test import TestCase
-from ..factories import MeasurementDefinitionFactory
 from django.urls import reverse
+
+from ..factories import MeasurementDefinitionFactory
 
 
 class MeasurementDefinitionModelTestCase(TestCase):
@@ -16,5 +17,6 @@ class MeasurementDefinitionModelTestCase(TestCase):
         self.assertEqual(result, expected)
 
     def test_str(self):
-        expected = f"{self.test_measure.title}|{self.test_measure.description}"
-        self.assertEqual(str(self.test_measure), expected)
+        value = str(self.test_measure)
+        expected = self.test_measure.title
+        self.assertEqual(value, expected)

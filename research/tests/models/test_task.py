@@ -1,6 +1,7 @@
 from django.test import TestCase
-from ..factories import TaskFactory
 from django.urls import reverse
+
+from ..factories import TaskFactory
 
 
 class TaskModelTestCase(TestCase):
@@ -16,5 +17,6 @@ class TaskModelTestCase(TestCase):
         self.assertEqual(result, expected)
 
     def test_str(self):
-        expected = f"{self.test_task.title}|{self.test_task.description}"
-        self.assertEqual(str(self.test_task), expected)
+        value = str(self.test_task)
+        expected = self.test_task.title
+        self.assertEqual(value, expected)

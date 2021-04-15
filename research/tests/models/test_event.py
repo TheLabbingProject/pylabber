@@ -1,6 +1,7 @@
 from django.test import TestCase
-from ..factories import EventFactory
 from django.urls import reverse
+
+from ..factories import EventFactory
 
 
 class EventModelTestCase(TestCase):
@@ -16,5 +17,6 @@ class EventModelTestCase(TestCase):
         self.assertEqual(result, expected)
 
     def test_str(self):
-        expected = f"{self.test_event.title}|{self.test_event.description}"
-        self.assertEqual(str(self.test_event), expected)
+        value = str(self.test_event)
+        expected = self.test_event.title
+        self.assertEqual(value, expected)

@@ -186,9 +186,11 @@ class SubjectAdmin(admin.ModelAdmin):
         "sex",
         "date_of_birth",
         "dominant_hand",
+        "n_mri_sessions",
     )
     search_fields = "id", "id_number", "first_name", "last_name"
     list_filter = "sex", "dominant_hand"
+    readonly_fields = ("n_mri_sessions",)
     inlines = (SessionInLine,)
 
     def changelist_view(self, request, extra_context=None):
@@ -196,6 +198,11 @@ class SubjectAdmin(admin.ModelAdmin):
             request, extra_context=extra_context
         )
         return response
+
+    def n_mri_sessions(self, instance: Subject) -> int:
+        return instance.mri_session_set.count()
+
+    n_mri_sessions.short_description = "# MRI Sessions"
 
 
 class ProcedureStepInline(admin.TabularInline):

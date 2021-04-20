@@ -291,7 +291,15 @@ class ProcedureAdmin(admin.ModelAdmin):
 
 
 class MeasurementDefinitionAdmin(admin.ModelAdmin):
-    list_display = "id", "title", "description", "content_type"
+    list_display = "id", "title", "description", "content_type", "n_collected"
+
+    def n_collected(self, instance: MeasurementDefinition) -> int:
+        try:
+            return instance.instance_set.count()
+        except AttributeError:
+            pass
+
+    n_collected.short_description = "# Collected"
 
 
 class TaskAdmin(admin.ModelAdmin):

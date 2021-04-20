@@ -78,9 +78,29 @@ class Profile(models.Model):
         """
         return reverse("accounts:user-detail", args=[str(self.user.id)])
 
-    def get_full_name(self) -> str:
+    def get_title_repr(self) -> str:
+        """
+        Returns the verbose title of the user as defined in the
+        :class:`~accounts.models.choices.Title` Enum.
+
+        Returns
+        -------
+        str
+            Verbose title representation
+        """
+        try:
+            return Title[self.title].value
+        except (KeyError, ValueError):
+            pass
+
+    def get_full_name(self, include_title: bool = True) -> str:
         """
         Returns the full name of the user, including a title if any.
+
+        Parameters
+        ----------
+        include_title : bool, optional
+            Whether to include title (academic credentials etc.) if specified
 
         Returns
         -------
@@ -88,7 +108,8 @@ class Profile(models.Model):
             User's full name
         """
 
-        if self.title:
-            title = Title[self.title].value
-            return f"{self.user.get_full_name()}, {title}"
-        return self.user.get_full_name()
+        full_name = self.user.get_full_name()
+        if self.include_title and self.title:
+            title = self.get_title_repr()
+            return f"{full_name}, {title}"
+        return full_name

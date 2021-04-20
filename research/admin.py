@@ -95,12 +95,86 @@ class CollaboratorsInline(admin.TabularInline):
     model = Study.collaborators.through
     verbose_name_plural = "Collaborators"
     extra = 0
+    fields = "user_id", "title", "first_name", "last_name", "username", "email"
+    readonly_fields = (
+        "user_id",
+        "title",
+        "first_name",
+        "last_name",
+        "username",
+        "email",
+    )
+    can_delete = False
+
+    class Media:
+        css = {"all": ("research/css/hide_admin_original.css",)}
+
+    def has_add_permission(self, request, instance: Session):
+        return False
+
+    def user_id(self, instance) -> str:
+        model_name = instance.user.__class__.__name__
+        pk = instance.user.id
+        return Html.admin_link(model_name, pk)
+
+    user_id.short_description = "ID"
+
+    def title(self, instance) -> str:
+        return instance.user.profile.get_title_repr()
+
+    def first_name(self, instance) -> str:
+        return instance.user.first_name
+
+    def last_name(self, instance) -> str:
+        return instance.user.last_name
+
+    def username(self, instance) -> str:
+        return instance.user.username
+
+    def email(self, instance) -> str:
+        return instance.user.email
 
 
-class StudiesAdmin(admin.ModelAdmin):
-    inlines = CollaboratorsInline, SubjectsInline
+class ProcedureInline(admin.TabularInline):
+    model = Study.procedures.through
+    extra = 0
+    can_delete = False
+    verbose_name_plural = "Procedures"
+    fields = (
+        "id_link",
+        "title",
+        "description",
+    )
+    readonly_fields = (
+        "id_link",
+        "title",
+        "description",
+    )
+
+    class Media:
+        css = {"all": ("research/css/hide_admin_original.css",)}
+
+    def has_add_permission(self, request, instance):
+        return False
+
+    def id_link(self, instance) -> str:
+        procedure = instance.procedure
+        model_name = procedure.__class__.__name__
+        return Html.admin_link(model_name, procedure.id)
+
+    def title(self, instance) -> str:
+        return instance.procedure.title
+
+    def description(self, instance) -> str:
+        return instance.procedure.description
+
+    id_link.short_description = "ID"
+
+
+class StudyAdmin(admin.ModelAdmin):
+    inlines = CollaboratorsInline, ProcedureInline, SubjectsInline
     list_display = "title", "description", "created"
-    exclude = "subjects", "collaborators"
+    exclude = "subjects", "collaborators", "procedures"
 
 
 class SubjectAdmin(admin.ModelAdmin):
@@ -128,20 +202,38 @@ class ProcedureStepInline(admin.TabularInline):
     model = ProcedureStep
     extra = 0
     fields = (
-        "index",
+        "index_link",
         "event_type",
         "event_title",
         "event_description",
     )
     readonly_fields = (
-        "index",
+        "index_link",
         "event_type",
         "event_title",
         "event_description",
     )
+    can_delete = False
+    verbose_name_plural = "Steps"
 
-    def event_type(self, instance) -> str:
-        event = Event.objects.select_subclasses().get(id=instance.id)
+    class Media:
+        css = {"all": ("research/css/hide_admin_original.css",)}
+
+    def has_add_permission(self, request, instance: ProcedureStep):
+        return False
+
+    def index_link(self, instance: ProcedureStep) -> str:
+        event = Event.objects.get_subclass(id=instance.event.id)
+        model_name = event.__class__.__name__
+        pk = instance.event.id
+        text = str(instance.index)
+        return Html.admin_link(model_name, pk, text)
+
+    def event_title(self, instance: ProcedureStep) -> str:
+        return instance.event.title
+
+    def event_type(self, instance: ProcedureStep) -> str:
+        event = Event.objects.get_subclass(id=instance.event.id)
         event_type = event.__class__.__name__
         return (
             event_type
@@ -149,22 +241,46 @@ class ProcedureStepInline(admin.TabularInline):
             else "Measurement"
         )
 
-    def event_title(self, instance) -> str:
-        return instance.event.title
-
-    def event_description(self, instance) -> str:
+    def event_description(self, instance: ProcedureStep) -> str:
         return instance.event.description
+
+    index_link.short_description = "Index"
+    event_title.short_description = "Title"
+    event_description.short_description = "Description"
+    event_type.short_description = "Type"
 
 
 class StudyInline(admin.TabularInline):
     model = Study.procedures.through
+    fields = "id_link", "title", "description"
+    readonly_fields = "id_link", "title", "description"
     verbose_name_plural = "Studies"
     extra = 0
+    can_delete = False
+
+    class Media:
+        css = {"all": ("research/css/hide_admin_original.css",)}
+
+    def has_add_permission(self, request, instance: ProcedureStep):
+        return False
+
+    def id_link(self, instance) -> str:
+        model_name = instance.study.__class__.__name__
+        pk = instance.study.id
+        return Html.admin_link(model_name, pk)
+
+    def title(self, instance) -> str:
+        return instance.study.title
+
+    def description(self, instance) -> str:
+        return instance.study.description
+
+    id_link.short_description = "ID"
 
 
 class ProcedureAdmin(admin.ModelAdmin):
     list_display = "id", "title", "description"
-    inlines = ProcedureStepInline, StudyInline
+    inlines = StudyInline, ProcedureStepInline
 
 
 class MeasurementDefinitionAdmin(admin.ModelAdmin):
@@ -181,6 +297,6 @@ class TaskAdmin(admin.ModelAdmin):
 
 admin.site.register(MeasurementDefinition, MeasurementDefinitionAdmin)
 admin.site.register(Procedure, ProcedureAdmin)
-admin.site.register(Study, StudiesAdmin)
+admin.site.register(Study, StudyAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Task, TaskAdmin)

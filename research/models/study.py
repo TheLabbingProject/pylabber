@@ -1,12 +1,13 @@
 """
-Definition of the :class:`~research.models.study.Study` model.
+Definition of the :class:`Study` model.
 """
 
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-from django_extensions.db.models import TitleDescriptionModel, TimeStampedModel
-from .subject import Subject
+from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
+from research.models.managers.study import StudyManager
+from research.models.subject import Subject
 
 
 class Study(TitleDescriptionModel, TimeStampedModel):
@@ -27,6 +28,8 @@ class Study(TitleDescriptionModel, TimeStampedModel):
 
     #: The experimental procedures associated with this study.
     procedures = models.ManyToManyField("research.Procedure", blank=True)
+
+    objects = StudyManager.as_manager()
 
     class Meta:
         ordering = ("title",)

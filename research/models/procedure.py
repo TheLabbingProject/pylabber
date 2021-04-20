@@ -4,9 +4,10 @@ Definition of the :class:`Procedure` model.
 
 from django.db import models
 from django.urls import reverse
-from research.models.event import Event
-from research.models.procedure_step import ProcedureStep
 from django_extensions.db.models import TitleDescriptionModel
+from research.models.event import Event
+from research.models.managers.procedure import ProcedureManager
+from research.models.procedure_step import ProcedureStep
 
 
 class Procedure(TitleDescriptionModel):
@@ -16,6 +17,8 @@ class Procedure(TitleDescriptionModel):
 
     #: Represents an ordered list of events in a procedure.
     events = models.ManyToManyField(Event, through="research.ProcedureStep")
+
+    objects = ProcedureManager.as_manager()
 
     class Meta:
         ordering = ("title",)
@@ -37,7 +40,10 @@ class Procedure(TitleDescriptionModel):
         Performs an event addition.
         """
 
-        ProcedureStep.objects.create(index=index, event=event, procedure=self)
+        index = self.max_index + 1 if index is None else index
+        return ProcedureStep.objects.create(
+            index=index, event=event, procedure=self
+        )
 
     def get_absolute_url(self):
         """
@@ -73,5 +79,5 @@ class Procedure(TitleDescriptionModel):
             Maximal step index, or -1
         """
 
-        last_step = self.procedurestep_set.order_by("-index").first()
+        last_step = self.step_set.order_by("-index").first()
         return last_step.index if last_step else -1

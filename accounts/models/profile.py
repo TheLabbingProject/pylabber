@@ -109,7 +109,7 @@ class Profile(models.Model):
         """
 
         full_name = self.user.get_full_name()
-        if self.include_title and self.title:
+        if include_title and self.title:
             title = self.get_title_repr()
             return f"{full_name}, {title}"
         return full_name

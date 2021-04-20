@@ -1,7 +1,8 @@
+from accounts.models import Profile, User
 from accounts.models.choices import Title
-from accounts.models import User, Profile
 from django.test import TestCase
-from .factories import UserFactory, TEST_PASSWORD
+
+from .factories import TEST_PASSWORD, UserFactory
 
 
 class UserModelTestCase(TestCase):
@@ -28,7 +29,9 @@ class ProfileModelTestCase(TestCase):
         self.assertEqual(str(self.profile), self.user.get_full_name())
 
     def test_login(self):
-        result = self.client.login(username=self.user.username, password=TEST_PASSWORD)
+        result = self.client.login(
+            username=self.user.username, password=TEST_PASSWORD
+        )
         self.assertTrue(result)
 
     def test_full_name_with_title(self):

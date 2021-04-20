@@ -46,8 +46,9 @@ class MeasurementDefinition(Event):
         models.QuerySet
             Collected data instances
         """
-        DataModel = self.content_type.model_class()
-        return DataModel.objects.filter(measurement=self)
+        if self.content_type:
+            DataModel = self.content_type.model_class()
+            return DataModel.objects.filter(measurement=self)
 
     @property
     def instance_set(self) -> models.QuerySet:

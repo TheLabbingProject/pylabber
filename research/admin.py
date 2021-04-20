@@ -284,7 +284,7 @@ class ProcedureAdmin(admin.ModelAdmin):
 
 
 class MeasurementDefinitionAdmin(admin.ModelAdmin):
-    list_display = "id", "title", "description"
+    list_display = "id", "title", "description", "content_type"
 
 
 class TaskAdmin(admin.ModelAdmin):

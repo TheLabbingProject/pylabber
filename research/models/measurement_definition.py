@@ -2,6 +2,8 @@
 Definition of the :class:`MeasurementDefinition` model.
 """
 
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
 from django.urls import reverse
 from research.models.event import Event
 
@@ -10,6 +12,10 @@ class MeasurementDefinition(Event):
     """
     Represents an experimental measurement definition.
     """
+
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, blank=True, null=True
+    )
 
     def get_absolute_url(self):
         """

@@ -1,9 +1,9 @@
 """
 Definition of the :class:`ProcedureStep` model.
 """
-from django.db import IntegrityError
-from django.db import models
+from django.db import IntegrityError, models
 from django.urls import reverse
+from research.models.managers.procedure_step import ProcedureStepManager
 
 
 class ProcedureStep(models.Model):
@@ -20,8 +20,10 @@ class ProcedureStep(models.Model):
 
     #: The procedure related to this item.
     procedure = models.ForeignKey(
-        "research.Procedure", on_delete=models.PROTECT
+        "research.Procedure", on_delete=models.PROTECT, related_name="step_set"
     )
+
+    objects = ProcedureStepManager.as_manager()
 
     class Meta:
         ordering = "procedure", "index"

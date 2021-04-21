@@ -2,9 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from django_admin_inline_paginator.admin import TabularInlinePaginated
 from django_mri.models.session import Session
-from nonrelated_inlines.admin import NonrelatedStackedInline
 
 from research.models.event import Event
 from research.models.measurement_definition import MeasurementDefinition
@@ -16,6 +14,7 @@ from research.models.task import Task
 from research.utils.html import Html
 
 DOWNLOAD_BUTTON = '<span style="padding-left:20px;"><a href={url} type="button" class="button" id="{file_format}-download-button">{text}</a></span>'  # noqa: E501
+LINK_BUTTON = '<a href={url} type="button" class="button">{text}</a>'
 
 
 class SessionInLine(admin.TabularInline):
@@ -174,53 +173,20 @@ class ProcedureInline(admin.TabularInline):
     id_link.short_description = "ID"
 
 
-class StudySubjectInline(TabularInlinePaginated, NonrelatedStackedInline):
-    model = Subject
-    fields = (
-        "id_link",
-        "id_number",
-        "first_name",
-        "last_name",
-        "sex",
-        "date_of_birth",
-        "dominant_hand",
-    )
-    readonly_fields = (
-        "id_link",
-        "id_number",
-        "first_name",
-        "last_name",
-        "sex",
-        "date_of_birth",
-        "dominant_hand",
-    )
-    can_delete = False
-    extra = 0
-    per_page = 20
-    _form_queryset = None
-
-    class Media:
-        css = {"all": ("django_mri/css/hide_admin_original.css",)}
-
-    def has_add_permission(self, request, instance: Study):
-        return False
-
-    def get_form_queryset(self, instance: Study):
-        if self._form_queryset is None:
-            self._form_queryset = instance.query_associated_subjects()
-        return self._form_queryset
-
-    def id_link(self, instance: Subject):
-        model_name = instance.__class__.__name__
-        return Html.admin_link(model_name, instance.id)
-
-    id_link.short_description = "ID"
-
-
 class StudyAdmin(admin.ModelAdmin):
-    inlines = CollaboratorsInline, ProcedureInline, StudySubjectInline
+    fields = "title", "description", "image", "participant_list"
+    readonly_fields = ("participant_list",)
+    inlines = CollaboratorsInline, ProcedureInline
     list_display = "title", "description", "created"
     exclude = "subjects", "collaborators", "procedures"
+
+    def participant_list(self, instance: Study) -> str:
+        subjects_view = reverse("admin:research_subject_changelist")
+        url = f"{subjects_view}?study+participation={instance.id}"
+        html = LINK_BUTTON.format(url=url, text="View")
+        return mark_safe(html)
+
+    participant_list.short_description = "Participants"
 
 
 class StudyAssociationFilter(SimpleListFilter):

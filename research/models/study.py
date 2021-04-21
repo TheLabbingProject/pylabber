@@ -68,11 +68,17 @@ class Study(TitleDescriptionModel, TimeStampedModel):
 
         return reverse("research:study-detail", args=[str(self.id)])
 
-    def query_associated_subjects(self) -> models.QuerySet:
+    def query_associated_subjects(
+        self, id_only: bool = False
+    ) -> models.QuerySet:
         Subject = get_subject_model()
         subject_ids = [
             subject.id
             for subject in Subject.objects.all()
             if self.id in subject.query_associated_studies(id_only=True)
         ]
-        return Subject.objects.filter(id__in=subject_ids)
+        return (
+            subject_ids
+            if id_only
+            else Subject.objects.filter(id__in=subject_ids)
+        )

@@ -1,7 +1,10 @@
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django_admin_inline_paginator.admin import TabularInlinePaginated
 from django_mri.models.session import Session
+from nonrelated_inlines.admin import NonrelatedStackedInline
 
 from research.models.event import Event
 from research.models.measurement_definition import MeasurementDefinition
@@ -171,10 +174,74 @@ class ProcedureInline(admin.TabularInline):
     id_link.short_description = "ID"
 
 
+class StudySubjectInline(TabularInlinePaginated, NonrelatedStackedInline):
+    model = Subject
+    fields = (
+        "id_link",
+        "id_number",
+        "first_name",
+        "last_name",
+        "sex",
+        "date_of_birth",
+        "dominant_hand",
+    )
+    readonly_fields = (
+        "id_link",
+        "id_number",
+        "first_name",
+        "last_name",
+        "sex",
+        "date_of_birth",
+        "dominant_hand",
+    )
+    can_delete = False
+    extra = 0
+    per_page = 20
+    _form_queryset = None
+
+    class Media:
+        css = {"all": ("django_mri/css/hide_admin_original.css",)}
+
+    def has_add_permission(self, request, instance: Study):
+        return False
+
+    def get_form_queryset(self, instance: Study):
+        if self._form_queryset is None:
+            self._form_queryset = instance.query_associated_subjects()
+        return self._form_queryset
+
+    def id_link(self, instance: Subject):
+        model_name = instance.__class__.__name__
+        return Html.admin_link(model_name, instance.id)
+
+    id_link.short_description = "ID"
+
+
 class StudyAdmin(admin.ModelAdmin):
-    inlines = CollaboratorsInline, ProcedureInline, SubjectsInline
+    inlines = CollaboratorsInline, ProcedureInline, StudySubjectInline
     list_display = "title", "description", "created"
     exclude = "subjects", "collaborators", "procedures"
+
+
+class StudyAssociationFilter(SimpleListFilter):
+    title = "study participation"
+    parameter_name = "study participation"
+
+    def lookups(self, request, model_admin):
+        return [(study.id, study.title) for study in Study.objects.all()]
+
+    def queryset(self, request, queryset):
+        try:
+            value = int(self.value())
+        except TypeError:
+            return queryset
+        else:
+            subject_ids = [
+                subject.id
+                for subject in queryset.all()
+                if value in subject.query_associated_studies(id_only=True)
+            ]
+            return queryset.filter(id__in=subject_ids)
 
 
 class SubjectAdmin(admin.ModelAdmin):
@@ -189,7 +256,7 @@ class SubjectAdmin(admin.ModelAdmin):
         "n_mri_sessions",
     )
     search_fields = "id", "id_number", "first_name", "last_name"
-    list_filter = "sex", "dominant_hand"
+    list_filter = "sex", "dominant_hand", StudyAssociationFilter
     readonly_fields = ("n_mri_sessions",)
     inlines = (SessionInLine,)
 

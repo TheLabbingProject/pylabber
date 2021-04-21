@@ -7,7 +7,7 @@ from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
 from research.models.managers.study import StudyManager
-from research.models.subject import Subject
+from research.utils import get_subject_model
 
 
 class Study(TitleDescriptionModel, TimeStampedModel):
@@ -21,7 +21,9 @@ class Study(TitleDescriptionModel, TimeStampedModel):
     )
 
     #: Subjects associated with this study.
-    subjects = models.ManyToManyField(Subject, blank=True)
+    #: This field is currently not used, but kept because in the future it
+    #: might be used for "caching" associated subjects to save queries.
+    subjects = models.ManyToManyField("research.Subject", blank=True)
 
     #: Researchers collaborating on this study.
     collaborators = models.ManyToManyField(get_user_model(), blank=True)
@@ -65,3 +67,12 @@ class Study(TitleDescriptionModel, TimeStampedModel):
         """
 
         return reverse("research:study-detail", args=[str(self.id)])
+
+    def query_associated_subjects(self) -> models.QuerySet:
+        Subject = get_subject_model()
+        subject_ids = [
+            subject.id
+            for subject in Subject.objects.all()
+            if self.id in subject.query_associated_studies(id_only=True)
+        ]
+        return Subject.objects.filter(id__in=subject_ids)

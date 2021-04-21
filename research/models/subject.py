@@ -2,24 +2,28 @@
 Definition of the :class:`Subject` model.
 """
 
-import pandas as pd
+import itertools
 
+import pandas as pd
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
 from pylabber.utils import CharNullField
+from questionnaire_reader import QuestionnaireReader
+from research.models.choices import DominantHand, Gender, Sex
 from research.models.managers.subject import SubjectQuerySet
+from research.models.measurement_definition import MeasurementDefinition
+from research.models.procedure import Procedure
+from research.models.study import Study
+from research.models.validators import not_future
 from research.utils.custom_attributes_processor import (
     CustomAttributesProcessor,
 )
 from research.utils.subject_table import (
-    read_subject_table,
     merge_subject_and_questionnaire_data,
+    read_subject_table,
 )
-from research.models.choices import Sex, Gender, DominantHand
-from research.models.validators import not_future
-from questionnaire_reader import QuestionnaireReader
 
 
 class Subject(TimeStampedModel):
@@ -133,6 +137,69 @@ class Subject(TimeStampedModel):
         """
 
         return f"{self.first_name} {self.last_name}"
+
+    def query_collected_measurements(self) -> models.QuerySet:
+        """
+        Returns a queryset of
+        :class:`~research.models.measurement_definition.MeasurementDefinition`
+        instances for which this subject has associated data model instances.
+
+        Returns
+        -------
+        models.QuerySet
+            Collected measurement definitions
+        """
+        measurements = {
+            session.measurement.id
+            for session in self.mri_session_set.all()
+            if session.measurement is not None
+        }
+        return MeasurementDefinition.objects.filter(id__in=measurements)
+
+    def query_experimental_procedures(self) -> models.QuerySet:
+        """
+        Returns a queryset of :class:`~research.models.procedure.Procedure`
+        instances in which this subject participated.
+
+        Returns
+        -------
+        models.QuerySet
+            Procedures this subject participated in
+        """
+        measurements = self.query_collected_measurements()
+        procedure_ids = measurements.values_list("procedure", flat=True)
+        return Procedure.objects.filter(id__in=procedure_ids)
+
+    def query_associated_studies(
+        self, id_only: bool = False
+    ) -> models.QuerySet:
+        """
+        Returns a queryset of :class:`~research.models.study.Study` instances
+        this subject has data associated with.
+
+        Parameters
+        ----------
+        id_only : bool, optional
+            Whether to return a list of IDs instead of a queryset, defaults to
+            False
+
+        Returns
+        -------
+        models.QuerySet
+            Associated studies
+        """
+        procedures = self.query_experimental_procedures()
+        study_ids = list(
+            set(
+                itertools.chain(
+                    *[
+                        procedure.study_set.values_list("id", flat=True)
+                        for procedure in procedures
+                    ]
+                )
+            )
+        )
+        return study_ids if id_only else Study.objects.filter(id__in=study_ids)
 
     def get_personal_information(self) -> pd.Series:
         """

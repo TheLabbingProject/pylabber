@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django_mri.models.session import Session
@@ -13,6 +14,7 @@ from research.models.task import Task
 from research.utils.html import Html
 
 DOWNLOAD_BUTTON = '<span style="padding-left:20px;"><a href={url} type="button" class="button" id="{file_format}-download-button">{text}</a></span>'  # noqa: E501
+LINK_BUTTON = '<a href={url} type="button" class="button">{text}</a>'
 
 
 class SessionInLine(admin.TabularInline):
@@ -172,9 +174,40 @@ class ProcedureInline(admin.TabularInline):
 
 
 class StudyAdmin(admin.ModelAdmin):
-    inlines = CollaboratorsInline, ProcedureInline, SubjectsInline
+    fields = "title", "description", "image", "participant_list"
+    readonly_fields = ("participant_list",)
+    inlines = CollaboratorsInline, ProcedureInline
     list_display = "title", "description", "created"
     exclude = "subjects", "collaborators", "procedures"
+
+    def participant_list(self, instance: Study) -> str:
+        subjects_view = reverse("admin:research_subject_changelist")
+        url = f"{subjects_view}?study+participation={instance.id}"
+        html = LINK_BUTTON.format(url=url, text="View")
+        return mark_safe(html)
+
+    participant_list.short_description = "Participants"
+
+
+class StudyAssociationFilter(SimpleListFilter):
+    title = "study participation"
+    parameter_name = "study participation"
+
+    def lookups(self, request, model_admin):
+        return [(study.id, study.title) for study in Study.objects.all()]
+
+    def queryset(self, request, queryset):
+        try:
+            value = int(self.value())
+        except TypeError:
+            return queryset
+        else:
+            subject_ids = [
+                subject.id
+                for subject in queryset.all()
+                if value in subject.query_associated_studies(id_only=True)
+            ]
+            return queryset.filter(id__in=subject_ids)
 
 
 class SubjectAdmin(admin.ModelAdmin):
@@ -189,7 +222,7 @@ class SubjectAdmin(admin.ModelAdmin):
         "n_mri_sessions",
     )
     search_fields = "id", "id_number", "first_name", "last_name"
-    list_filter = "sex", "dominant_hand"
+    list_filter = "sex", "dominant_hand", StudyAssociationFilter
     readonly_fields = ("n_mri_sessions",)
     inlines = (SessionInLine,)
 
@@ -286,8 +319,11 @@ class StudyInline(admin.TabularInline):
 
 
 class ProcedureAdmin(admin.ModelAdmin):
-    list_display = "id", "title", "description"
+    list_display = "id", "title", "description", "step_count"
     inlines = StudyInline, ProcedureStepInline
+
+    def step_count(self, instance: Procedure) -> int:
+        return instance.step_set.count()
 
 
 class MeasurementDefinitionAdmin(admin.ModelAdmin):

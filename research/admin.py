@@ -286,8 +286,11 @@ class StudyInline(admin.TabularInline):
 
 
 class ProcedureAdmin(admin.ModelAdmin):
-    list_display = "id", "title", "description"
+    list_display = "id", "title", "description", "step_count"
     inlines = StudyInline, ProcedureStepInline
+
+    def step_count(self, instance: Procedure) -> int:
+        return instance.step_set.count()
 
 
 class MeasurementDefinitionAdmin(admin.ModelAdmin):

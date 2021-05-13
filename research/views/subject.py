@@ -1,6 +1,7 @@
 from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bs4 import BeautifulSoup
+from django.db.models import Max
 from django.http import HttpResponse
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
@@ -10,19 +11,18 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-
 BOKEH_URL = "http://localhost:5006/date_of_birth"
 
 
 class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
-    API endpoint that allows :class:`~research.models.subject.Subject` instances
-    to be viewed or edited.
+    API endpoint that allows :class:`~research.models.subject.Subject`
+    instances to be viewed or edited.
 
     """
 
     filter_class = SubjectFilter
-    queryset = Subject.objects.order_by("id").all()
+    queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     ordering_fields = (
         "id",
@@ -35,6 +35,12 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     def get_queryset(self):
         # TODO: Implement filtering according to the user's collaborations
         return Subject.objects.all()
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+        return queryset.annotate(
+            latest_session=Max("mri_session_set__time")
+        ).order_by("-latest_session")
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

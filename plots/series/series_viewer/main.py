@@ -1,12 +1,12 @@
 import numpy as np
-
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
 from bokeh.models import Div
 from django.core.exceptions import ObjectDoesNotExist
 from django_mri.models.scan import Scan
-from .utils.sources_manager import SourcesManager
+
 from .utils.figures_manager import FiguresManager
+from .utils.sources_manager import SourcesManager
 from .utils.widgets_manager import WidgetsManager
 
 
@@ -15,23 +15,30 @@ class SeriesViewer:
         self.sources_manager = SourcesManager(data)
         self.widgets_manager = WidgetsManager()
         self.figures_manager = FiguresManager(
-            sources_manager=self.sources_manager, widgets_manager=self.widgets_manager
+            sources_manager=self.sources_manager,
+            widgets_manager=self.widgets_manager,
         )
         self.figures_manager.create_figures()
         self.figures_row = row(*self.figures_manager.figures.values())
 
     def create_visibility_checkbox(self):
         visibility_checkbox = self.widgets_manager.create_visibility_checkbox()
-        visibility_checkbox.on_change("active", self.figures_manager.handle_checkbox)
+        visibility_checkbox.on_change(
+            "active", self.figures_manager.handle_checkbox
+        )
         return visibility_checkbox
 
     def create_palette_select(self):
         palette_select = self.widgets_manager.create_palette_select()
-        palette_select.on_change("value", self.figures_manager.handle_palette_change)
+        palette_select.on_change(
+            "value", self.figures_manager.handle_palette_change
+        )
         return palette_select
 
     def create_crosshair_color_select(self):
-        crosshair_color_select = self.widgets_manager.create_crosshair_color_select()
+        crosshair_color_select = (
+            self.widgets_manager.create_crosshair_color_select()
+        )
         crosshair_color_select.on_change(
             "value", self.figures_manager.change_crosshair_color
         )
@@ -63,9 +70,18 @@ scan_id = int(arguments.get("scan_id", [-1])[0])
 try:
     scan = Scan.objects.get(id=scan_id)
 except ObjectDoesNotExist:
-    data = np.ones((200, 200, 200))
+    data = np.ones((400, 400, 400))
 else:
-    data = scan.dicom.data
+    if scan.sequence_type.title == "MPRAGE":
+        data = scan.dicom.data
+    else:
+        try:
+            data = scan.nifti.get_data(dtype=np.float16)
+        except RuntimeError:
+            data = scan.dicom.data.squeeze()
+        # In case of 4D data, show a mean image.
+    if data.ndim == 4:
+        data = data.mean(axis=-1)
 
 valid_data = data.ndim == 3 and max(data.shape) < 750
 if valid_data:

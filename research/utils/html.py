@@ -9,11 +9,13 @@ from pygments.lexers import JsonLexer
 ADMIN_VIEW_NAMES = {
     "Subject": "admin:research_subject_change",
     "Study": "admin:research_study_change",
+    "Group": "admin:research_group_change",
     "Procedure": "admin:research_procedure_change",
     "MeasurementDefinition": "admin:research_measurementdefinition_change",
     "Task": "admin:research_task_change",
     "User": "admin:accounts_user_change",
     "Session": "admin:django_mri_session_change",
+    "Scan": "admin:django_mri_scan_change",
 }
 
 

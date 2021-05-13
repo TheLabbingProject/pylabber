@@ -1,5 +1,4 @@
 import numpy as np
-
 from bokeh.events import MouseWheel, Tap
 from bokeh.models.widgets import (
     CheckboxButtonGroup,
@@ -9,10 +8,10 @@ from bokeh.models.widgets import (
     Toggle,
 )
 from plots.series.series_viewer.utils.crosshair import (
+    DEFAULT_CROSSHAIR_COLOR,
     CrosshairLines,
     crosshair_colors,
     crosshair_line_dict,
-    DEFAULT_CROSSHAIR_COLOR,
 )
 from plots.series.series_viewer.utils.palettes import (
     DEFAULT_PALETTE,
@@ -55,8 +54,8 @@ class WidgetsManager:
 
     def create_range_slider(self, plane: Plane) -> RangeSlider:
         """
-        Creates a range slider to comfortable show and change a given plane's values
-        range.
+        Creates a range slider to comfortable show and change a given plane's
+        values range.
 
         Parameters
         ----------
@@ -81,8 +80,8 @@ class WidgetsManager:
 
     def handle_mouse_wheel(self, event: MouseWheel, plane: Plane):
         """
-        Changes the current plane's index interactively in response to a MouseWheel
-        event.
+        Changes the current plane's index interactively in response to a
+        MouseWheel event.
 
         Parameters
         ----------
@@ -100,7 +99,8 @@ class WidgetsManager:
 
     def handle_tap(self, event: Tap, plane: Plane):
         """
-        Changes the other planes' indices interactively in response to a Tap event.
+        Changes the other planes' indices interactively in response to a Tap
+        event.
 
         Parameters
         ----------
@@ -118,8 +118,8 @@ class WidgetsManager:
 
     def update_values_range(self, plane: Plane, image: np.ndarray):
         """
-        Updates min and max values of the RangeSlider which corresponds to the given
-        plane's figure.
+        Updates min and max values of the RangeSlider which corresponds to the
+        given plane's figure.
 
         Parameters
         ----------
@@ -202,7 +202,9 @@ class WidgetsManager:
         """
 
         select = Select(
-            title="Palette", value=DEFAULT_PALETTE, options=list(palette_dict.keys())
+            title="Palette",
+            value=DEFAULT_PALETTE,
+            options=list(palette_dict.keys()),
         )
         # select.on_change("value", handle_palette_change)
         return select
@@ -214,8 +216,8 @@ class WidgetsManager:
         Returns
         -------
         CheckboxButtonGroup
-            A button group to change the visibility of the crosshair and axes in the
-            figures.
+            A button group to change the visibility of the crosshair and axes
+            in the figures.
         """
 
         visibility_checkbox = CheckboxButtonGroup(
@@ -226,7 +228,8 @@ class WidgetsManager:
 
     def get_checkbox_index(self, label: str) -> int:
         """
-        Returns the index of the given label from the CheckboxButtonGroup definition.
+        Returns the index of the given label from the CheckboxButtonGroup
+        definition.
 
         Parameters
         ----------

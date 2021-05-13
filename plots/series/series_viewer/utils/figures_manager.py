@@ -1,20 +1,16 @@
-import numpy as np
+from functools import partial
 
+import numpy as np
 from bokeh.events import MouseWheel, Tap
 from bokeh.io import curdoc
-from bokeh.models.mappers import LinearColorMapper
 from bokeh.models.glyphs import Image, MultiLine
+from bokeh.models.mappers import LinearColorMapper
 from bokeh.models.ranges import Range1d
-from bokeh.plotting import figure, Figure
-from functools import partial
-from plots.series.series_viewer.utils.crosshair import (
-    CrosshairLines,
-    CrosshairsManager,
-)
-from plots.series.series_viewer.utils.palettes import (
-    get_default_palette,
-    palette_dict,
-)
+from bokeh.plotting import Figure, figure
+from plots.series.series_viewer.utils.crosshair import (CrosshairLines,
+                                                        CrosshairsManager)
+from plots.series.series_viewer.utils.palettes import (get_default_palette,
+                                                       palette_dict)
 from plots.series.series_viewer.utils.plane import Plane
 from plots.series.series_viewer.utils.sources_manager import SourcesManager
 from plots.series.series_viewer.utils.widgets_manager import WidgetsManager
@@ -30,7 +26,11 @@ class FiguresManager:
         self.crosshairs_manager = CrosshairsManager(self.figures)
 
     def create_figures_dictionary(self) -> dict:
-        return {Plane.TRANSVERSE: None, Plane.SAGITTAL: None, Plane.CORONAL: None}
+        return {
+            Plane.TRANSVERSE: None,
+            Plane.SAGITTAL: None,
+            Plane.CORONAL: None,
+        }
 
     def create_figure_model(self, plane: Plane) -> Figure:
         """
@@ -88,8 +88,8 @@ class FiguresManager:
 
     def create_crosshair_model(self, plane: Plane) -> MultiLine:
         """
-        Creates an instance of the MultiLine model for the given plane to display a
-        crosshair.
+        Creates an instance of the MultiLine model for the given plane to
+        display a crosshair.
 
         Parameters
         ----------
@@ -115,7 +115,8 @@ class FiguresManager:
 
     def get_figure_model(self, plane: Plane) -> Figure:
         """
-        Returns the existing Figure instance for the desired plane from the document.
+        Returns the existing Figure instance for the desired plane from the
+        document.
 
         Parameters
         ----------
@@ -132,7 +133,8 @@ class FiguresManager:
 
     def get_image_model(self, plane: Plane) -> Image:
         """
-        Returns the existing Image instance for the desired plane from the document.
+        Returns the existing Image instance for the desired plane from the
+        document.
 
         Parameters
         ----------
@@ -158,7 +160,8 @@ class FiguresManager:
         """
 
         self.figures[plane].on_event(
-            MouseWheel, partial(self.widgets_manager.handle_mouse_wheel, plane=plane)
+            MouseWheel,
+            partial(self.widgets_manager.handle_mouse_wheel, plane=plane),
         )
 
     def add_click_interaction(self, plane: Plane):
@@ -177,7 +180,8 @@ class FiguresManager:
 
     def update_figure_properties(self, plane: Plane, image: np.ndarray):
         """
-        Updates the figure's properties according to the properties of the image.
+        Updates the figure's properties according to the properties of the
+        image.
 
         Parameters
         ----------
@@ -187,14 +191,15 @@ class FiguresManager:
 
         width, height = image.shape[1], image.shape[0]
         figure = self.get_figure_model(plane)
-        figure.plot_width = min(int(width * 1.8), 405)
-        figure.plot_height = int(height * 1.8)
+        figure.plot_width = max(int(width * 1.8), 380)
+        figure.plot_height = max(int(height * 1.8), 380)
         figure.x_range = Range1d(0, width)
         figure.y_range = Range1d(0, height)
 
     def get_crosshair_index(self, plane: Plane, line: CrosshairLines) -> int:
         """
-        Returns the index of the crosshair line in the given plane and orientation.
+        Returns the index of the crosshair line in the given plane and
+        orientation.
 
         Parameters
         ----------
@@ -209,9 +214,8 @@ class FiguresManager:
             The current index of the crosshair line.
         """
 
-        crosshair_line_plane = self.crosshairs_manager.get_crosshair_line_plane(
-            plane, line
-        )
+        manager = self.crosshairs_manager
+        crosshair_line_plane = manager.get_crosshair_line_plane(plane, line)
         return self.widgets_manager.index_sliders[crosshair_line_plane].value
 
     def get_crosshair_indices(self, plane: Plane):
@@ -253,7 +257,8 @@ class FiguresManager:
 
     def update_crosshairs(self, skip: Plane = None):
         """
-        Updates the crosshair for all planes, except for the "skip" plane if provided.
+        Updates the crosshair for all planes, except for the "skip" plane if
+        provided.
 
         Parameters
         ----------
@@ -269,8 +274,8 @@ class FiguresManager:
 
     def set_image(self, plane: Plane, index: int):
         """
-        Sets the data for the appropriate figure according to the provided plane and
-        index.
+        Sets the data for the appropriate figure according to the provided
+        plane and index.
 
         Parameters
         ----------
@@ -307,11 +312,14 @@ class FiguresManager:
         )
         new_image[new_image >= max_value] = max_value
         new_image[new_image <= min_value] = min_value
-        self.sources_manager.sources[plane]["image"].data["image"] = [new_image]
+        self.sources_manager.sources[plane]["image"].data["image"] = [
+            new_image
+        ]
 
     def handle_checkbox(self, attr, old, new):
         """
-        Show or hide crosshairs and axes according to the CheckboxButtonGroup state.
+        Show or hide crosshairs and axes according to the CheckboxButtonGroup
+        state.
         """
 
         if self.widgets_manager.get_checkbox_index("Crosshair") in new:
@@ -373,13 +381,17 @@ class FiguresManager:
         for plane in self.figures:
             self.figures[plane] = self.create_figure_model(plane)
             self.create_image_model(plane)
-            self.crosshairs_manager.models[plane] = self.create_crosshair_model(plane)
+            self.crosshairs_manager.models[
+                plane
+            ] = self.create_crosshair_model(plane)
             self.add_wheel_interaction(plane)
             self.add_click_interaction(plane)
             slider = self.widgets_manager.create_index_slider(
                 self.sources_manager.data, plane
             )
-            slider.on_change("value", partial(self.update_plane_index, plane=plane))
+            slider.on_change(
+                "value", partial(self.update_plane_index, plane=plane)
+            )
             slider.visible = False
             self.widgets_manager.index_sliders[plane] = slider
             range_slider = self.widgets_manager.create_range_slider(plane)

@@ -1,5 +1,4 @@
 import pandas as pd
-
 from bokeh.io import curdoc
 from bokeh.layouts import row
 from bokeh.models import ColumnDataSource, FactorRange, Tabs
@@ -10,7 +9,9 @@ from plots.model_explorer.plotters.bar_plot.bar_plot import BarPlot
 from plots.model_explorer.plotters.bar_plot.date_distribution import (
     DateDistributionConfiguration,
 )
-from plots.model_explorer.plotters.bar_plot.date_distribution.time_bins import TimeBins
+from plots.model_explorer.plotters.bar_plot.date_distribution.time_bins import (
+    TimeBins,
+)
 from titlecase import titlecase
 
 
@@ -23,14 +24,21 @@ class DateDistribution(BarPlot):
         "y_axis_label": "Count",
     }
     INDEX_NAMES = {
-        TimeBins.DAY: (TimeBins.YEAR.value, TimeBins.MONTH.value, TimeBins.DAY.value),
+        TimeBins.DAY: (
+            TimeBins.YEAR.value,
+            TimeBins.MONTH.value,
+            TimeBins.DAY.value,
+        ),
         TimeBins.MONTH: (TimeBins.YEAR.value, TimeBins.MONTH.value),
         TimeBins.YEAR: (TimeBins.YEAR.value,),
     }
     NAME = "bk-date-dist"
 
     def __init__(
-        self, field: Field, time_bin: TimeBins = TimeBins.YEAR, by: Field = None
+        self,
+        field: Field,
+        time_bin: TimeBins = TimeBins.YEAR,
+        by: Field = None,
     ):
         self.date_counts = None
         self.time_bin = time_bin
@@ -61,7 +69,9 @@ class DateDistribution(BarPlot):
             df = df.reindex(index, fill_value=0)
             return {"Count": df}
         else:
-            df = df.groupby([df[self.field.name].dt.date, df[self.by.name]]).count()
+            df = df.groupby(
+                [df[self.field.name].dt.date, df[self.by.name]]
+            ).count()
             level_values = df.index.get_level_values(self.by.name)
             levels = list(set(level_values))
             self.stackers = levels

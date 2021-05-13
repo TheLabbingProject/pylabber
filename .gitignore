@@ -58,7 +58,7 @@ params_calculation.ipynb
 subjects.xlsx
 scan_method_comparison.ipynb
 subjects_script.ipynb
-.*.xlsx#
+*.xlsx
 
 # Default media directory
 media/*

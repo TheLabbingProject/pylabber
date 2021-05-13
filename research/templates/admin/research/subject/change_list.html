@@ -5,13 +5,12 @@
 {{ block.super }}
 {% endblock %}
 
-{% block pagination %}
-{{block.super}}
-<br />
-<hr style="background-color: #999; height: 2px;">
-<br />
-<h1>Summary Report</h1>
+{% block content %}
 <div>
-    {{ server|safe }}
+    {{ bokeh_tag|safe }}
+    <script>
+    {{ bokeh_js|safe }}
+    </script>
 </div>
+{{block.super}}
 {% endblock %}

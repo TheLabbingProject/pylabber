@@ -1,11 +1,49 @@
+import pandas as pd
+from bokeh.plotting import Figure
 from django.db import models
 from django_dicom.models.patient import Patient
+from research.plots.subject import (
+    plot_bokeh_date_of_birth,
+    plot_bokeh_dominant_hand_pie,
+    plot_bokeh_sex_pie,
+)
 
-# from pylabber.plotting.providers import Providers
-# from research.plotting.subject_queryset_plotter import SubjectQuerySetPlotter
+#: Subject fields to include in an exported DataFrame.
+DATAFRAME_FIELDS = (
+    "id",
+    "id_number",
+    "first_name",
+    "last_name",
+    "sex",
+    "date_of_birth",
+    "dominant_hand",
+)
+#: Column names to use when exporting a Subject queryset as a DataFrame.
+DATAFRAME_COLUMNS = (
+    "ID",
+    "ID Number",
+    "First Name",
+    "Last Name",
+    "Sex",
+    "Date Of Birth",
+    "Dominant Hand",
+)
 
 
 class SubjectQuerySet(models.QuerySet):
+    def to_dataframe(self) -> pd.DataFrame:
+        """
+        Export the queryset as a DataFrame.
+
+        Returns
+        -------
+        pd.DataFrame
+            Queryset information
+        """
+        df = pd.DataFrame(self.values(*DATAFRAME_FIELDS))
+        df.columns = DATAFRAME_COLUMNS
+        return df.set_index("ID").sort_index()
+
     def from_dicom_patient(self, patient: Patient) -> tuple:
         data = {
             "id_number": patient.uid,
@@ -16,17 +54,11 @@ class SubjectQuerySet(models.QuerySet):
         }
         return self.get_or_create(**data)
 
-    # def plot(
-    #     self,
-    #     field_name: str,
-    #     provider: Providers = None,
-    #     plotter_kwargs: dict = None,
-    #     plot_kwargs: dict = None,
-    # ):
-    #     queryset = self.all()
-    #     return SubjectQuerySetPlotter(queryset).plot(
-    #         field_name=field_name,
-    #         provider=provider,
-    #         plotter_kwargs=plotter_kwargs,
-    #         plot_kwargs=plot_kwargs,
-    #     )
+    def plot_bokeh_sex_pie(self) -> Figure:
+        return plot_bokeh_sex_pie(self.all())
+
+    def plot_bokeh_dominant_hand_pie(self) -> Figure:
+        return plot_bokeh_dominant_hand_pie(self.all())
+
+    def plot_bokeh_date_of_birth(self) -> Figure:
+        return plot_bokeh_date_of_birth(self.all())

@@ -1,12 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.safestring import mark_safe
 
-from accounts.models import LaboratoryMembership, Laboratory, Profile, User
+from accounts.models import Laboratory, LaboratoryMembership, Profile, User
+
+IMAGE_TAG = (
+    '<img src="{url}" width="150" height="150" alt="Preview unavailable!" />'
+)
 
 
 class LaboratoryMembershipInLine(admin.TabularInline):
     model = LaboratoryMembership
-    extra = 1
+    extra = 0
 
 
 class ProfileInline(admin.StackedInline):
@@ -14,6 +19,14 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = "Profile"
     fk_name = "user"
+    fields = "title", "image", "image_tag", "date_of_birth", "institute", "bio"
+    readonly_fields = ("image_tag",)
+
+    def image_tag(self, instance: Profile) -> str:
+        html = IMAGE_TAG.format(url=instance.image.url)
+        return mark_safe(html)
+
+    image_tag.short_description = "Preview"
 
 
 class UserAdmin(BaseUserAdmin):
@@ -25,6 +38,7 @@ class UserAdmin(BaseUserAdmin):
         "last_name",
         "get_institute",
         "is_staff",
+        "is_superuser",
     )
     list_select_related = ("profile",)
 
@@ -42,6 +56,17 @@ class UserAdmin(BaseUserAdmin):
 class LaboratoryAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "description", "created", "modified")
     inlines = (LaboratoryMembershipInLine,)
+    fields = "title", "description", "image", "image_tag"
+    readonly_fields = ("image_tag",)
+
+    class Media:
+        css = {"all": ("accounts/css/hide_admin_original.css",)}
+
+    def image_tag(self, instance: Laboratory) -> str:
+        html = IMAGE_TAG.format(url=instance.image.url)
+        return mark_safe(html)
+
+    image_tag.short_description = "Preview"
 
 
 admin.site.register(User, UserAdmin)

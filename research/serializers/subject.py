@@ -36,6 +36,8 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
             "custom_attributes",
             "mri_session_count",
             "latest_mri_session_time",
+            "created",
+            "modified",
         )
 
     def get_latest_mri_session_time(self, instance: Subject):

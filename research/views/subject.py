@@ -30,17 +30,19 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
         "first_name",
         "last_name",
         "date_of_birth",
+        "created",
+        "modified",
     )
 
     def get_queryset(self):
-        # TODO: Implement filtering according to the user's collaborations
-        return Subject.objects.all()
-
-    def filter_queryset(self, queryset):
-        queryset = super().filter_queryset(queryset)
+        queryset = super().get_queryset()
         return queryset.annotate(
             latest_session=Max("mri_session_set__time")
         ).order_by("-latest_session")
+
+    def filter_queryset(self, queryset):
+        # TODO: Implement filtering according to the user's collaborations
+        return super().filter_queryset(queryset)
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

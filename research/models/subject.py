@@ -12,7 +12,7 @@ from django_extensions.db.models import TimeStampedModel
 from pylabber.utils import CharNullField
 from questionnaire_reader import QuestionnaireReader
 from research.models.choices import DominantHand, Gender, Sex
-from research.models.managers.subject import SubjectQuerySet
+from research.models.managers.subject import SubjectManager, SubjectQuerySet
 from research.models.measurement_definition import MeasurementDefinition
 from research.models.procedure import Procedure
 from research.models.study import Study
@@ -69,7 +69,7 @@ class Subject(TimeStampedModel):
     #: Custom attributes dictionary.
     custom_attributes = models.JSONField(blank=True, default=dict)
 
-    objects = SubjectQuerySet.as_manager()
+    objects = SubjectManager.from_queryset(SubjectQuerySet)()
 
     class Meta:
         ordering = ("-id",)

@@ -1,7 +1,6 @@
 from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bs4 import BeautifulSoup
-from django.db.models import Max
 from django.http import HttpResponse
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
@@ -22,7 +21,7 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
 
     filter_class = SubjectFilter
-    queryset = Subject.objects.all()
+    queryset = Subject.objects.order_by("-latest_mri_session_time")
     serializer_class = SubjectSerializer
     ordering_fields = (
         "id",
@@ -32,13 +31,9 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
         "date_of_birth",
         "created",
         "modified",
+        "latest_mri_session_time",
+        "mri_session_count",
     )
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.annotate(
-            latest_session=Max("mri_session_set__time")
-        ).order_by("-latest_session")
 
     def filter_queryset(self, queryset):
         # TODO: Implement filtering according to the user's collaborations

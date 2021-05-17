@@ -16,6 +16,15 @@ class MeasurementDefinitionSerializer(serializers.HyperlinkedModelSerializer):
        https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
+    app_label = serializers.SerializerMethodField()
+    model_name = serializers.SerializerMethodField()
+
     class Meta:
         model = MeasurementDefinition
-        fields = "id", "title", "description"
+        fields = "id", "title", "description", "app_label", "model_name"
+
+    def get_app_label(self, instance: MeasurementDefinition) -> str:
+        return instance.content_type.app_label if instance.content_type else ""
+
+    def get_model_name(self, instance: MeasurementDefinition) -> str:
+        return instance.content_type.model if instance.content_type else ""

@@ -16,7 +16,17 @@ class MeasurementDefinitionFilter(filters.FilterSet):
 
     title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     description = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
+    model_name = filters.CharFilter(
+        field_name="content_type__model",
+        lookup_expr="exact",
+        label="Model name (exact)",
+    )
+    app_label = filters.CharFilter(
+        field_name="content_type__app_label",
+        lookup_expr="exact",
+        label="App label (exact)",
+    )
 
     class Meta:
         model = MeasurementDefinition
-        fields = "id", "title", "description"
+        fields = "id", "title", "description", "content_type"

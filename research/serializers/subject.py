@@ -18,8 +18,8 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="research:subject-detail"
     )
-    latest_mri_session_time = serializers.SerializerMethodField()
-    mri_session_count = serializers.SerializerMethodField()
+    latest_mri_session_time = serializers.DateTimeField(read_only=True)
+    mri_session_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Subject
@@ -36,11 +36,6 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
             "custom_attributes",
             "mri_session_count",
             "latest_mri_session_time",
+            "created",
+            "modified",
         )
-
-    def get_latest_mri_session_time(self, instance: Subject):
-        sessions = instance.mri_session_set.order_by("-time")
-        return sessions.first().time if sessions.exists() else None
-
-    def get_mri_session_count(self, instance: Subject):
-        return instance.mri_session_set.count()

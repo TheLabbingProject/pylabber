@@ -29,6 +29,8 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
         "first_name",
         "last_name",
         "date_of_birth",
+        "sex",
+        "dominant_hand",
         "created",
         "modified",
         "latest_mri_session_time",

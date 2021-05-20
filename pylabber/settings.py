@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import os
 from pathlib import Path
 
-import django_heroku
+# import django_heroku
 import environ
 from django_mri.analysis.mri_interfaces import interfaces
 
@@ -102,7 +102,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-STATICFILES_STORAGE = "pylabber.storage.WhiteNoiseStaticFilesStorage"
+# STATICFILES_STORAGE = "pylabber.storage.WhiteNoiseStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+WHITENOISE_MANIFEST_STRICT = False
 
 # Import path for the project's URLs configuration file.
 ROOT_URLCONF = "pylabber.urls"

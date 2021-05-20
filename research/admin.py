@@ -3,7 +3,6 @@ from datetime import date, datetime
 from bokeh.embed import autoload_static
 from bokeh.io import curdoc
 from bokeh.layouts import layout
-from bokeh.plotting import output_file
 from bokeh.resources import CDN
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter

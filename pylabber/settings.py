@@ -217,66 +217,52 @@ TIME_ZONE = "Asia/Jerusalem"
 
 # Logging
 LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
-if DEBUG:
-    LOGGING = {
-        "version": 1,
-        "formatters": {
-            "normal": {
-                "format": "{asctime} {name} {levelname} {message}",
-                "style": "{",
-            },
+LOGGING = {
+    "version": 1,
+    "formatters": {
+        "normal": {
+            "format": "{asctime} {name} {levelname} {message}",
+            "style": "{",
         },
-        "filters": {
-            "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
+    },
+    "filters": {
+        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
+    },
+    "handlers": {
+        "debug_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "debug.log"),
+            "maxBytes": 2048000,
+            "backupCount": 5,
+            "formatter": "normal",
+            "filters": ["require_debug_true"],
         },
-        "handlers": {
-            "debug_file": {
-                "level": "DEBUG",
-                "class": "logging.handlers.RotatingFileHandler",
-                "filename": os.path.join(LOGGING_ROOT, "debug.log"),
-                "maxBytes": 2048000,
-                "backupCount": 5,
-                "formatter": "normal",
-                "filters": ["require_debug_true"],
-            },
-            "warning_file": {
-                "level": "WARNING",
-                "class": "logging.handlers.RotatingFileHandler",
-                "filename": os.path.join(LOGGING_ROOT, "warnings.log"),
-                "maxBytes": 2048000,
-                "backupCount": 2,
-                "formatter": "normal",
-            },
-            "console": {"level": "INFO", "class": "logging.StreamHandler"},
+        "warning_file": {
+            "level": "WARNING",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "warnings.log"),
+            "maxBytes": 2048000,
+            "backupCount": 2,
+            "formatter": "normal",
         },
-        "loggers": {
-            "data": {
-                "handlers": ["debug_file", "warning_file", "console"],
-                "level": "DEBUG",
-            },
-            "data_import": {
-                "handlers": ["debug_file", "warning_file", "console"],
-                "level": "DEBUG",
-            },
-            "analysis_exection": {
-                "handlers": ["console", "debug_file", "warning_file"],
-                "level": "INFO",
-            },
+        "console": {"level": "INFO", "class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        "data": {
+            "handlers": ["debug_file", "warning_file", "console"],
+            "level": "DEBUG",
         },
-    }
-else:
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {"console": {"class": "logging.StreamHandler"}},
-        "loggers": {
-            "django": {
-                "handlers": ["console"],
-                "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
-            },
+        "data_import": {
+            "handlers": ["debug_file", "warning_file", "console"],
+            "level": "DEBUG",
         },
-    }
-
+        "analysis_exection": {
+            "handlers": ["console", "debug_file", "warning_file"],
+            "level": "INFO",
+        },
+    },
+}
 
 ########################
 # Application settings #

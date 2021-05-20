@@ -140,6 +140,7 @@ DATABASES = {
         "PORT": env("DB_PORT"),
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Authentication
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]

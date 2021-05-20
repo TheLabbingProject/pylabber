@@ -102,7 +102,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "pylabber.storage.WhiteNoiseStaticFilesStorage"
 
 # Import path for the project's URLs configuration file.
 ROOT_URLCONF = "pylabber.urls"

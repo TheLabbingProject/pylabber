@@ -103,7 +103,6 @@ MIDDLEWARE = [
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-WHITENOISE_MANIFEST_STRICT = False
 
 # Import path for the project's URLs configuration file.
 ROOT_URLCONF = "pylabber.urls"

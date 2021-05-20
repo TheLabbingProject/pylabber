@@ -219,6 +219,7 @@ TIME_ZONE = "Asia/Jerusalem"
 LOGGING_ROOT = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     "version": 1,
+    "disable_existing_loggers": False,
     "formatters": {
         "normal": {
             "format": "{asctime} {name} {levelname} {message}",
@@ -233,7 +234,6 @@ LOGGING = {
             "maxBytes": 2048000,
             "backupCount": 5,
             "formatter": "normal",
-            "filters": ["require_debug_true"],
         },
         "warning_file": {
             "level": "WARNING",
@@ -246,6 +246,11 @@ LOGGING = {
         "console": {"level": "INFO", "class": "logging.StreamHandler"},
     },
     "loggers": {
+        "django": {
+            "handlers": ["debug_file"],
+            "propagate": True,
+            "level": "DEBUG",
+        },
         "data": {
             "handlers": ["debug_file", "warning_file", "console"],
             "level": "DEBUG",

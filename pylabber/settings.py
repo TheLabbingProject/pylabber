@@ -225,9 +225,6 @@ LOGGING = {
             "style": "{",
         },
     },
-    "filters": {
-        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}
-    },
     "handlers": {
         "debug_file": {
             "level": "DEBUG",

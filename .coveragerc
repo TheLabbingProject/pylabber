@@ -4,9 +4,8 @@ omit = ../*migrations*
     */wsgi.py
     run_tests.py
     *tests*
-    venv/**
-    tox/**
-    .tox/**
+    venv/*
+    .tox/*
 
 source = .
 branch = True

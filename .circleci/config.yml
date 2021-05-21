@@ -35,7 +35,7 @@ jobs:
           command: pip install tox
       - run:
           name: Create blank tests env file
-          command: touch tests/.env
+          command: touch pylabber/.env
       - run:
           name: Test using tox
           command: tox

@@ -1,7 +1,6 @@
 """
 Definition of the :class:`Subject` model.
 """
-
 import itertools
 
 import pandas as pd

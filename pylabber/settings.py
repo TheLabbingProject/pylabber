@@ -102,8 +102,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Import path for the project's URLs configuration file.
 ROOT_URLCONF = "pylabber.urls"
 
@@ -166,6 +164,7 @@ MEDIA_ROOT = env("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
 MEDIA_URL = "/media/"
 
 # Static files (CSS, JavaScript, Images)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 os.makedirs(STATIC_ROOT, exist_ok=True)
 STATIC_URL = "/static/"

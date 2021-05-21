@@ -22,12 +22,20 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Upgrade pip
+          command: pip install --upgrade pip
+      - run:
           name: Install libpq-dev
           command: apt update && apt install -y libpq-dev
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run: pip install tox
+      - run:
+          name: Install tox
+          command: pip install tox
+      - run:
+          name: Create blank tests env file
+          command: touch tests/.env
       - run:
           name: Test using tox
           command: tox

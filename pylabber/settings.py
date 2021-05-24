@@ -234,6 +234,14 @@ LOGGING = {
             "backupCount": 5,
             "formatter": "normal",
         },
+        "info_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "info.log"),
+            "maxBytes": 2048000,
+            "backupCount": 5,
+            "formatter": "normal",
+        },
         "warning_file": {
             "level": "WARNING",
             "class": "logging.handlers.RotatingFileHandler",
@@ -251,16 +259,16 @@ LOGGING = {
             "level": "DEBUG",
         },
         "data": {
-            "handlers": ["debug_file", "warning_file", "console"],
+            "handlers": ["debug_file", "info_file", "warning_file", "console"],
             "level": "DEBUG",
         },
         "data_import": {
-            "handlers": ["debug_file", "warning_file", "console"],
+            "handlers": ["debug_file", "info_file", "warning_file", "console"],
             "level": "DEBUG",
         },
         "analysis_exection": {
-            "handlers": ["console", "debug_file", "warning_file"],
-            "level": "INFO",
+            "handlers": ["console", "info_file", "debug_file", "warning_file"],
+            "level": "DEBUG",
         },
     },
 }

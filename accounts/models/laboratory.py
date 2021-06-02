@@ -1,7 +1,6 @@
 """
 Definition of the :class:`~accounts.models.laboratory.Laboratory` model.
 """
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -11,7 +10,6 @@ from django_extensions.db.models import TitleDescriptionModel, TimeStampedModel
 class Laboratory(TitleDescriptionModel, TimeStampedModel):
     """
     A class to represents a research laboratory.
-
     """
 
     image = models.ImageField(upload_to="images/labs", blank=True, null=True)

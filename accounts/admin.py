@@ -54,10 +54,17 @@ class UserAdmin(BaseUserAdmin):
 
 
 class LaboratoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "description", "created", "modified")
+    list_display = (
+        "id",
+        "title",
+        "description",
+        "created",
+        "modified",
+        "n_members",
+    )
     inlines = (LaboratoryMembershipInLine,)
     fields = "title", "description", "image", "image_tag"
-    readonly_fields = ("image_tag",)
+    readonly_fields = ("image_tag", "n_members")
 
     class Media:
         css = {"all": ("accounts/css/hide_admin_original.css",)}
@@ -66,7 +73,11 @@ class LaboratoryAdmin(admin.ModelAdmin):
         html = IMAGE_TAG.format(url=instance.image.url)
         return mark_safe(html)
 
+    def n_members(self, instance: Laboratory) -> int:
+        return instance.members.count()
+
     image_tag.short_description = "Preview"
+    n_members.short_description = "# members"
 
 
 admin.site.register(User, UserAdmin)

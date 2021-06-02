@@ -1,7 +1,6 @@
 """
 Definition of the :class:`StudySerializer` class.
 """
-
 from accounts.models import User
 from research.models.procedure import Procedure
 from research.models.study import Study
@@ -26,10 +25,8 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
         queryset=Subject.objects.all(),
         many=True,
     )
-    collaborators = serializers.HyperlinkedRelatedField(
-        view_name="accounts:user-detail",
-        queryset=User.objects.all(),
-        many=True,
+    collaborators = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), many=True
     )
     procedures = serializers.PrimaryKeyRelatedField(
         queryset=Procedure.objects.all(),

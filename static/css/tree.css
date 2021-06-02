@@ -1,0 +1,15 @@
+.imported {
+    color: green;
+}
+
+.notimported {
+    color: orange;
+}
+
+.available {
+    opacity: 0.75;
+}
+
+.unavailable {
+    opacity: 0.2;
+}

@@ -1,7 +1,6 @@
 """
-Definition of the :class:`~accounts.serializers.user.UserSerializer` class.
+Definition of the :class:`UserSerializer` class.
 """
-
 from accounts.models.profile import Profile
 from accounts.models.user import User
 from rest_framework import serializers

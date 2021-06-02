@@ -1,7 +1,6 @@
 """
-Definition of the :class:`~accounts.filters.user.UserFilter` class.
+Definition of the :class:`UserFilter` class.
 """
-
 from accounts.models.user import User
 from django_filters import rest_framework as filters
 
@@ -17,7 +16,6 @@ class UserFilter(filters.FilterSet):
     """
     Provides useful filtering options for the
     :class:`~accounts.models.user.User` model.
-
     """
 
     username = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
@@ -25,6 +23,10 @@ class UserFilter(filters.FilterSet):
     last_name = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     email = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     institute = filters.AllValuesFilter(field_name="profile__institute")
+    study = filters.NumberFilter(field_name="study", lookup_expr="exact")
+    study_ne = filters.NumberFilter(
+        field_name="study", lookup_expr="exact", exclude=True
+    )
 
     class Meta:
         model = User
@@ -36,4 +38,5 @@ class UserFilter(filters.FilterSet):
             "email",
             "institute",
             "study",
+            "study_ne",
         )

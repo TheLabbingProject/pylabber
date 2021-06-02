@@ -1,8 +1,6 @@
 """
-Definition of the :class:`~accounts.serializers.profile.ProfileSerializer`
-class.
+Definition of the :class:`ProfileSerializer` class.
 """
-
 from accounts.models import Profile
 from rest_framework import serializers
 

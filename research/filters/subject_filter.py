@@ -36,6 +36,7 @@ class SubjectFilter(filters.FilterSet):
     sex = filters.CharFilter(method="filter_nullable_charfield")
     gender = filters.CharFilter(method="filter_nullable_charfield")
     dominant_hand = filters.CharFilter(method="filter_nullable_charfield")
+    id_number = filters.CharFilter(lookup_expr="icontains")
 
     class Meta:
         model = Subject
@@ -49,6 +50,7 @@ class SubjectFilter(filters.FilterSet):
             "born_before_date",
             "dominant_hand",
             "dicom_patient",
+            "id_number",
         )
 
     def filter_by_dicom_patient(self, queryset, name, value):

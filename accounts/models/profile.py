@@ -1,7 +1,6 @@
 """
-Definition of the :class:`~accounts.models.profile.Profile` model.
+Definition of the :class:`Profile` model.
 """
-
 from accounts.models.choices import Title
 from django.contrib.auth import get_user_model
 from django.db import models

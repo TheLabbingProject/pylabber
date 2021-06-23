@@ -1,42 +1,36 @@
 """
 Definition of the :class:`SubjectFilter` class.
 """
-
 from django.db.models import Q
 from django_dicom.models.patient import Patient
 from django_filters import rest_framework as filters
 from django_mri.models.scan import Scan
 from research.models.subject import Subject
 
+from utils.lookup_choices import DEFUALT_LOOKUP_CHOICES
+
 
 class SubjectFilter(filters.FilterSet):
     """
     Provides useful filtering options for the
     :class:`~research.models.subject.Subject` model.
-
     """
 
     born_after_date = filters.DateFilter("date_of_birth", lookup_expr="gte")
     born_before_date = filters.DateFilter("date_of_birth", lookup_expr="lte")
     first_name = filters.LookupChoiceFilter(
-        lookup_choices=[
-            ("contains", "Contains (case-sensitive)"),
-            ("icontains", "Contains (case-insensitive)"),
-            ("exact", "Exact"),
-        ]
+        lookup_choices=DEFUALT_LOOKUP_CHOICES
     )
     last_name = filters.LookupChoiceFilter(
-        lookup_choices=[
-            ("contains", "Contains (case-sensitive)"),
-            ("icontains", "Contains (case-insensitive)"),
-            ("exact", "Exact"),
-        ]
+        lookup_choices=DEFUALT_LOOKUP_CHOICES
     )
     dicom_patient = filters.NumberFilter(method="filter_by_dicom_patient")
     sex = filters.CharFilter(method="filter_nullable_charfield")
     gender = filters.CharFilter(method="filter_nullable_charfield")
     dominant_hand = filters.CharFilter(method="filter_nullable_charfield")
-    id_number = filters.CharFilter(lookup_expr="icontains")
+    id_number = filters.LookupChoiceFilter(
+        lookup_choices=DEFUALT_LOOKUP_CHOICES
+    )
 
     class Meta:
         model = Subject

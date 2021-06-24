@@ -1,29 +1,27 @@
 """
 Definition of the :class:`~accounts.filters.user.UserFilter` class.
 """
-
 from accounts.models.user import User
 from django_filters import rest_framework as filters
-
-
-LOOKUP_CHOICES = [
-    ("contains", "Contains (case-sensitive)"),
-    ("icontains", "Contains (case-insensitive)"),
-    ("exact", "Exact"),
-]
+from utils.lookup_choices import DEFUALT_LOOKUP_CHOICES
 
 
 class UserFilter(filters.FilterSet):
     """
     Provides useful filtering options for the
     :class:`~accounts.models.user.User` model.
-
     """
 
-    username = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
-    first_name = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
-    last_name = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
-    email = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
+    username = filters.LookupChoiceFilter(
+        lookup_choices=DEFUALT_LOOKUP_CHOICES
+    )
+    first_name = filters.LookupChoiceFilter(
+        lookup_choices=DEFUALT_LOOKUP_CHOICES
+    )
+    last_name = filters.LookupChoiceFilter(
+        lookup_choices=DEFUALT_LOOKUP_CHOICES
+    )
+    email = filters.LookupChoiceFilter(lookup_choices=DEFUALT_LOOKUP_CHOICES)
     institute = filters.AllValuesFilter(field_name="profile__institute")
 
     class Meta:

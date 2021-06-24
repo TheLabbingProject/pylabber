@@ -15,4 +15,3 @@ class LaboratoryMembership(models.Model):
         blank=True,
         null=True,
     )
-

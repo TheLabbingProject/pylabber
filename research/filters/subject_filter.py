@@ -69,7 +69,9 @@ class SubjectFilter(filters.FilterSet):
             dicom__in=dicom_patient.series_set.all()
         )
         subject_ids = set(
-            mri_scans.order_by("subject").values_list("subject", flat=True)
+            mri_scans.order_by("session__subject").values_list(
+                "session__subject", flat=True
+            )
         )
         return queryset.filter(id=subject_ids.pop())
 

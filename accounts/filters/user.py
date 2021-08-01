@@ -1,5 +1,5 @@
 """
-Definition of the :class:`~accounts.filters.user.UserFilter` class.
+Definition of the :class:`UserFilter` class.
 """
 from accounts.models.user import User
 from django_filters import rest_framework as filters
@@ -23,6 +23,7 @@ class UserFilter(filters.FilterSet):
     )
     email = filters.LookupChoiceFilter(lookup_choices=DEFUALT_LOOKUP_CHOICES)
     institute = filters.AllValuesFilter(field_name="profile__institute")
+    study_ne = filters.NumberFilter(field_name="study", exclude=True)
 
     class Meta:
         model = User
@@ -34,4 +35,5 @@ class UserFilter(filters.FilterSet):
             "email",
             "institute",
             "study",
+            "study_ne",
         )

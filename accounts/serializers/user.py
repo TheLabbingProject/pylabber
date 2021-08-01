@@ -4,9 +4,9 @@ Definition of the :class:`~accounts.serializers.user.UserSerializer` class.
 
 from accounts.models.profile import Profile
 from accounts.models.user import User
-from rest_framework import serializers
-from rest_auth.serializers import UserDetailsSerializer
 from accounts.serializers.profile import ProfileSerializer
+from rest_auth.serializers import UserDetailsSerializer
+from rest_framework import serializers
 
 
 class UserSerializer(UserDetailsSerializer):
@@ -29,6 +29,7 @@ class UserSerializer(UserDetailsSerializer):
             "id",
             "profile",
             "is_staff",
+            "is_superuser",
             "laboratory_set",
         )
 

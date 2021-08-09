@@ -1,7 +1,6 @@
 """
-Definition of the :class:`~research.serializers.group.GroupSerializer` class.
+Definition of the :class:`GroupSerializer` class.
 """
-
 from research.models.group import Group
 from research.models.study import Study
 from rest_framework import serializers
@@ -35,7 +34,7 @@ class GroupReadSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Group
-        fields = "title", "description", "id", "study"
+        fields = "id", "title", "description", "study"
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):

@@ -3,7 +3,7 @@ Definition of the :class:`~research.models.group.Group` model.
 """
 
 from django.db import models
-from django_extensions.db.models import TitleDescriptionModel, TimeStampedModel
+from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
 
 
 class Group(TitleDescriptionModel, TimeStampedModel):

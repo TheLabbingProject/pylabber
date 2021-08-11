@@ -1,7 +1,6 @@
 """
 Definition of the :class:`EventSerializer` class.
 """
-
 from django_analyses.serializers.utils.polymorphic import PolymorphicSerializer
 from research.models.event import Event
 from research.models.event_types import EventTypes
@@ -11,7 +10,6 @@ from research.serializers.measurement_definition import (
 from research.serializers.task import TaskSerializer
 from rest_framework import serializers
 from rest_framework.serializers import Serializer
-
 
 SERIALIZERS = {
     EventTypes.MEASUREMENT.value: MeasurementDefinitionSerializer,

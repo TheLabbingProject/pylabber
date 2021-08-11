@@ -1,7 +1,10 @@
+"""
+Definition of the :class:`EventViewSet` class.
+"""
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.event_filter import EventFilter
 from research.models.event import Event
-from research.serializers.event import EventSerializer, EventItemsSerializer
+from research.serializers.event import EventItemsSerializer, EventSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.serializers import Serializer
@@ -11,7 +14,6 @@ class EventViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows :class:`~research.models.event.Event` instances to
     be viewed or edited.
-
     """
 
     filter_class = EventFilter

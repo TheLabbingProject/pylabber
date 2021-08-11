@@ -1,6 +1,7 @@
 from django.urls import include, path
-from research import views
 from rest_framework import routers
+
+from research import views
 
 app_name = "research"
 router = routers.DefaultRouter()
@@ -16,6 +17,7 @@ router.register(r"task", views.TaskViewSet)
 router.register(
     r"measurement", views.MeasurementDefinitionViewSet, basename="measurement"
 )
+router.register(r"data_acquisition", views.DataAcquisitionViewSet)
 
 urlpatterns = [
     path(

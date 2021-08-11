@@ -16,6 +16,9 @@ class EventFilter(filters.FilterSet):
 
     title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     description = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
+    exclude_procedure = filters.NumberFilter(
+        field_name="procedure", exclude=True
+    )
 
     class Meta:
         model = Event

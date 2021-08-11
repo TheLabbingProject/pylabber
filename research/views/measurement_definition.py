@@ -2,6 +2,7 @@
 Definition of the :class:`MeasurementDefinitionViewSet` class.
 """
 
+from django.conf import settings
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.measurement_definition_filter import (
     MeasurementDefinitionFilter,
@@ -11,6 +12,7 @@ from research.serializers.measurement_definition import (
     MeasurementDefinitionSerializer,
 )
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 
 class MeasurementDefinitionViewSet(DefaultsMixin, viewsets.ModelViewSet):

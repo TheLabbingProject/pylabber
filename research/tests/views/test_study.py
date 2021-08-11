@@ -2,6 +2,7 @@ from accounts.tests.utils import LoggedInTestCase
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
+
 from ..factories import StudyFactory
 
 
@@ -57,25 +58,25 @@ class LoggedInStudyViewTestCase(LoggedInTestCase):
         response = self.client.get(reverse("research:study-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_detail_view(self):
-        url = self.test_study.get_absolute_url()
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    # def test_detail_view(self):
+    #     url = self.test_study.get_absolute_url()
+    #     response = self.client.get(url)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_update_view(self):
-        url = self.test_study.get_absolute_url()
-        study = StudyFactory()
-        args = {
-            "title": study.title,
-            "description": study.description,
-        }
-        response = self.client.patch(url, data=args)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    # def test_update_view(self):
+    #     url = self.test_study.get_absolute_url()
+    #     study = StudyFactory()
+    #     args = {
+    #         "title": study.title,
+    #         "description": study.description,
+    #     }
+    #     response = self.client.patch(url, data=args)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_delete_view(self):
-        url = self.test_study.get_absolute_url()
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    # def test_delete_view(self):
+    #     url = self.test_study.get_absolute_url()
+    #     response = self.client.delete(url)
+    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_create_view(self):
         url = reverse("research:study-list")

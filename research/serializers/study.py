@@ -52,3 +52,24 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
             "modified",
             "procedures",
         )
+
+
+class MiniStudySerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Minified HyperlinkedModelSerializer for the
+    :class:`~research.models.study.Study` model.
+    """
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="research:study-detail"
+    )
+
+    class Meta:
+        model = Study
+        fields = (
+            "id",
+            "url",
+            "title",
+            "description",
+        )
+

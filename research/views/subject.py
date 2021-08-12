@@ -39,8 +39,9 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         user = self.request.user
+        queryset = super().filter_queryset(queryset)
         if user.is_superuser:
-            return super().filter_queryset(queryset)
+            return queryset
         user_collaborations = set(user.study_set.values_list("id", flat=True))
         ids = [
             subject.id

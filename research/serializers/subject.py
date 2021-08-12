@@ -3,6 +3,7 @@ Definition of the :class:`SubjectSerializer` class.
 """
 
 from research.models.subject import Subject
+from research.serializers.study import MiniStudySerializer
 from rest_framework import serializers
 
 
@@ -20,6 +21,7 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
     )
     latest_mri_session_time = serializers.DateTimeField(read_only=True)
     mri_session_count = serializers.IntegerField(read_only=True)
+    studies = MiniStudySerializer(source="query_studies", many=True)
 
     class Meta:
         model = Subject
@@ -38,4 +40,5 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
             "latest_mri_session_time",
             "created",
             "modified",
+            "studies",
         )

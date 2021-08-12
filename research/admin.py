@@ -411,7 +411,7 @@ class StudyAssociationFilter(SimpleListFilter):
             subject_ids = [
                 subject.id
                 for subject in queryset.all()
-                if value in subject.query_associated_studies(id_only=True)
+                if value in subject.query_studies(id_only=True)
             ]
             return queryset.filter(id__in=subject_ids)
 

@@ -38,8 +38,22 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     )
 
     def filter_queryset(self, queryset):
-        # TODO: Implement filtering according to the user's collaborations
-        return super().filter_queryset(queryset)
+        user = self.request.user
+        queryset = super().filter_queryset(queryset)
+        if user.is_superuser:
+            return queryset
+        user_collaborations = set(user.study_set.values_list("id", flat=True))
+        ids = [
+            subject.id
+            for subject in queryset
+            if any(
+                [
+                    study_id in user_collaborations
+                    for study_id in subject.query_studies(id_only=True)
+                ]
+            )
+        ]
+        return queryset.filter(id__in=ids)
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

@@ -75,7 +75,7 @@ class Study(TitleDescriptionModel, TimeStampedModel):
         subject_ids = [
             subject.id
             for subject in Subject.objects.all()
-            if self.id in subject.query_associated_studies(id_only=True)
+            if self.id in subject.query_studies(id_only=True)
         ]
         return (
             subject_ids

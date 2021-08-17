@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.safestring import mark_safe
+from paramiko import SSHException
 
 from accounts.forms import ExportDestinationForm
 from accounts.models import (
@@ -84,8 +85,19 @@ class ExportDestinationAdmin(admin.ModelAdmin):
         "ip",
         "username",
         "destination",
+        "sftp",
     )
     form = ExportDestinationForm
+
+    def sftp(self, destination: ExportDestination) -> bool:
+        try:
+            destination.sftp_client
+        except (RuntimeError, SSHException):
+            return False
+        else:
+            return True
+
+    sftp.boolean = True
 
 
 admin.site.register(ExportDestination, ExportDestinationAdmin)

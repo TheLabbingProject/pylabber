@@ -326,6 +326,8 @@ MEASUREMENT_MODEL = "research.MeasurementDefinition"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")
 QUESTIONNAIRE_DATA_PATH = env("QUESTIONNAIRE_DATA_PATH")
 DATA_ACQUISITION_MODELS = [{"app_label": "django_mri", "model": "session"}]
+# SSH_RSA_KEY = os.path.expanduser("~/.ssh/id_rsa")
+SSH_KNOWN_HOSTS = os.path.expanduser("~/.ssh/known_hosts")
 
 # django_analyses
 ANALYSIS_INTERFACES = interfaces

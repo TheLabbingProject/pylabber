@@ -139,112 +139,6 @@ class Subject(TimeStampedModel):
 
         return f"{self.first_name} {self.last_name}"
 
-    def query_collected_measurements(self) -> models.QuerySet:
-        """
-        Returns a queryset of
-        :class:`~research.models.measurement_definition.MeasurementDefinition`
-        instances for which this subject has associated data model instances.
-
-        Returns
-        -------
-        models.QuerySet
-            Collected measurement definitions
-        """
-        measurements = {
-            session.measurement.id
-            for session in self.mri_session_set.all()
-            if session.measurement is not None
-        }
-        return MeasurementDefinition.objects.filter(id__in=measurements)
-
-    def query_study_groups(self) -> models.QuerySet:
-        """
-        Returns a queryset of :class:`~research.models.group.Group` instances
-        for which this subject has associated data.
-
-        Returns
-        -------
-        models.QuerySet
-            Associated study groups
-        """
-        ids = list(
-            set(
-                itertools.chain(
-                    *[
-                        session.query_study_groups(id_only=True)
-                        for session in self.mri_session_set.all()
-                    ]
-                )
-            )
-        )
-        return Group.objects.filter(id__in=ids)
-
-    def query_experimental_procedures(self) -> models.QuerySet:
-        """
-        Returns a queryset of :class:`~research.models.procedure.Procedure`
-        instances in which this subject participated.
-
-        Returns
-        -------
-        models.QuerySet
-            Procedures this subject participated in
-        """
-        measurements = self.query_collected_measurements()
-        procedure_ids = measurements.values_list("procedure", flat=True)
-        return Procedure.objects.filter(id__in=procedure_ids)
-
-    def query_studies_from_procedures(
-        self, id_only: bool = False
-    ) -> models.QuerySet:
-        """
-        Returns a queryset of :class:`~research.models.study.Study` instances
-        with which this subject has associated procedural data acquisition
-        models.
-
-        Parameters
-        ----------
-        id_only : bool, optional
-            Whether to return a list of IDs instead of a queryset, defaults to
-            False
-
-        Returns
-        -------
-        models.QuerySet
-            Associated studies
-        """
-        procedures = self.query_experimental_procedures()
-        ids = list(
-            set(
-                itertools.chain(
-                    *[
-                        procedure.study_set.values_list("id", flat=True)
-                        for procedure in procedures
-                    ]
-                )
-            )
-        )
-        return ids if id_only else Study.objects.filter(id__in=ids)
-
-    def query_studies_from_data(self, id_only: bool = False) -> QuerySet:
-        """
-        Returns a queryset of :class:`~research.models.study.Study` instances
-        with which this subject has associated data model instances.
-
-        Parameters
-        ----------
-        id_only : bool, optional
-            Whether to return a list of IDs instead of a queryset, defaults to
-            False
-
-        Returns
-        -------
-        models.QuerySet
-            Associated studies
-        """
-        study_groups = self.query_study_groups()
-        ids = list(set(study_groups.values_list("study", flat=True)))
-        return ids if id_only else Study.objects.filter(id__in=ids)
-
     def query_studies(self, id_only: bool = False) -> models.QuerySet:
         """
         Returns a queryset of :class:`~research.models.study.Study` instances
@@ -261,10 +155,13 @@ class Subject(TimeStampedModel):
         models.QuerySet
             Associated studies
         """
-        from_procedures = self.query_studies_from_procedures(id_only=True)
-        from_data_models = self.query_studies_from_data(id_only=True)
-        ids = from_procedures + from_data_models
-        return ids if id_only else Study.objects.filter(id__in=ids)
+        group_query = models.Q(
+            id__in=self.mri_session_set.values("scan__study_groups__study")
+        )
+        procedure_query = models.Q(
+            id__in=self.mri_session_set.values("measurement__procedure__study")
+        )
+        return Study.objects.filter(group_query | procedure_query)
 
     def get_personal_information(self) -> pd.Series:
         """

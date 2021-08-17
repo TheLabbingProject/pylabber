@@ -136,19 +136,12 @@ class Subject(TimeStampedModel):
         str
             Subject's full name
         """
-
         return f"{self.first_name} {self.last_name}"
 
-    def query_studies(self, id_only: bool = False) -> models.QuerySet:
+    def query_studies(self) -> models.QuerySet:
         """
         Returns a queryset of :class:`~research.models.study.Study` instances
         this subject has data associated with.
-
-        Parameters
-        ----------
-        id_only : bool, optional
-            Whether to return a list of IDs instead of a queryset, defaults to
-            False
 
         Returns
         -------

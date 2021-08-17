@@ -2,7 +2,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.safestring import mark_safe
 
-from accounts.models import Laboratory, LaboratoryMembership, Profile, User
+from accounts.forms import ExportDestinationForm
+from accounts.models import (
+    ExportDestination,
+    Laboratory,
+    LaboratoryMembership,
+    Profile,
+    User,
+)
 
 IMAGE_TAG = (
     '<img src="{url}" width="150" height="150" alt="Preview unavailable!" />'
@@ -69,5 +76,18 @@ class LaboratoryAdmin(admin.ModelAdmin):
     image_tag.short_description = "Preview"
 
 
-admin.site.register(User, UserAdmin)
+class ExportDestinationAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "description",
+        "ip",
+        "username",
+        "destination",
+    )
+    form = ExportDestinationForm
+
+
+admin.site.register(ExportDestination, ExportDestinationAdmin)
 admin.site.register(Laboratory, LaboratoryAdmin)
+admin.site.register(User, UserAdmin)

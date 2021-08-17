@@ -38,6 +38,9 @@ class SubjectFilter(filters.FilterSet):
         lookup_choices=DEFUALT_LOOKUP_CHOICES
     )
     studies = NumberInFilter(method="filter_by_studies", label="Studies")
+    mri_session_time = filters.DateTimeFromToRangeFilter(
+        field_name="mri_session_set__time"
+    )
 
     class Meta:
         model = Subject
@@ -52,6 +55,7 @@ class SubjectFilter(filters.FilterSet):
             "dominant_hand",
             "dicom_patient",
             "id_number",
+            "mri_session_time",
         )
 
     def filter_by_dicom_patient(self, queryset, name, value):
@@ -90,12 +94,8 @@ class SubjectFilter(filters.FilterSet):
         return queryset.filter(**{name: value})
 
     def filter_by_studies(self, queryset, name, value):
-        ids = [
-            subject.id
-            for subject in queryset
-            if any(
-                study_id in subject.query_studies(id_only=True)
-                for study_id in value
-            )
-        ]
-        return queryset.filter(id__in=ids)
+        procedure_query = Q(
+            mri_session_set__measurement__procedure__study__in=value
+        )
+        group_query = Q(mri_session_set__scan__study_groups__study__in=value)
+        return queryset.filter(procedure_query | group_query)

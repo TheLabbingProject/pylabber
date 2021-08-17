@@ -1,6 +1,7 @@
 from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bs4 import BeautifulSoup
+from django.db.models import Q
 from django.http import HttpResponse
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
@@ -42,18 +43,13 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
         queryset = super().filter_queryset(queryset)
         if user.is_superuser:
             return queryset
-        user_collaborations = set(user.study_set.values_list("id", flat=True))
-        ids = [
-            subject.id
-            for subject in queryset
-            if any(
-                [
-                    study_id in user_collaborations
-                    for study_id in subject.query_studies(id_only=True)
-                ]
-            )
-        ]
-        return queryset.filter(id__in=ids)
+        procedure_query = Q(
+            mri_session_set__measurement__procedure__study__collaborators=user
+        )
+        group_query = Q(
+            mri_session_set__scan__study_groups__study__collaborators=user
+        )
+        return queryset.filter(procedure_query | group_query)
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

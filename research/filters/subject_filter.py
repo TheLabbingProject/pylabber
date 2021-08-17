@@ -38,6 +38,9 @@ class SubjectFilter(filters.FilterSet):
         lookup_choices=DEFUALT_LOOKUP_CHOICES
     )
     studies = NumberInFilter(method="filter_by_studies", label="Studies")
+    mri_session_time = filters.DateTimeFromToRangeFilter(
+        field_name="mri_session_set__time"
+    )
 
     class Meta:
         model = Subject
@@ -52,6 +55,7 @@ class SubjectFilter(filters.FilterSet):
             "dominant_hand",
             "dicom_patient",
             "id_number",
+            "mri_session_time",
         )
 
     def filter_by_dicom_patient(self, queryset, name, value):

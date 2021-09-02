@@ -1,7 +1,6 @@
 """
 Definition of the :class:`Procedure` model.
 """
-
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TitleDescriptionModel

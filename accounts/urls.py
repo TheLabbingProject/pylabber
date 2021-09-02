@@ -1,7 +1,7 @@
-from django.urls import path, include
-from accounts import views
+from django.urls import include, path
 from rest_framework import routers
 
+from accounts import views
 
 app_name = "accounts"
 router = routers.DefaultRouter()
@@ -10,6 +10,7 @@ router.register(r"group", views.GroupViewSet)
 router.register(r"laboratory", views.LaboratoryViewSet)
 router.register(r"profile", views.ProfileViewSet)
 router.register(r"user", views.UserViewSet)
+router.register(r"export_destination", views.ExportDestinationViewSet)
 
 
 urlpatterns = [

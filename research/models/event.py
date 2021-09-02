@@ -1,7 +1,6 @@
 """
 Definition of the :class:`Event` model.
 """
-
 from django.urls import reverse
 from django_extensions.db.models import TitleDescriptionModel
 from model_utils.managers import InheritanceManager

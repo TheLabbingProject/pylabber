@@ -17,4 +17,7 @@ For more information, see:
    https://django-filter.readthedocs.io/en/stable/guide/rest_framework.html
 """
 
+from accounts.filters.export_destination import ExportDestinationFilter
 from accounts.filters.user import UserFilter
+
+# flake8: noqa: E401

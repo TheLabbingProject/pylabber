@@ -22,6 +22,7 @@ class ExportDestinationSerializer(serializers.HyperlinkedModelSerializer):
             "description",
             "ip",
             "username",
+            "password",
             "destination",
             "users",
         )

@@ -16,7 +16,7 @@ django-environ~=0.4
 django-extensions~=3.1
 django-filter~=2.4
 django-heroku==0.3.1
-django-mirage-field>=1.2.2
+django-mirage-field
 django-model-utils==4.*
 django-nonrelated-inlines~=0.1
 django-rest-auth~=0.9

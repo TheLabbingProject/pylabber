@@ -7,3 +7,4 @@ RAW_SUBJECT_TABLE_PATH = os.path.join(
 )
 MEDIA_ROOT = os.path.join(BASE_DIR, "test_media")
 TESTS = True
+TESTING_MODE = True

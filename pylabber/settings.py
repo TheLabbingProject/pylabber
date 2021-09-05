@@ -26,7 +26,7 @@ from django_mri.analysis.mri_interfaces import interfaces
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(str, [""]),
-    SECRET_KEY=(str, "s0m3-$upEr=S3cre7"),
+    SECRET_KEY=(str, "s0m3-$upEr=S3cre7/|<3Y-L0n9Er=7hAn32(haR$"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),
     DB_PASSWORD=(str, ""),

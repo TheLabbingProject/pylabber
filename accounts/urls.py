@@ -20,4 +20,9 @@ urlpatterns = [
         views.UserViewSet.as_view({"get": "get_institutions"}),
         name="get_institutions",
     ),
+    path(
+        "accounts/export_destination/<int:pk>/<str:app_label>/<str:model_name>/<int:instance_id>/",  # noqa: E501
+        views.ExportDestinationViewSet.as_view({"get": "export_instance"}),
+        name="export_instance",
+    ),
 ]

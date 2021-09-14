@@ -1,3 +1,6 @@
+"""
+Definintion of the :class:`StudyViewSet` class.
+"""
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.study_filter import StudyFilter
 from research.models.study import Study
@@ -9,7 +12,6 @@ class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows :class:`~research.models.study.Study` instances to
     be viewed or edited.
-
     """
 
     filter_class = StudyFilter

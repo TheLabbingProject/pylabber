@@ -1,7 +1,6 @@
 """
 Definition of the :class:`StudySerializer` class.
 """
-
 from accounts.models import User
 from research.models.procedure import Procedure
 from research.models.study import Study
@@ -11,11 +10,7 @@ from rest_framework import serializers
 
 class StudySerializer(serializers.HyperlinkedModelSerializer):
     """
-    HyperlinkedModelSerializer_ for the :class:`~research.models.study.Study`
-    model.
-
-    .. _HyperlinkedModelSerializer:
-       https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
+    Serializer for the :class:`~research.models.study.Study` model.
     """
 
     url = serializers.HyperlinkedIdentityField(
@@ -56,8 +51,7 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
 
 class MiniStudySerializer(serializers.HyperlinkedModelSerializer):
     """
-    Minified HyperlinkedModelSerializer for the
-    :class:`~research.models.study.Study` model.
+    Minified serializer for the :class:`~research.models.study.Study` model.
     """
 
     url = serializers.HyperlinkedIdentityField(
@@ -72,4 +66,3 @@ class MiniStudySerializer(serializers.HyperlinkedModelSerializer):
             "title",
             "description",
         )
-

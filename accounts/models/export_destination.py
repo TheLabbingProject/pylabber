@@ -39,6 +39,9 @@ class ExportDestination(TitleDescriptionModel):
     #: Port to use for SSH connection.
     PORT: int = 22
 
+    #: Default SSH connection banner timeout value.
+    BANNER_TIMEOUT: int = 200
+
     # Host key cache.
     _key = None
     # Transport instance cache.
@@ -67,10 +70,17 @@ class ExportDestination(TitleDescriptionModel):
             key_type = key_dict.keys()[0]
             return key_dict[key_type]
 
-    def create_transport(self) -> paramiko.Transport:
+    def create_transport(
+        self, banner_timeout: int = None
+    ) -> paramiko.Transport:
         """
         Returns the transport instance which will be used to negotiate the
         connection.
+
+        Parameters
+        ----------
+        banner_timeout : int
+            Timeout in seconds protocol banner read
 
         See Also
         --------
@@ -81,14 +91,20 @@ class ExportDestination(TitleDescriptionModel):
         paramiko.Transport
             SSH transport thread
         """
-        return paramiko.Transport((self.ip, self.PORT))
+        transport = paramiko.Transport((self.ip, self.PORT))
+        transport.banner_timeout = (
+            self.BANNER_TIMEOUT if banner_timeout is None else banner_timeout
+        )
+        return transport
 
     def connect(self) -> None:
         """
         Negotiates a connection with the host.
         """
         if not self.transport.active:
-            self.transport.connect(self.key, self.username, self.password)
+            self.transport.connect(
+                self.key, self.username, self.password,
+            )
 
     def start_sftp_client(self) -> paramiko.sftp_client.SFTPClient:
         """

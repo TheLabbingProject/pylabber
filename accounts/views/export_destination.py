@@ -25,21 +25,27 @@ class ExportDestinationViewSet(DefaultsMixin, viewsets.ModelViewSet):
     serializer_class = ExportDestinationSerializer
     filter_class = ExportDestinationFilter
 
-    @action(detail=True, methods=["GET"])
+    @action(detail=False, methods=["POST"])
     def export_instance(
-        self,
-        request: Request,
-        pk: int,
-        app_label: str,
-        model_name: str,
-        instance_id: int,
+        self, request: Request,
     ):
+        try:
+            app_label = request.data.pop("app_label")
+            model_name = request.data.pop("model_name")
+            export_destination_id = request.data.pop("export_destination_id")
+            instance_id = request.data.pop("instance_id")
+        except KeyError:
+            return Response(status.HTTP_400_BAD_REQUEST)
         handler = EXPORT_HANDLERS.get(app_label, {}).get(model_name)
         if handler:
             try:
-                handler.delay(pk, instance_id, **self.request.GET)
+                handler.delay(
+                    export_destination_id, instance_id, **self.request.data
+                )
             except AttributeError:
-                handler(pk, instance_id, **self.request.GET)
+                handler(
+                    export_destination_id, instance_id, **self.request.data
+                )
             finally:
                 return Response(status.HTTP_200_OK)
         return Response(status.HTTP_400_BAD_REQUEST)

@@ -21,8 +21,8 @@ urlpatterns = [
         name="get_institutions",
     ),
     path(
-        "accounts/export_destination/<int:pk>/<str:app_label>/<str:model_name>/<int:instance_id>/",  # noqa: E501
-        views.ExportDestinationViewSet.as_view({"get": "export_instance"}),
+        "accounts/export_destination/export_instance/",
+        views.ExportDestinationViewSet.as_view({"POST": "export_instance"}),
         name="export_instance",
     ),
 ]

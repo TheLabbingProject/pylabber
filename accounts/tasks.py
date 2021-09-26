@@ -3,7 +3,7 @@ Celery tasks exposed by the :mod:`pylabber.accounts` app.
 """
 import math
 from pathlib import Path
-from typing import Callable, Iterable, List, Union
+from typing import Iterable, List, Union
 
 from celery import group, shared_task
 from django_mri.models import Scan, Session
@@ -238,7 +238,7 @@ def export_mri_session(
     )
 
 
-@shared_task(name="accounts.export-subject-data")
+@shared_task(name="accounts.export-subject-mri-data")
 def export_subject_mri_data(
     export_destination_id: int,
     subject_id: int,

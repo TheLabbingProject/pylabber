@@ -1,3 +1,9 @@
+"""
+Definition of the :class:`SubjectViewSet` class.
+"""
+from typing import Callable, Dict
+
+from accounts.tasks import export_subject_mri_data
 from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bs4 import BeautifulSoup
@@ -7,18 +13,21 @@ from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
 from research.models.subject import Subject
 from research.serializers.subject import SubjectSerializer
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 BOKEH_URL = "http://localhost:5006/date_of_birth"
+
+DATA_EXPORT_HANDLERS: Dict[str, Callable] = {
+    "mri": export_subject_mri_data.delay
+}
 
 
 class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows :class:`~research.models.subject.Subject`
     instances to be viewed or edited.
-
     """
 
     filter_class = SubjectFilter
@@ -50,6 +59,20 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
             mri_session_set__scan__study_groups__study__collaborators=user
         )
         return queryset.filter(procedure_query | group_query)
+
+    @action(detail=False, methods=["POST"])
+    def export_files(self, request):
+        try:
+            export_destination_id = request.data.pop("export_destination_id")
+            instance_id = request.data.pop("instance_id")
+        except KeyError:
+            Response(status.HTTP_400_BAD_REQUEST)
+        else:
+            for data_type, parameters in request.data.items():
+                handler = DATA_EXPORT_HANDLERS.get(data_type)
+                if handler:
+                    handler(export_destination_id, instance_id, **parameters)
+            return Response(status.HTTP_200_OK)
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

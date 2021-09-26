@@ -35,5 +35,10 @@ urlpatterns = [
         views.MeasurementDefinitionViewSet.as_view({"get": "get_items"}),
         name="get_measurement_definition_items",
     ),
+    path(
+        "research/subject/export/",
+        views.SubjectViewSet.as_view({"post": "export_files"}),
+        name="export_subject_data",
+    ),
     path("research/", include(router.urls)),
 ]

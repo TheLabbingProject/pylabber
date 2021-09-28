@@ -1,8 +1,6 @@
 """
-Definition of the
-:class:`~accounts.serializers.laboratory.LaboratorySerializer` class.
+Definition of the :class:`LaboratorySerializer` class.
 """
-
 from accounts.models import User
 from accounts.models.laboratory import Laboratory
 from rest_framework import serializers
@@ -10,9 +8,8 @@ from rest_framework import serializers
 
 class LaboratorySerializer(serializers.HyperlinkedModelSerializer):
     """
-    `Serializer <https://www.django-rest-framework.org/api-guide/serializers/>`_
-    class for the :class:`~accounts.models.laboratory.Laboratory` model.
-
+    Serializer class for the :class:`~accounts.models.laboratory.Laboratory`
+    model.
     """
 
     url = serializers.HyperlinkedIdentityField(

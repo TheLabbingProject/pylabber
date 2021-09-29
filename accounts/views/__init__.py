@@ -7,6 +7,7 @@ from accounts.views.export_destination import ExportDestinationViewSet
 from accounts.views.group import GroupViewSet
 from accounts.views.laboratory import LaboratoryViewSet
 from accounts.views.profile import ProfileViewSet
+from accounts.views.task_result import TaskResultViewSet
 from accounts.views.user import UserViewSet
 
 # flake8: noqa: E401

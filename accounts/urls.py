@@ -11,6 +11,7 @@ router.register(r"laboratory", views.LaboratoryViewSet)
 router.register(r"profile", views.ProfileViewSet)
 router.register(r"user", views.UserViewSet)
 router.register(r"export_destination", views.ExportDestinationViewSet)
+router.register(r"task_result", views.TaskResultViewSet)
 
 
 urlpatterns = [

@@ -18,6 +18,7 @@ For more information, see:
 """
 
 from accounts.filters.export_destination import ExportDestinationFilter
+from accounts.filters.task_result import TaskResultFilter
 from accounts.filters.user import UserFilter
 
 # flake8: noqa: E401

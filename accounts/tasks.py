@@ -62,7 +62,7 @@ def export_mri_scan(
                 )
                 for pk in scan_id
             ]
-            return group(signatures)()
+            group(signatures)()
         else:
             # Create the inputs for each separate execution and run in chunks.
             inputs = (
@@ -70,14 +70,17 @@ def export_mri_scan(
                 for pk in scan_id
             )
             chunks = export_mri_scan.chunks(inputs, n_chunks)
-            return chunks.group().skew()()
+            chunks.group().skew()()
+        finally:
+            return
     # Split in case of multiple export destinations.
     if isinstance(export_destination_id, Iterable):
         signatures = [
             export_mri_scan.s(pk, scan_id, file_format, include_json)
             for pk in export_destination_id
         ]
-        return group(signatures)()
+        group(signatures)()
+        return
     # Split in case of multiple file formats.
     if isinstance(file_format, list):
         # Fix list passed as a single string.
@@ -87,13 +90,15 @@ def export_mri_scan(
             export_mri_scan.s(export_destination_id, scan_id, f, include_json)
             for f in file_format
         ]
-        return group(signatures)()
+        group(signatures)()
+        return
     elif isinstance(file_format, str):
         file_format = file_format.split(",")
         if len(file_format) > 1:
-            return export_mri_scan(
+            export_mri_scan.delay(
                 export_destination_id, scan_id, file_format, include_json
             )
+            return
         else:
             file_format = file_format.pop()
     file_format = file_format.lower()
@@ -159,7 +164,7 @@ def export_mri_session(
                 )
                 for pk in session_id
             ]
-            return group(signatures)()
+            group(signatures)()
         else:
             # Create the inputs for each separate execution and run in chunks.
             inputs = (
@@ -176,8 +181,11 @@ def export_mri_session(
             chunks = export_mri_session.chunks(inputs, n_chunks)
             grouped = chunks.group()
             if skew:
-                return grouped.skew()()
-            return grouped()
+                grouped.skew()()
+            else:
+                grouped()
+        finally:
+            return
     # Split in case of multiple export destinations.
     if isinstance(export_destination_id, Iterable):
         signatures = [
@@ -192,7 +200,8 @@ def export_mri_session(
             )
             for pk in export_destination_id
         ]
-        return group(signatures)()
+        group(signatures)()
+        return
     # Split in case of multiple file formats.
     if isinstance(file_format, list):
         # Fix list passed as a single string.
@@ -210,11 +219,12 @@ def export_mri_session(
             )
             for f in file_format
         ]
-        return group(signatures)()
+        group(signatures)()
+        return
     elif isinstance(file_format, str):
         file_format = file_format.split(",")
         if len(file_format) > 1:
-            return export_mri_session(
+            export_mri_session.delay(
                 export_destination_id,
                 session_id,
                 file_format=file_format,
@@ -223,6 +233,7 @@ def export_mri_session(
                 max_parallel_scans=max_parallel_scans,
                 skew=skew,
             )
+            return
         else:
             file_format = file_format.pop()
     file_format = file_format.lower()
@@ -282,7 +293,7 @@ def export_subject_mri_data(
                 )
                 for pk in subject_id
             ]
-            return group(signatures)()
+            group(signatures)()
         else:
             # Create the inputs for each separate execution and run in chunks.
             inputs = (
@@ -301,16 +312,19 @@ def export_subject_mri_data(
             chunks = export_subject_mri_data.chunks(inputs, n_chunks)
             grouped = chunks.group()
             if skew:
-                return grouped.skew()()
-            return grouped()
-    subject = Subject.objects.get(id=subject_id)
-    sessions_ids = list(subject.mri_session_set.values_list("id", flat=True))
-    export_mri_session.delay(
-        export_destination_id,
-        sessions_ids,
-        file_format=file_format,
-        include_json=include_json,
-        max_parallel=max_parallel_sessions,
-        max_parallel_scans=max_parallel_scans,
-        skew=skew,
-    )
+                grouped.skew()()
+            grouped()
+    else:
+        subject = Subject.objects.get(id=subject_id)
+        sessions_ids = list(
+            subject.mri_session_set.values_list("id", flat=True)
+        )
+        export_mri_session.delay(
+            export_destination_id,
+            sessions_ids,
+            file_format=file_format,
+            include_json=include_json,
+            max_parallel=max_parallel_sessions,
+            max_parallel_scans=max_parallel_scans,
+            skew=skew,
+        )

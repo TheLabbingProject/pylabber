@@ -1,7 +1,7 @@
 import pandas as pd
 from bokeh.plotting import Figure
 from django.db import models
-from django.db.models import Max
+from django.db.models import Count, Max
 from django_dicom.models.patient import Patient
 from research.plots.subject import (
     plot_bokeh_date_of_birth,
@@ -38,7 +38,7 @@ class SubjectManager(models.Manager):
             .get_queryset()
             .annotate(
                 latest_mri_session_time=Max("mri_session_set__time"),
-                # mri_session_count=Count("mri_session_set"),
+                mri_session_count=Count("mri_session_set"),
             )
         )
 

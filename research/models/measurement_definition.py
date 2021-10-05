@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
 from research.models.event import Event
+from research.models.study import Study
 
 
 class MeasurementDefinition(Event):
@@ -48,6 +49,11 @@ class MeasurementDefinition(Event):
         if self.content_type:
             DataModel = self.content_type.model_class()
             return DataModel.objects.filter(measurement=self)
+
+    def query_associated_studies(self) -> models.QuerySet:
+        return Study.objects.filter(
+            id__in=self.procedure_set.values_list("study")
+        )
 
     @property
     def instance_set(self) -> models.QuerySet:

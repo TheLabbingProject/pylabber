@@ -5,13 +5,8 @@ from django.db.models import Q
 from django_dicom.models.patient import Patient
 from django_filters import rest_framework as filters
 from django_mri.models.scan import Scan
+from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES, NumberInFilter
 from research.models.subject import Subject
-
-from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES
-
-
-class NumberInFilter(filters.BaseInFilter, filters.NumberFilter):
-    pass
 
 
 class SubjectFilter(filters.FilterSet):

@@ -5,6 +5,7 @@ from accounts.filters.task_result import TaskResultFilter
 from accounts.serializers.task_result import TaskResultSerializer
 from django_celery_results.models import TaskResult
 from pylabber.views.defaults import DefaultsMixin
+from pylabber.views.pagination import StandardResultsSetPagination
 from rest_framework import viewsets
 
 
@@ -17,3 +18,4 @@ class TaskResultViewSet(DefaultsMixin, viewsets.ModelViewSet):
     queryset = TaskResult.objects.all()
     serializer_class = TaskResultSerializer
     filter_class = TaskResultFilter
+    pagination_class = StandardResultsSetPagination

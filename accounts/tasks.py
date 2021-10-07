@@ -15,7 +15,7 @@ from accounts.models.export_destination import ExportDestination
 
 @shared_task(
     name="accounts.export-files",
-    autoretry_for=(SSHException,),
+    autoretry_for=(OSError, SSHException),
     retry_backoff=True,
 )
 def export_files(export_destination_id: int, files: List[str]):

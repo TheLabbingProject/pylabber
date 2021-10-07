@@ -5,7 +5,7 @@ from accounts.filters.utils import STATUS_CHOICES
 from django_celery_results.models import TaskResult
 from django_filters import rest_framework as filters
 
-from utils.lookup_choices import DEFUALT_LOOKUP_CHOICES
+from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES
 
 
 class TaskResultFilter(filters.FilterSet):

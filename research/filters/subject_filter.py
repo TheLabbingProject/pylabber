@@ -7,7 +7,7 @@ from django_filters import rest_framework as filters
 from django_mri.models.scan import Scan
 from research.models.subject import Subject
 
-from utils.lookup_choices import DEFUALT_LOOKUP_CHOICES
+from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES
 
 
 class NumberInFilter(filters.BaseInFilter, filters.NumberFilter):

@@ -3,11 +3,7 @@ Definition of the :class:`ExportDestinationFilter` class.
 """
 from accounts.models.export_destination import ExportDestination
 from django_filters import rest_framework as filters
-from utils.lookup_choices import DEFUALT_LOOKUP_CHOICES
-
-
-class NumberInFilter(filters.BaseInFilter, filters.NumberFilter):
-    pass
+from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES, NumberInFilter
 
 
 class ExportDestinationFilter(filters.FilterSet):

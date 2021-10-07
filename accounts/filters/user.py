@@ -3,7 +3,7 @@ Definition of the :class:`UserFilter` class.
 """
 from accounts.models.user import User
 from django_filters import rest_framework as filters
-from utils.lookup_choices import DEFUALT_LOOKUP_CHOICES
+from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES
 
 
 class UserFilter(filters.FilterSet):

@@ -35,10 +35,12 @@ class TaskResultSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def get_task_args(self, task):
-        return json.loads(task.task_args)
+        if task.task_args:
+            return json.loads(task.task_args)
 
     def get_task_kwargs(self, task):
-        return json.loads(task.task_kwargs)
+        if task.task_kwargs:
+            return json.loads(task.task_kwargs)
 
     def get_meta(self, task):
         return json.loads(task.meta)

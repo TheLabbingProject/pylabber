@@ -43,5 +43,6 @@ class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"])
     def aggregate(self, request) -> Response:
-        result = self.queryset.aggregate(**STUDY_AGGREGATIONS)
+        queryset = self.filter_queryset(self.get_queryset())
+        result = queryset.aggregate(**STUDY_AGGREGATIONS)
         return Response(result)

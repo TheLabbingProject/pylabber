@@ -6,6 +6,9 @@ from research.filters.study_filter import StudyFilter
 from research.models.study import Study
 from research.serializers.study import StudySerializer
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from research.views.utils import STUDY_AGGREGATIONS
 
 
 class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
@@ -15,7 +18,7 @@ class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
     """
 
     filter_class = StudyFilter
-    queryset = Study.objects.order_by("title").all()
+    queryset = Study.objects.with_counts().order_by("title")
     serializer_class = StudySerializer
 
     def filter_queryset(self, queryset):
@@ -37,3 +40,8 @@ class StudyViewSet(DefaultsMixin, viewsets.ModelViewSet):
         if user.is_superuser:
             return super().filter_queryset(queryset)
         return queryset.filter(collaborators__in=[user])
+
+    @action(detail=False, methods=["get"])
+    def aggregate(self, request) -> Response:
+        result = self.queryset.aggregate(**STUDY_AGGREGATIONS)
+        return Response(result)

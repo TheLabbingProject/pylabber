@@ -40,5 +40,10 @@ urlpatterns = [
         views.SubjectViewSet.as_view({"post": "export_files"}),
         name="export_subject_data",
     ),
+    path(
+        "research/study/aggregate/",
+        views.StudyViewSet.as_view({"get": "aggregate"}),
+        name="study_aggregations",
+    ),
     path("research/", include(router.urls)),
 ]

@@ -13,18 +13,17 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
     Serializer for the :class:`~research.models.study.Study` model.
     """
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="research:study-detail"
-    )
-    subjects = serializers.HyperlinkedRelatedField(
-        view_name="research:subject-detail",
+    subjects = serializers.PrimaryKeyRelatedField(
         queryset=Subject.objects.all(),
+        allow_null=True,
         many=True,
+        required=False,
     )
-    collaborators = serializers.HyperlinkedRelatedField(
-        view_name="accounts:user-detail",
+    collaborators = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(),
+        allow_null=True,
         many=True,
+        required=False,
     )
     procedures = serializers.PrimaryKeyRelatedField(
         queryset=Procedure.objects.all(),
@@ -32,6 +31,7 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
         many=True,
         required=False,
     )
+    n_subjects = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Study
@@ -40,12 +40,12 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
             "image",
             "subjects",
             "collaborators",
-            "url",
             "title",
             "description",
             "created",
             "modified",
             "procedures",
+            "n_subjects",
         )
 
 

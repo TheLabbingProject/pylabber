@@ -1,21 +1,15 @@
 """
 Definition of the :class:`Subject` model.
 """
-import itertools
-
 import pandas as pd
 from django.conf import settings
 from django.db import models
-from django.db.models.query import QuerySet
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
 from pylabber.utils import CharNullField
 from questionnaire_reader import QuestionnaireReader
 from research.models.choices import DominantHand, Gender, Sex
-from research.models.group import Group
 from research.models.managers.subject import SubjectManager, SubjectQuerySet
-from research.models.measurement_definition import MeasurementDefinition
-from research.models.procedure import Procedure
 from research.models.study import Study
 from research.models.validators import not_future
 from research.utils.custom_attributes_processor import (

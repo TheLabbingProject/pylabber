@@ -371,6 +371,7 @@ DATA_SHARE_ROOT = "/mnt/"
 
 # django_dicom
 DICOM_IMPORT_MODE = "minimal"
+ENABLE_COUNT_FILTERING = False
 
 # For external usage of APP_IP
 APP_IP = env("APP_IP")

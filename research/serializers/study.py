@@ -2,6 +2,7 @@
 Definition of the :class:`StudySerializer` class.
 """
 from accounts.models import User
+from pylabber.utils.configuration import ENABLE_COUNT_FILTERING
 from research.models.procedure import Procedure
 from research.models.study import Study
 from research.models.subject import Subject
@@ -31,7 +32,8 @@ class StudySerializer(serializers.HyperlinkedModelSerializer):
         many=True,
         required=False,
     )
-    n_subjects = serializers.IntegerField(read_only=True)
+    if ENABLE_COUNT_FILTERING:
+        n_subjects = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Study

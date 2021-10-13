@@ -67,17 +67,54 @@ class Study(TitleDescriptionModel, TimeStampedModel):
 
         return reverse("research:study-detail", args=[str(self.id)])
 
-    def query_associated_subjects(
-        self, id_only: bool = False
-    ) -> models.QuerySet:
+    def query_associated_subjects(self) -> models.QuerySet:
+        """
+        Returns a queryset of subjects associated with this study.
+
+        See Also
+        --------
+        * :func:`subject_set`
+
+        Returns
+        -------
+        models.QuerySet
+            Subjects associated with this study
+        """
         Subject = get_subject_model()
-        subject_ids = [
-            subject.id
-            for subject in Subject.objects.all()
-            if self.id in subject.query_studies(id_only=True)
-        ]
-        return (
-            subject_ids
-            if id_only
-            else Subject.objects.filter(id__in=subject_ids)
-        )
+        mri_session_subjects = self.procedures.values_list(
+            "events__measurementdefinition__mri_session_set__subject",
+            flat=True,
+        ).distinct()
+        mri_scan_subjects = self.group_set.values_list(
+            "mri_scan_set__session__subject", flat=True
+        ).distinct()
+        subject_ids = set(list(mri_session_subjects) + list(mri_scan_subjects))
+        return Subject.objects.filter(id__in=subject_ids)
+
+    @property
+    def subject_set(self) -> models.QuerySet:
+        """
+        Returns a queryset of subjects associated with this study.
+
+        See Also
+        --------
+        * :func:`query_associated_subjects`
+
+        Returns
+        -------
+        models.QuerySet
+            Subjects associated with this study
+        """
+        return self.query_associated_subjects()
+
+    @property
+    def n_subjects(self) -> int:
+        """
+        Returns the number of subjects associated with this study.
+
+        Returns
+        -------
+        int
+            Number of subjects associated with this study
+        """
+        return self.subject_set.count()

@@ -2,7 +2,6 @@
 `Django REST Framework <https://www.django-rest-framework.org/>`_
 `serializers <https://www.django-rest-framework.org/api-guide/serializers/>`_
 module for the :mod:`research` package.
-
 """
 
 from research.serializers.content_type import ContentTypeSerializer
@@ -14,5 +13,10 @@ from research.serializers.measurement_definition import (
 from research.serializers.procedure import ProcedureSerializer
 from research.serializers.procedure_step import ProcedureStepSerializer
 from research.serializers.study import StudySerializer
-from research.serializers.subject import SubjectSerializer
+from research.serializers.subject import (
+    AdminSubjectSerializer,
+    SubjectSerializer,
+)
 from research.serializers.task import TaskSerializer
+
+# flake8: noqa: E401

@@ -12,7 +12,10 @@ from django.http import HttpResponse
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
 from research.models.subject import Subject
-from research.serializers.subject import SubjectSerializer
+from research.serializers.subject import (
+    AdminSubjectSerializer,
+    SubjectSerializer,
+)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -32,7 +35,6 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     filter_class = SubjectFilter
     queryset = Subject.objects.order_by("-latest_mri_session_time")
-    serializer_class = SubjectSerializer
     ordering_fields = (
         "id",
         "id_number",
@@ -46,6 +48,11 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
         "latest_mri_session_time",
         "mri_session_count",
     )
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return AdminSubjectSerializer
+        return SubjectSerializer
 
     def filter_queryset(self, queryset):
         user = self.request.user

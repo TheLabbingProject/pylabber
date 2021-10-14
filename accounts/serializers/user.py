@@ -1,12 +1,10 @@
 """
 Definition of the :class:`~accounts.serializers.user.UserSerializer` class.
 """
-
 from accounts.models.profile import Profile
 from accounts.models.user import User
 from accounts.serializers.profile import ProfileSerializer
 from rest_auth.serializers import UserDetailsSerializer
-from rest_framework import serializers
 
 
 class UserSerializer(UserDetailsSerializer):

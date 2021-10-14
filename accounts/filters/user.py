@@ -22,7 +22,9 @@ class UserFilter(filters.FilterSet):
         lookup_choices=DEFUALT_LOOKUP_CHOICES
     )
     email = filters.LookupChoiceFilter(lookup_choices=DEFUALT_LOOKUP_CHOICES)
-    institute = filters.AllValuesFilter(field_name="profile__institute")
+    institute = filters.AllValuesMultipleFilter(
+        field_name="profile__institute"
+    )
     study_ne = filters.NumberFilter(field_name="study", exclude=True)
 
     class Meta:

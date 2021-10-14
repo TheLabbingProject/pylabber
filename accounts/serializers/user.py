@@ -18,15 +18,10 @@ class UserSerializer(UserDetailsSerializer):
     * https://www.django-rest-framework.org/api-guide/serializers/
     """
 
-    url = serializers.HyperlinkedIdentityField(
-        view_name="accounts:user-detail"
-    )
     profile = ProfileSerializer()
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (
-            "url",
-            "id",
             "profile",
             "is_staff",
             "is_superuser",

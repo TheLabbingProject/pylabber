@@ -321,6 +321,7 @@ CORS_ORIGIN_WHITELIST = [
 
 # research
 SUBJECT_MODEL = "research.Subject"
+PROCEDURE_MODEL = "research.Procedure"
 STUDY_GROUP_MODEL = "research.Group"
 MEASUREMENT_MODEL = "research.MeasurementDefinition"
 RAW_SUBJECT_TABLE_PATH = env("RAW_SUBJECT_TABLE_PATH")

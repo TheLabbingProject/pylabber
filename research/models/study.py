@@ -8,6 +8,9 @@ from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
 from research.models.managers.study import StudyManager
 from research.utils import get_subject_model
 
+STUDY_IMAGE_UPLOAD_DESTINATION: str = "images/studies"
+User = get_user_model()
+
 
 class Study(TitleDescriptionModel, TimeStampedModel):
     """
@@ -16,7 +19,7 @@ class Study(TitleDescriptionModel, TimeStampedModel):
 
     #: An optional image to supplement the description.
     image = models.ImageField(
-        upload_to="images/studies", blank=True, null=True
+        upload_to=STUDY_IMAGE_UPLOAD_DESTINATION, blank=True, null=True
     )
 
     #: Subjects associated with this study.
@@ -25,7 +28,7 @@ class Study(TitleDescriptionModel, TimeStampedModel):
     subjects = models.ManyToManyField("research.Subject", blank=True)
 
     #: Researchers collaborating on this study.
-    collaborators = models.ManyToManyField(get_user_model(), blank=True)
+    collaborators = models.ManyToManyField(User, blank=True)
 
     #: The experimental procedures associated with this study.
     procedures = models.ManyToManyField("research.Procedure", blank=True)
@@ -45,7 +48,6 @@ class Study(TitleDescriptionModel, TimeStampedModel):
         str
             String representation
         """
-
         return self.title
 
     def get_absolute_url(self):
@@ -64,7 +66,6 @@ class Study(TitleDescriptionModel, TimeStampedModel):
         str
             URL
         """
-
         return reverse("research:study-detail", args=[str(self.id)])
 
     def query_associated_subjects(self) -> models.QuerySet:

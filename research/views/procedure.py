@@ -1,3 +1,6 @@
+"""
+Definition of the :class:`ProcedureViewSet` class.
+"""
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.procedure_filter import ProcedureFilter
 from research.models.procedure import Procedure

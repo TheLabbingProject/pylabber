@@ -1,18 +1,16 @@
 """
 Definition of the :class:`ProcedureStepFilter` class.
 """
-
 from django_filters import rest_framework as filters
+from research.filters.utils import LOOKUP_CHOICES
 from research.models.procedure import Procedure
 from research.models.procedure_step import ProcedureStep
-from research.filters.utils import LOOKUP_CHOICES
 
 
 class ProcedureStepFilter(filters.FilterSet):
     """
     Provides useful filtering options for the
     :class:`~research.models.procedure_step.ProcedureStep` model.
-
     """
 
     title = filters.LookupChoiceFilter(

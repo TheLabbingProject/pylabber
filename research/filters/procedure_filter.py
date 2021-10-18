@@ -1,7 +1,6 @@
 """
 Definition of the :class:`ProcedureFilter` class.
 """
-
 from django_filters import rest_framework as filters
 from research.filters.utils import LOOKUP_CHOICES
 from research.models.procedure import Procedure
@@ -12,7 +11,6 @@ class ProcedureFilter(filters.FilterSet):
     """
     Provides useful filtering options for the
     :class:`~research.models.procedure.Procedure` model.
-
     """
 
     title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)

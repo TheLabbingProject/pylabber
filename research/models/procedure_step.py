@@ -38,7 +38,6 @@ class ProcedureStep(models.Model):
         str
             This instance's string representation
         """
-
         return f"[{self.procedure.title}] #{self.index}:\t{self.event.title}"
 
     def save(self, *args, **kwargs) -> None:
@@ -55,7 +54,6 @@ class ProcedureStep(models.Model):
         .. _overriding model methods:
            https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
         """
-
         # If no index is assigned, append to the procedure as a new last step.
         if self.index is None:
             self.index = self.procedure.max_index + 1
@@ -88,5 +86,4 @@ class ProcedureStep(models.Model):
         str
             URL
         """
-
         return reverse("research:procedure_step-detail", args=[str(self.id)])

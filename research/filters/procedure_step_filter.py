@@ -40,9 +40,6 @@ class ProcedureStepFilter(filters.FilterSet):
             "id",
             "index",
             "procedure",
-            "exclude_procedure",
-            "title",
-            "description",
         )
 
     def check_event_type(

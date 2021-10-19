@@ -1,12 +1,15 @@
 """
 Definition of the :class:`ProcedureStepFilter` class.
 """
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django_filters import rest_framework as filters
 from research.filters.utils import LOOKUP_CHOICES
 from research.models.procedure import Procedure
 from research.models.procedure_step import ProcedureStep
+from typing import Tuple
 
+CONTENT_TYPE_PARTS: Tuple[str, str] = ("app_label", "model")
+CONTENT_TYPE_QUERY_KEY: str = "event__measurementdefinition__content_type__{part}"  # noqa: E501
 EVENT_TYPE_QUERY_KEY: str = "event__{event_type}__isnull"
 
 
@@ -33,6 +36,11 @@ class ProcedureStepFilter(filters.FilterSet):
         method="check_event_type",
         label="Event type:",
     )
+    content_type = filters.ChoiceFilter(
+        choices=(("django_mri.Session", "MRI Session"),),
+        method="check_content_type",
+        label="Measurement content type:",
+    )
 
     class Meta:
         model = ProcedureStep
@@ -47,3 +55,13 @@ class ProcedureStepFilter(filters.FilterSet):
     ) -> QuerySet:
         key = EVENT_TYPE_QUERY_KEY.format(event_type=value)
         return queryset.filter(**{key: False})
+
+    def check_content_type(
+        self, queryset: QuerySet, name: str, value: str, *args, **kwargs
+    ) -> QuerySet:
+        query = Q()
+        values = value.lower().split(".")
+        for part, value in zip(CONTENT_TYPE_PARTS, values):
+            key = CONTENT_TYPE_QUERY_KEY.format(part=part)
+            query |= Q(**{key: value})
+        return queryset.filter(query)

@@ -8,8 +8,7 @@ from rest_framework import serializers
 class ContentTypeSerializer(serializers.ModelSerializer):
     """
     Serializer class for the
-    :class:`~django.contrib.contenttypes.models.ContentType`
-    model.
+    :class:`~django.contrib.contenttypes.models.ContentType` model.
     """
 
     class Meta:

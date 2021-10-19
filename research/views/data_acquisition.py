@@ -23,4 +23,13 @@ class DataAcquisitionViewSet(DefaultsMixin, viewsets.ModelViewSet):
     serializer_class = ContentTypeSerializer
 
     def get_queryset(self) -> QuerySet:
+        """
+        Returns only content types registered in the *DATA_ACQUISITION_MODELS*
+        setting.
+
+        Returns
+        -------
+        QuerySet
+            Registered data acuisition models' content types
+        """
         return get_data_acquisition_models()

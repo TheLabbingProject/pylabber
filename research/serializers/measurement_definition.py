@@ -6,18 +6,15 @@ from research.models.measurement_definition import MeasurementDefinition
 from rest_framework import serializers
 
 
-class MeasurementDefinitionSerializer(serializers.HyperlinkedModelSerializer):
+class MeasurementDefinitionSerializer(serializers.ModelSerializer):
     """
-    HyperlinkedModelSerializer_ for the
+    ModelSerializer for the
     :class:`~research.models.measurement_definition.MeasurementDefinition`
     model.
-
-    .. _HyperlinkedModelSerializer:
-       https://www.django-rest-framework.org/api-guide/serializers/#hyperlinkedmodelserializer
     """
 
     content_type = serializers.PrimaryKeyRelatedField(
-        queryset=ContentType.objects.all(), required=False,
+        queryset=ContentType.objects.all(), required=False, allow_null=True
     )
 
     class Meta:

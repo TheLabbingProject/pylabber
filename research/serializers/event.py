@@ -38,18 +38,3 @@ class EventSerializer(PolymorphicSerializer):
             return SERIALIZERS.get(input_type, BaseEventSerializer)
         except KeyError:
             raise ValueError(f'Serializer for "{input_type}" does not exist')
-
-
-class EventItemsSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Alternative serializer for the
-    :class:`~research.models.event.Event` model used to generate items
-    for select widgets in the frontend.
-    """
-
-    value = serializers.IntegerField(source="id")
-    text = serializers.CharField(source="title")
-
-    class Meta:
-        model = Event
-        fields = "value", "text"

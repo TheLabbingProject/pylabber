@@ -45,7 +45,7 @@ class ExportDestinationSerializer(serializers.HyperlinkedModelSerializer):
     def get_status(self, destination: ExportDestination) -> bool:
         try:
             destination.sftp_client
-        except (RuntimeError, SSHException):
+        except (RuntimeError, SSHException, ConnectionResetError):
             return False
         else:
             return True

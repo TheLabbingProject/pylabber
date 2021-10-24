@@ -80,7 +80,9 @@ class SubjectFilter(filters.FilterSet):
                 "session__subject", flat=True
             )
         )
-        return queryset.filter(id=subject_ids.pop())
+        if len(subject_ids) == 1:
+            return queryset.filter(id=subject_ids.pop())
+        return queryset.none()
 
     def filter_nullable_charfield(self, queryset, name, value):
         if value == "null":

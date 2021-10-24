@@ -16,6 +16,7 @@ class TaskResultSerializer(serializers.HyperlinkedModelSerializer):
     task_args = serializers.SerializerMethodField()
     task_kwargs = serializers.SerializerMethodField()
     meta = serializers.SerializerMethodField()
+    parent = serializers.CharField()
 
     class Meta:
         model = TaskResult
@@ -32,6 +33,7 @@ class TaskResultSerializer(serializers.HyperlinkedModelSerializer):
             "result",
             "traceback",
             "meta",
+            "parent",
         )
 
     def get_task_args(self, task):

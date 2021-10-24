@@ -308,8 +308,8 @@ REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer"
 }
 CORS_ORIGIN_WHITELIST = [
-    f"http://{env('APP_IP')}:8080",
-    f"https://{env('APP_IP')}:8080",
+    f"http://{env('APP_IP')}",
+    f"https://{env('APP_IP')}",
     "http://localhost:8080",
     "https://localhost:8080",
     "http://127.0.0.1:8080",
@@ -371,7 +371,12 @@ EXTRA_OUTPUT_SERIALIZERS = {
 DATA_SHARE_ROOT = "/mnt/"
 
 # django_dicom
+#: Prevent the creation of DICOM data elements in the database.
 DICOM_IMPORT_MODE = "minimal"
+ENABLE_COUNT_FILTERING = False
+
+#: Do not annotate querysets with related model counts which drastically slows
+#: down queries.
 ENABLE_COUNT_FILTERING = False
 
 # For external usage of APP_IP
@@ -392,4 +397,6 @@ if USE_TZ:
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-CELERY_RESULT_EXPIRES = 0
+
+# Uncomment to keep results forever
+# CELERY_RESULT_EXPIRES = 0

@@ -1,7 +1,7 @@
 bokeh~=2.0
 boto3~=1.14
 bs4~=0.0
-celery~=5.0
+celery>=5.1.2
 dask
 Django~=3.2
 django-admin-inline-paginator~=0.1

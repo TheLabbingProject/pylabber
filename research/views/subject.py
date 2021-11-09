@@ -50,9 +50,10 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     )
 
     def get_serializer_class(self):
-        if self.request.user.is_staff:
-            return AdminSubjectSerializer
-        return SubjectSerializer
+        # if self.request.user.is_staff:
+        #     return AdminSubjectSerializer
+        # return SubjectSerializer
+        return AdminSubjectSerializer
 
     def filter_queryset(self, queryset):
         user = self.request.user

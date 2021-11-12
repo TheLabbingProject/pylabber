@@ -14,8 +14,7 @@ from research.filters.subject_filter import SubjectFilter
 from research.models.subject import Subject
 from research.serializers.subject import (
     AdminSubjectSerializer,
-    SubjectSerializer,
-)
+)  # SubjectSerializer,
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response

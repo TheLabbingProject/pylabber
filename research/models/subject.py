@@ -12,9 +12,7 @@ from research.models.choices import DominantHand, Gender, Sex
 from research.models.managers.subject import SubjectManager, SubjectQuerySet
 from research.models.study import Study
 from research.models.validators import not_future
-from research.utils.custom_attributes_processor import (
-    CustomAttributesProcessor,
-)
+from research.utils.custom_attributes_processor import CustomAttributesProcessor
 from research.utils.subject_table import (
     merge_subject_and_questionnaire_data,
     read_subject_table,
@@ -78,7 +76,6 @@ class Subject(TimeStampedModel):
         str
             String representation
         """
-
         return f"Subject #{self.id}"
 
     def get_absolute_url(self):
@@ -97,7 +94,6 @@ class Subject(TimeStampedModel):
         str
             URL
         """
-
         return reverse("research:subject-detail", args=[str(self.id)])
 
     def save(self, *args, **kwargs):
@@ -113,7 +109,6 @@ class Subject(TimeStampedModel):
         .. _overriding model methods:
            https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
         """
-
         custom_attributes_processor = CustomAttributesProcessor(
             self.custom_attributes
         )
@@ -160,7 +155,6 @@ class Subject(TimeStampedModel):
         pd.Series
             Subject personal information
         """
-
         subject_table = read_subject_table()
         subject_table["Questionnaire", "Questionnaire"].fillna(
             "", inplace=True
@@ -192,17 +186,14 @@ class Subject(TimeStampedModel):
         pd.Series
             Subject and Questionnaire information.
         """
-
         # Getting the questionnaire data from the sheets document.
         questionnaire = QuestionnaireReader(
             path=settings.QUESTIONNAIRE_DATA_PATH
         ).data
 
         subject_data = self.get_personal_information()
-
         # Merging tables to get the questionnaire data.
         output = merge_subject_and_questionnaire_data(
             subject_data, questionnaire
         )
-
         return output[self.id_number == output["Anonymized", "Patient ID"]]

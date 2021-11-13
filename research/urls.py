@@ -26,6 +26,11 @@ urlpatterns = [
         name="export_subject_data",
     ),
     path(
+        "research/subject/to_csv/",
+        views.SubjectViewSet.as_view({"get": "to_csv"}),
+        name="subjects_csv",
+    ),
+    path(
         "research/study/aggregate/",
         views.StudyViewSet.as_view({"get": "aggregate"}),
         name="study_aggregations",

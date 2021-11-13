@@ -7,7 +7,7 @@ from accounts.tasks import export_subject_mri_data
 from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bs4 import BeautifulSoup
-from django.db.models import Q
+from django.db.models import Q, query
 from django.http import HttpResponse
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
@@ -15,6 +15,7 @@ from research.models.subject import Subject
 from research.serializers.subject import (
     AdminSubjectSerializer,
 )  # SubjectSerializer,
+from research.views.utils import CSV_CONTENT_TYPE
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -80,6 +81,20 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
                 if handler:
                     handler(export_destination_id, instance_id, **parameters)
             return Response(status.HTTP_200_OK)
+
+    @action(detail=False, methods=["GET"])
+    def to_csv(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset)
+        df = queryset.to_dataframe()
+        response = HttpResponse(
+            content_type=CSV_CONTENT_TYPE,
+            headers={
+                "Content-Disposition": 'attachment; filename="subjects.csv"'
+            },
+        )
+        df.to_csv(path_or_buf=response)
+        return response
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

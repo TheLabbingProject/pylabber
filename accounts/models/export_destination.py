@@ -49,6 +49,9 @@ class ExportDestination(TitleDescriptionModel):
     # SFTPClient cache.
     _sftp_client = None
 
+    def __str__(self) -> str:
+        return f"{self.username}@{self.ip}"
+
     def get_key(self) -> paramiko.ecdsakey.ECDSAKey:
         """
         Returns the key of the host if it exists within the *known_hosts* file.
@@ -143,18 +146,39 @@ class ExportDestination(TitleDescriptionModel):
             relative_path = Path(path).relative_to(settings.MEDIA_ROOT)
 
             # Create parents if necessary.
+            remote_base = Path(self.destination)
+            required_absolute = False
             if create_parents:
                 parents = []
                 for part in relative_path.parts[:-1]:
                     parents.append(part)
                     current = "/".join(parents)
-                    try:
-                        self.sftp_client.mkdir(current)
-                    except OSError:
-                        pass
+                    if required_absolute:
+                        destination = remote_base / current
+                        self.sftp_client.mkdir(str(destination))
+                    else:
+                        try:
+                            self.sftp_client.mkdir(current)
+                        except OSError:
+                            destination = remote_base / current
+                            try:
+                                self.sftp_client.mkdir(str(destination))
+                            except OSError:
+                                pass
+                            else:
+                                required_absolute = True
 
             # Copy file.
-            self.sftp_client.put(str(path), str(relative_path))
+            destination = (
+                str(remote_base / relative_path)
+                if required_absolute
+                else str(relative_path)
+            )
+            try:
+                self.sftp_client.put(str(path), destination)
+            except OSError:
+                destination = remote_base / relative_path
+                self.sftp_client.put(str(path), destination)
         else:
             for p in path:
                 self.put(p, create_parents)

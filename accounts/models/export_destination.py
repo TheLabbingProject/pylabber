@@ -1,6 +1,7 @@
 """
 Definition of the :class:`ExportDestination` class.
 """
+import logging
 from pathlib import Path
 from typing import Iterable, Union
 
@@ -48,6 +49,8 @@ class ExportDestination(TitleDescriptionModel):
     _transport = None
     # SFTPClient cache.
     _sftp_client = None
+
+    _logger = logging.getLogger("accounts.export_destination")
 
     def __str__(self) -> str:
         return f"{self.username}@{self.ip}"
@@ -144,41 +147,134 @@ class ExportDestination(TitleDescriptionModel):
         """
         if isinstance(path, (str, Path)):
             relative_path = Path(path).relative_to(settings.MEDIA_ROOT)
-
-            # Create parents if necessary.
+            self._logger.debug(f"Starting {relative_path} export to {self}...")
+            # Create parents one by one.
+            # (No `parents` or `exist_ok` available)
             remote_base = Path(self.destination)
+            # Windows requires absolute paths, Linux requires relative.
             required_absolute = False
             if create_parents:
+                self._logger.debug(
+                    "Creating destination directory within the host..."
+                )
                 parents = []
                 for part in relative_path.parts[:-1]:
                     parents.append(part)
                     current = "/".join(parents)
+                    self._logger.debug(f"Trying to create {current}...")
+                    absolute_parent = str(remote_base / current)
+                    # Found to run on Windows in a previous iteration.
                     if required_absolute:
-                        destination = remote_base / current
-                        self.sftp_client.mkdir(str(destination))
+                        self.sftp_client.mkdir(absolute_parent)
+                        self._logger.debug(
+                            f"Successfully created {absolute_parent}."
+                        )
                     else:
                         try:
                             self.sftp_client.mkdir(current)
                         except OSError:
-                            destination = remote_base / current
+                            # Handle connections to Windows.
+                            self._logger.debug(
+                                f"Failed to create {current} (OSError), trying with absolute path..."  # noqa: E501
+                            )
                             try:
-                                self.sftp_client.mkdir(str(destination))
+                                self.sftp_client.mkdir(absolute_parent)
+                            # Directory already exists.
                             except OSError:
+                                self._logger.debug(
+                                    "Parent creation raised OSError for both relative and absolute paths, assuming directory exists in host."  # noqa: E501
+                                )
                                 pass
+                            # Succeeded creating with absolute path.
                             else:
+                                self._logger.debug(
+                                    f"Successfully created {absolute_parent}."
+                                )
                                 required_absolute = True
+                        else:
+                            self._logger.debug(
+                                f"Successfully created {current}."
+                            )
 
             # Copy file.
+            absolute_destination = str(remote_base / relative_path)
             destination = (
-                str(remote_base / relative_path)
+                absolute_destination
                 if required_absolute
                 else str(relative_path)
             )
+            self._logger.debug(f"Copying {relative_path} to {destination}")
             try:
                 self.sftp_client.put(str(path), destination)
-            except OSError:
-                destination = remote_base / relative_path
-                self.sftp_client.put(str(path), destination)
+            except OSError as first_exception:
+                # In case the directory existed or an OSError was re-raised
+                # in parent creation and exporting to Windows, make sure to
+                # try using the absolute path.
+                self._logger.debug(
+                    f"Export to {destination} raised:\n{first_exception}"
+                )
+                if destination != absolute_destination:
+                    self._logger.debug(
+                        "Re-trying export with absolute host destination path."  # noqa: E501
+                    )
+                    self._logger.debug(
+                        f"Copying {relative_path} to {absolute_destination}"
+                    )
+                    try:
+                        self.sftp_client.put(str(path), absolute_destination)
+                    except OSError as second_exception:
+                        self._logger.debug(
+                            f"Failed to export {relative_path} to both relative and absolute destinations in the {self}."  # noqa: E501
+                        )
+                        self._logger.debug(
+                            f"Relative path exception:\n{first_exception}"
+                        )
+                        self._logger.debug(
+                            f"Absolute path exception:\n{second_exception}"
+                        )
+                        raise
+                    else:
+                        self._logger.debug(
+                            f"Successfully exported {relative_path} to {self}/{absolute_destination}"  # noqa: E501
+                        )
+            else:
+                self._logger.debug(
+                    f"Validating {absolute_destination} exists in {self}..."
+                )
+                try:
+                    self.sftp_client.stat(absolute_destination)
+                except FileNotFoundError:
+                    self._logger.debug(
+                        "Exported file could not be found in {self}!"
+                    )
+                    self._logger.debug(
+                        "Re-trying export with absolute host destination path."  # noqa: E501
+                    )
+                    self._logger.debug(
+                        f"Copying {relative_path} to {absolute_destination}"
+                    )
+                    try:
+                        self.sftp_client.put(str(path), absolute_destination)
+                    except OSError as e:
+                        self._logger.debug(
+                            f"File export to absolute destination raised:\n{e}"  # noqa: E501
+                        )
+                    else:
+                        self._logger.debug(
+                            f"Validating {absolute_destination} exists in {self}..."
+                        )
+                        try:
+                            self.sftp_client.stat(absolute_destination)
+                        except FileNotFoundError:
+                            self._logger.debug(
+                                "File transfter did not raise an exception, but the destination file could not be validated to have been created in {self}!"
+                            )
+                            raise
+
+                else:
+                    self._logger.debug(
+                        f"Successfully exported {relative_path} to {self}/{destination}"  # noqa: E501
+                    )
         else:
             for p in path:
                 self.put(p, create_parents)

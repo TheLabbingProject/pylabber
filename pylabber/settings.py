@@ -251,6 +251,14 @@ LOGGING = {
             "formatter": "normal",
         },
         "console": {"level": "INFO", "class": "logging.StreamHandler"},
+        "celery": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "celery.log"),
+            "formatter": "normal",
+            "maxBytes": 1024 * 1024 * 20,  # 20 mb
+            "backupCount": 2,
+        },
     },
     "loggers": {
         "django": {
@@ -270,6 +278,11 @@ LOGGING = {
             "handlers": ["console", "info_file", "debug_file", "warning_file"],
             "level": "DEBUG",
         },
+        "accounts": {
+            "handlers": ["debug_file", "info_file", "warning_file", "console"],
+            "level": "DEBUG",
+        },
+        "celery": {"handlers": ["celery", "console"], "level": "DEBUG"},
     },
 }
 

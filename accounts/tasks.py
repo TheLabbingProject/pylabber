@@ -210,6 +210,12 @@ def export_mri_session(
     file_format = file_format.lower()
     # Create an iterable of file paths.
     session = Session.objects.get(id=session_id)
+    if file_format == "nifti":
+        missing_nifti = session.scan_set.filter(_nifti__isnull=True)
+        if missing_nifti.exists():
+            session.scan_set.convert_to_nifti(
+                force=False, persistent=True, progressbar=False
+            )
     scan_ids = session.scan_set.values_list("id", flat=True)
     export_mri_scan.delay(
         export_destination_id,

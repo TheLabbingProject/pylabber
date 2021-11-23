@@ -12,7 +12,9 @@ from research.models.choices import DominantHand, Gender, Sex
 from research.models.managers.subject import SubjectManager, SubjectQuerySet
 from research.models.study import Study
 from research.models.validators import not_future
-from research.utils.custom_attributes_processor import CustomAttributesProcessor
+from research.utils.custom_attributes_processor import (
+    CustomAttributesProcessor,
+)
 from research.utils.subject_table import (
     merge_subject_and_questionnaire_data,
     read_subject_table,

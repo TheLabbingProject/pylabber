@@ -28,7 +28,6 @@ def export_mri_scan(
     export_destination_id: int,
     scan_id: int,
     file_format: Union[str, List[str]] = "DICOM",
-    include_json: bool = True,
     max_parallel: int = 3,
 ):
     """
@@ -42,14 +41,9 @@ def export_mri_scan(
         Scan ID
     file_format : Union[str, List[str]]
         Either DICOM or NIfTI or both
-    include_json : bool
-        If exporting NIfTI files, whether to include the JSON sidecar or not
     max_parallel : int
         Maximal number of parallel processes
     """
-    # Fix single boolean value passed as string.
-    if isinstance(include_json, list):
-        include_json = include_json.pop()
     # Split in case of multiple sessions.
     if isinstance(scan_id, Iterable):
         try:
@@ -57,17 +51,14 @@ def export_mri_scan(
         except ZeroDivisionError:
             # If `max_parallel` is set to 0, run all in parallel.
             signatures = [
-                export_mri_scan.s(
-                    export_destination_id, pk, file_format, include_json
-                )
+                export_mri_scan.s(export_destination_id, pk, file_format)
                 for pk in scan_id
             ]
             group(signatures)()
         else:
             # Create the inputs for each separate execution and run in chunks.
             inputs = (
-                (export_destination_id, pk, file_format, include_json)
-                for pk in scan_id
+                (export_destination_id, pk, file_format) for pk in scan_id
             )
             chunks = export_mri_scan.chunks(inputs, n_chunks)
             chunks.group().skew()()
@@ -76,7 +67,7 @@ def export_mri_scan(
     # Split in case of multiple export destinations.
     if isinstance(export_destination_id, Iterable):
         signatures = [
-            export_mri_scan.s(pk, scan_id, file_format, include_json)
+            export_mri_scan.s(pk, scan_id, file_format)
             for pk in export_destination_id
         ]
         group(signatures)()
@@ -87,7 +78,7 @@ def export_mri_scan(
         if len(file_format) == 1:
             file_format = file_format.pop().split(",")
         signatures = [
-            export_mri_scan.s(export_destination_id, scan_id, f, include_json)
+            export_mri_scan.s(export_destination_id, scan_id, f)
             for f in file_format
         ]
         group(signatures)()
@@ -95,9 +86,7 @@ def export_mri_scan(
     elif isinstance(file_format, str):
         file_format = file_format.split(",")
         if len(file_format) > 1:
-            export_mri_scan.delay(
-                export_destination_id, scan_id, file_format, include_json
-            )
+            export_mri_scan.delay(export_destination_id, scan_id, file_format)
             return
         else:
             file_format = file_format.pop()
@@ -108,14 +97,8 @@ def export_mri_scan(
     if file_format == "dicom":
         files = list(scan.dicom.image_set.values_list("dcm", flat=True))
     elif file_format == "nifti":
-        p = scan.nifti.path
-        files.append(p)
-        if include_json:
-            p = Path(p)
-            json_path = (p.parent / p.stem).with_suffix(".json")
-            if json_path.exists():
-                files.append(str(json_path))
-
+        nii_files = scan.nifti.get_file_paths()
+        files += [str(path) for path in nii_files]
     export_files.delay(export_destination_id, files)
 
 
@@ -124,7 +107,6 @@ def export_mri_session(
     export_destination_id: int,
     session_id: int,
     file_format: Union[str, List[str]] = "DICOM",
-    include_json: bool = True,
     max_parallel: int = 3,
     max_parallel_scans: int = 3,
     skew: bool = True,
@@ -140,14 +122,9 @@ def export_mri_session(
         Session ID
     file_format : Union[str, List[str]]
         Either DICOM or NIfTI or both
-    include_json : bool
-        If exporting NIfTI files, whether to include the JSON sidecar or not
     max_parallel : int
         Maximal number of parallel processes
     """
-    # Fix single boolean value passed as string.
-    if isinstance(include_json, list):
-        include_json = include_json.pop()
     # Split in case of multiple sessions.
     if isinstance(session_id, Iterable):
         try:
@@ -159,7 +136,6 @@ def export_mri_session(
                     export_destination_id,
                     pk,
                     file_format=file_format,
-                    include_json=include_json,
                     max_parallel_scans=max_parallel_scans,
                 )
                 for pk in session_id
@@ -172,7 +148,6 @@ def export_mri_session(
                     export_destination_id,
                     pk,
                     file_format,
-                    include_json,
                     max_parallel,
                     max_parallel_scans,
                 )
@@ -193,7 +168,6 @@ def export_mri_session(
                 pk,
                 session_id,
                 file_format=file_format,
-                include_json=include_json,
                 max_parallel=max_parallel,
                 max_parallel_scans=max_parallel_scans,
                 skew=skew,
@@ -212,7 +186,6 @@ def export_mri_session(
                 export_destination_id,
                 session_id,
                 file_format=f,
-                include_json=include_json,
                 max_parallel=max_parallel,
                 max_parallel_scans=max_parallel_scans,
                 skew=skew,
@@ -228,7 +201,6 @@ def export_mri_session(
                 export_destination_id,
                 session_id,
                 file_format=file_format,
-                include_json=include_json,
                 max_parallel=max_parallel,
                 max_parallel_scans=max_parallel_scans,
                 skew=skew,
@@ -244,7 +216,6 @@ def export_mri_session(
         export_destination_id,
         list(scan_ids),
         file_format=file_format,
-        include_json=include_json,
         max_parallel=max_parallel_scans,
     )
 
@@ -254,7 +225,6 @@ def export_subject_mri_data(
     export_destination_id: int,
     subject_id: int,
     file_format: Union[str, List[str]] = "DICOM",
-    include_json: bool = True,
     max_parallel: int = 3,
     max_parallel_sessions: int = 3,
     max_parallel_scans: int = 3,
@@ -271,8 +241,6 @@ def export_subject_mri_data(
         Subject ID
     file_format : Union[str, List[str]]
         Either DICOM or NIfTI or both
-    include_json : bool
-        If exporting NIfTI files, whether to include the JSON sidecar or not
     max_parallel : int
         Maximal number of parallel processes
     """
@@ -286,7 +254,6 @@ def export_subject_mri_data(
                     export_destination_id,
                     pk,
                     file_format=file_format,
-                    include_json=include_json,
                     max_parallel_sessions=max_parallel_sessions,
                     max_parallel_scans=max_parallel_scans,
                     skew=skew,
@@ -301,7 +268,6 @@ def export_subject_mri_data(
                     export_destination_id,
                     pk,
                     file_format,
-                    include_json,
                     max_parallel,
                     max_parallel_sessions,
                     max_parallel_scans,
@@ -323,7 +289,6 @@ def export_subject_mri_data(
             export_destination_id,
             sessions_ids,
             file_format=file_format,
-            include_json=include_json,
             max_parallel=max_parallel_sessions,
             max_parallel_scans=max_parallel_scans,
             skew=skew,

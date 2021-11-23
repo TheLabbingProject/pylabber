@@ -37,6 +37,7 @@ pygments~=2.6
 scikit-learn~=0.23
 scipy>=1.5
 seaborn~=0.11
+smriprep
 tqdm~=4.59
 whitenoise~=5.1
 xarray~=0.16
@@ -46,3 +47,5 @@ git+https://github.com/TheLabbingProject/django_dicom.git@master#egg=django_dico
 git+https://github.com/TheLabbingProject/django_mri.git@master#egg=django_mri
 git+https://github.com/TheLabbingProject/questionnaire_reader.git@main#egg=questionnaire_reader
 git+https://github.com/open-dicom/dicom_parser.git@master#egg=dicom_parser
+git+https://github.com/GalBenZvi/nipype@master#egg=nipype
+git+https://github.com/GalBenZvi/dwiprep@master#egg=dwiprep

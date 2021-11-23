@@ -7,14 +7,15 @@ from accounts.tasks import export_subject_mri_data
 from bokeh.client import pull_session
 from bokeh.embed import server_session
 from bs4 import BeautifulSoup
-from django.db.models import Q, query
+from django.db.models import Q
 from django.http import HttpResponse
 from pylabber.views.defaults import DefaultsMixin
 from research.filters.subject_filter import SubjectFilter
 from research.models.subject import Subject
 from research.serializers.subject import (
     AdminSubjectSerializer,
-)  # SubjectSerializer,
+    SubjectSerializer,
+)
 from research.views.utils import CSV_CONTENT_TYPE
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -50,10 +51,9 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     )
 
     def get_serializer_class(self):
-        # if self.request.user.is_staff:
-        #     return AdminSubjectSerializer
-        # return SubjectSerializer
-        return AdminSubjectSerializer
+        if self.request.user.is_staff:
+            return AdminSubjectSerializer
+        return SubjectSerializer
 
     def filter_queryset(self, queryset):
         user = self.request.user

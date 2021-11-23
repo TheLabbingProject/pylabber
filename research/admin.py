@@ -375,7 +375,7 @@ class ScanInline(TabularInlinePaginated):
 
 class GroupAdmin(admin.ModelAdmin):
     inlines = (ScanInline,)
-    list_display = "study_", "title", "description", "mri_scan_count"
+    list_display = "id", "study_", "title", "description", "mri_scan_count"
     readonly_fields = "study_", "mri_scan_count"
     search_fields = "study__title", "title", "description"
     list_filter = (

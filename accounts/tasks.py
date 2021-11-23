@@ -2,7 +2,6 @@
 Celery tasks exposed by the :mod:`pylabber.accounts` app.
 """
 import math
-from pathlib import Path
 from typing import Iterable, List, Union
 
 from celery import group, shared_task

@@ -4,6 +4,7 @@ Definition of the :class:`ExportDestination` class.
 import logging
 from pathlib import Path
 from typing import Iterable, Union
+from paramiko import SSHException
 
 import paramiko
 from accounts.models.utils.ssh import get_known_hosts
@@ -108,9 +109,30 @@ class ExportDestination(TitleDescriptionModel):
         Negotiates a connection with the host.
         """
         if not self.transport.active:
-            self.transport.connect(
-                self.key, self.username, self.password,
+            if self.key is not None:
+                self.transport._preferred_keys = [self.key.get_name()]
+            self.transport.start_client(timeout=3)
+            remote_key = self.transport.get_remote_server_key()
+            remote_name = remote_key.get_name()
+            remote_bytes = remote_key.asbytes()
+            expected_name = self.key.get_name()
+            expected_bytes = self.key.asbytes()
+            valid_name = remote_name == expected_name
+            valid_bytes = remote_bytes == expected_bytes
+            if not (valid_name and valid_bytes):
+                self._logger.warn("Bad host key from server!")
+                self._logger.warn(
+                    f"Expected: {self.hostkey.get_name()}: {repr(self.key.asbytes())}"  # noqa: E501
+                )
+                self._logger.warn(
+                    f"Got     : {remote_key.get_name()}: {repr(remote_key.asbytes())}"  # noqa: E501
+                )
+                raise SSHException("Bad host key from server")
+            self._logger.debug(
+                f"Host {self.ip} key ({expected_name}) successfully verified."
             )
+            self._logger.debug("Attempting password authentication...")
+            self.transport.auth_password(self.username, self.password)
 
     def start_sftp_client(self) -> paramiko.sftp_client.SFTPClient:
         """
@@ -261,13 +283,13 @@ class ExportDestination(TitleDescriptionModel):
                         )
                     else:
                         self._logger.debug(
-                            f"Validating {absolute_destination} exists in {self}..."
+                            f"Validating {absolute_destination} exists in {self}..."  # noqa: E501
                         )
                         try:
                             self.sftp_client.stat(absolute_destination)
                         except FileNotFoundError:
                             self._logger.debug(
-                                "File transfter did not raise an exception, but the destination file could not be validated to have been created in {self}!"
+                                "File transfter did not raise an exception, but the destination file could not be validated to have been created in {self}!"  # noqa: E501
                             )
                             raise
 

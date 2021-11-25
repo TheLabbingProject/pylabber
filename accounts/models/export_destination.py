@@ -42,7 +42,7 @@ class ExportDestination(TitleDescriptionModel):
     PORT: int = 22
 
     #: Default SSH connection banner timeout value.
-    BANNER_TIMEOUT: int = 200
+    BANNER_TIMEOUT: int = 100
 
     # Host key cache.
     _key = None
@@ -98,10 +98,12 @@ class ExportDestination(TitleDescriptionModel):
         paramiko.Transport
             SSH transport thread
         """
+        self._logger.debug(f"Initializing transport session to {self}")
         transport = paramiko.Transport((self.ip, self.PORT))
         transport.banner_timeout = (
             self.BANNER_TIMEOUT if banner_timeout is None else banner_timeout
         )
+        self._logger.debug("Transport session successfully initialized.")
         return transport
 
     def connect(self) -> None:
@@ -110,11 +112,17 @@ class ExportDestination(TitleDescriptionModel):
         """
         if not self.transport.active:
             if self.key is not None:
+                expected_name = self.key.get_name()
                 self.transport._preferred_keys = [self.key.get_name()]
+
+            self._logger.debug(f"Starting SSH client connection to {self}...")
             self.transport.start_client(timeout=3)
+            self._logger.debug("SSH client started successfully.")
+            self._logger.debug("Querying remote host key...")
             remote_key = self.transport.get_remote_server_key()
             remote_name = remote_key.get_name()
             remote_bytes = remote_key.asbytes()
+            self._logger.debug(f"Remote host key ({remote_name}) received.")
             expected_name = self.key.get_name()
             expected_bytes = self.key.asbytes()
             valid_name = remote_name == expected_name
@@ -122,17 +130,19 @@ class ExportDestination(TitleDescriptionModel):
             if not (valid_name and valid_bytes):
                 self._logger.warn("Bad host key from server!")
                 self._logger.warn(
-                    f"Expected: {self.hostkey.get_name()}: {repr(self.key.asbytes())}"  # noqa: E501
+                    f"Expected: {expected_name}: {expected_bytes}"
                 )
-                self._logger.warn(
-                    f"Got     : {remote_key.get_name()}: {repr(remote_key.asbytes())}"  # noqa: E501
-                )
+                self._logger.warn(f"Got     : {remote_name}: {remote_bytes}")
                 raise SSHException("Bad host key from server")
             self._logger.debug(
                 f"Host {self.ip} key ({expected_name}) successfully verified."
             )
             self._logger.debug("Attempting password authentication...")
             self.transport.auth_password(self.username, self.password)
+        else:
+            self._logger.debug(
+                f"Existing transport connection found for {self}"
+            )
 
     def start_sftp_client(self) -> paramiko.sftp_client.SFTPClient:
         """
@@ -148,8 +158,8 @@ class ExportDestination(TitleDescriptionModel):
         paramiko.sftp_client.SFTPClient
             SFTP Client connected to the host filesystem
         """
-        if not self.transport.active:
-            self.connect()
+        self._logger.debug(f"Starting SFTP client to connect to {self}...")
+        self.connect()
         return paramiko.SFTPClient.from_transport(self.transport)
 
     def put(

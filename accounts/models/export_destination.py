@@ -123,20 +123,23 @@ class ExportDestination(TitleDescriptionModel):
             remote_name = remote_key.get_name()
             remote_bytes = remote_key.asbytes()
             self._logger.debug(f"Remote host key ({remote_name}) received.")
-            expected_name = self.key.get_name()
-            expected_bytes = self.key.asbytes()
-            valid_name = remote_name == expected_name
-            valid_bytes = remote_bytes == expected_bytes
-            if not (valid_name and valid_bytes):
-                self._logger.warn("Bad host key from server!")
-                self._logger.warn(
-                    f"Expected: {expected_name}: {expected_bytes}"
+            if self.key:
+                expected_name = self.key.get_name()
+                expected_bytes = self.key.asbytes()
+                valid_name = remote_name == expected_name
+                valid_bytes = remote_bytes == expected_bytes
+                if not (valid_name and valid_bytes):
+                    self._logger.warn("Bad host key from server!")
+                    self._logger.warn(
+                        f"Expected: {expected_name}: {expected_bytes}"
+                    )
+                    self._logger.warn(
+                        f"Got     : {remote_name}: {remote_bytes}"
+                    )
+                    raise SSHException("Bad host key from server")
+                self._logger.debug(
+                    f"Host {self.ip} key ({expected_name}) successfully verified."  # noqa: E501
                 )
-                self._logger.warn(f"Got     : {remote_name}: {remote_bytes}")
-                raise SSHException("Bad host key from server")
-            self._logger.debug(
-                f"Host {self.ip} key ({expected_name}) successfully verified."
-            )
             self._logger.debug("Attempting password authentication...")
             self.transport.auth_password(self.username, self.password)
         else:

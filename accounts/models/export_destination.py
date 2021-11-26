@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Iterable, Tuple, Union
 
 import paramiko
-from accounts.models import logs
+from accounts.models import help_text, logs
 from accounts.models.utils.ssh import get_known_hosts
 from django.conf import settings
 from django.db import models
@@ -14,6 +14,11 @@ from django_extensions.db.models import TitleDescriptionModel
 from mirage import fields
 from paramiko import SSHException
 from tqdm import tqdm
+
+DEFAULT_PORT: int = 22
+DEFAULT_BANNER_TIMEOUT: int = 100
+DEFAULT_SOCKET_TIMEOUT: int = 3
+DEFAULT_NEGOTIATION_TIMEOUT: int = 3
 
 
 class ExportDestination(TitleDescriptionModel):
@@ -23,34 +28,64 @@ class ExportDestination(TitleDescriptionModel):
 
     #: SSH destination host IP.
     ip = models.GenericIPAddressField(
-        blank=False, null=False, verbose_name="IP"
+        blank=False,
+        null=False,
+        verbose_name="IP",
+        help_text=help_text.EXPORT_DESTINATION_IP,
     )
 
     #: Authentication username.
-    username = models.CharField(max_length=128, blank=False, null=False)
+    username = models.CharField(
+        max_length=128,
+        blank=False,
+        null=False,
+        help_text=help_text.EXPORT_DESTINATION_USERNAME,
+    )
 
     #: Authentication password.
     password = fields.EncryptedCharField(
-        max_length=128, blank=False, null=False
+        max_length=128,
+        blank=False,
+        null=False,
+        help_text=help_text.EXPORT_DESTINATION_PASSWORD,
     )
 
     #: Destination in the host filesystem.
-    destination = models.CharField(max_length=512, blank=False, null=False)
+    destination = models.CharField(
+        max_length=512,
+        blank=False,
+        null=False,
+        help_text=help_text.EXPORT_DESTINATION_PATH,
+    )
+
+    #: Connection port.
+    port = models.PositiveIntegerField(
+        default=DEFAULT_PORT, null=False, help_text=help_text.SSH_PORT
+    )
+
+    #: SSH banner timeout in seconds.
+    banner_timeout = models.PositiveIntegerField(
+        default=DEFAULT_BANNER_TIMEOUT,
+        null=False,
+        help_text=help_text.SSH_BANNER_TIMEOUT,
+    )
+
+    #: Socket connection timeout in seconds.
+    socket_timeout = models.PositiveIntegerField(
+        default=DEFAULT_SOCKET_TIMEOUT,
+        null=False,
+        help_text=help_text.SSH_SOCKET_TIMEOUT,
+    )
+
+    #: Transport session negotiation timeout in seconds.
+    negotiation_timeout = models.PositiveIntegerField(
+        default=DEFAULT_NEGOTIATION_TIMEOUT,
+        null=False,
+        help_text=help_text.SSH_NEGOTIATION_TIMEOUT,
+    )
 
     #: Users that may export to this destination.
     users = models.ManyToManyField("accounts.User")
-
-    #: Port to use for SSH connection.
-    PORT: int = 22
-
-    #: Default SSH connection banner timeout value in seconds.
-    BANNER_TIMEOUT: int = 100
-
-    #: Default socket connection timeout value in seconds.
-    SOCKET_TIMEOUT: int = 3
-
-    #: Default SSH session negotiation timeout.
-    SESSION_TIMEOUT: int = 3
 
     # Host key cache.
     _key = None
@@ -135,12 +170,9 @@ class ExportDestination(TitleDescriptionModel):
         )
         self._logger.debug(start_log)
         # Create Transport instance.
-        socket_timeout = (
-            self.SOCKET_TIMEOUT if socket_timeout is None else socket_timeout
-        )
         try:
             transport = paramiko.Transport(
-                (self.ip, self.PORT), socket_timeout=socket_timeout
+                (self.ip, self.port), socket_timeout=self.socket_timeout
             )
         except Exception as e:
             # Log exception and re-raise,
@@ -155,9 +187,7 @@ class ExportDestination(TitleDescriptionModel):
             self._logger.info(success_log)
         # Increase banner timeout to prevent exception raised due to lack of
         # resources. See: https://stackoverflow.com/a/59453832/4416932.
-        transport.banner_timeout = (
-            self.BANNER_TIMEOUT if banner_timeout is None else banner_timeout
-        )
+        transport.banner_timeout = self.banner_timeout
         # Set encryption algorithm type.
         if self.key is not None:
             expected_name = self.key.get_name()
@@ -270,9 +300,8 @@ class ExportDestination(TitleDescriptionModel):
             )
             self._logger.debug(start_log)
             # Initialize SSH client session.
-            timeout = self.SESSION_TIMEOUT if timeout is None else timeout
             try:
-                self.transport.start_client(timeout=timeout)
+                self.transport.start_client(timeout=self.negotiation_timeout)
             except SSHException as e:
                 # Log raised exception and re-raise.
                 failure_log = logs.SSH_CONNECTION_FAILURE.format(

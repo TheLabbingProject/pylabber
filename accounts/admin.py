@@ -88,6 +88,34 @@ class ExportDestinationAdmin(admin.ModelAdmin):
         "sftp",
     )
     form = ExportDestinationForm
+    readonly_fields = ("id",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "id",
+                    "title",
+                    "description",
+                    "username",
+                    "password",
+                    "destination",
+                )
+            },
+        ),
+        (
+            "Advanced options",
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "port",
+                    "socket_timeout",
+                    "negotiation_timeout",
+                    "banner_timeout",
+                ),
+            },
+        ),
+    )
 
     def sftp(self, destination: ExportDestination) -> bool:
         try:

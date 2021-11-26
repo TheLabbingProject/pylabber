@@ -40,6 +40,10 @@ class ExportDestinationSerializer(serializers.HyperlinkedModelSerializer):
             "users",
             "user_ids",
             "status",
+            "port",
+            "socket_timeout",
+            "negotiation_timeout",
+            "banner_timeout",
         )
 
     def get_status(self, destination: ExportDestination) -> bool:

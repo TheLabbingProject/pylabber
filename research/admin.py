@@ -2,7 +2,6 @@ from datetime import date, datetime
 
 from bokeh.embed import autoload_static
 from bokeh.io import curdoc
-from bokeh.layouts import layout
 from bokeh.resources import CDN
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
@@ -463,15 +462,7 @@ class SubjectAdmin(admin.ModelAdmin):
         if hasattr(response, "context_data"):
             queryset = response.context_data["cl"].queryset
             if queryset.exists():
-                # output_file("bokeh_tmp.html")
-
-                sex_plot = queryset.plot_bokeh_sex_pie()
-                dominant_hand_plot = queryset.plot_bokeh_dominant_hand_pie()
-                dob_plot = queryset.plot_bokeh_date_of_birth()
-                figure_layout = [[sex_plot, dominant_hand_plot]]
-                if dob_plot is not None:
-                    figure_layout[0].append(dob_plot)
-                figure = layout(figure_layout)
+                figure = queryset.plot_summary_info()
                 js, tag = autoload_static(figure, CDN, "tmp_bokeh_figure")
                 curdoc().theme = "dark_minimal"
                 extra_context = {"bokeh_tag": tag, "bokeh_js": js}

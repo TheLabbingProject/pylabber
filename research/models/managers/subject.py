@@ -1,4 +1,6 @@
 import pandas as pd
+from bokeh.layouts import layout
+from bokeh.models import Column
 from bokeh.plotting import Figure
 from django.db import models
 from django.db.models import Count, Max
@@ -75,3 +77,12 @@ class SubjectQuerySet(models.QuerySet):
 
     def plot_bokeh_date_of_birth(self) -> Figure:
         return plot_bokeh_date_of_birth(self.all())
+
+    def plot_summary_info(self) -> Column:
+        sex_plot = self.plot_bokeh_sex_pie()
+        dominant_hand_plot = self.plot_bokeh_dominant_hand_pie()
+        dob_plot = self.plot_bokeh_date_of_birth()
+        figure_layout = [[sex_plot, dominant_hand_plot]]
+        if dob_plot is not None:
+            figure_layout[0].append(dob_plot)
+        return layout(figure_layout)

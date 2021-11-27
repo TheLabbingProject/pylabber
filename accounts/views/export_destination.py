@@ -5,6 +5,7 @@ from accounts.filters import ExportDestinationFilter
 from accounts.models.export_destination import ExportDestination
 from accounts.serializers.export_destination import ExportDestinationSerializer
 from accounts.tasks import export_mri_scan, export_mri_session
+from django.db.models import QuerySet
 from pylabber.views.defaults import DefaultsMixin
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -26,6 +27,11 @@ class ExportDestinationViewSet(DefaultsMixin, viewsets.ModelViewSet):
     queryset = ExportDestination.objects.order_by("id")
     serializer_class = ExportDestinationSerializer
     filter_class = ExportDestinationFilter
+
+    def filter_queryset(self, queryset: QuerySet) -> QuerySet:
+        user = self.request.user
+        queryset = super().filter_queryset(queryset)
+        return queryset.filter(users=user)
 
     @action(detail=False, methods=["POST"])
     def export_instance(

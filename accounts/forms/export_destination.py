@@ -5,7 +5,8 @@ from django.forms import CharField, ModelForm, PasswordInput
 
 class ExportDestinationForm(ModelForm):
     password = CharField(
-        widget=PasswordInput(), help_text=help_text.EXPORT_DESTINATION_PASSWORD
+        widget=PasswordInput(render_value=True),
+        help_text=help_text.EXPORT_DESTINATION_PASSWORD,
     )
 
     class Meta:

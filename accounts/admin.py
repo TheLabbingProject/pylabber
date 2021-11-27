@@ -100,6 +100,7 @@ class ExportDestinationAdmin(admin.ModelAdmin):
                     "username",
                     "password",
                     "destination",
+                    "users",
                 )
             },
         ),

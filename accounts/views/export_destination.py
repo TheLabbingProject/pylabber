@@ -4,14 +4,16 @@ Definition of the :class:`ExportDestinationViewSet` class.
 from accounts.filters import ExportDestinationFilter
 from accounts.models.export_destination import ExportDestination
 from accounts.serializers.export_destination import ExportDestinationSerializer
-from accounts.tasks import export_mri_session
+from accounts.tasks import export_mri_scan, export_mri_session
 from pylabber.views.defaults import DefaultsMixin
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-EXPORT_HANDLERS: dict = {"django_mri": {"Session": export_mri_session}}
+EXPORT_HANDLERS: dict = {
+    "django_mri": {"Session": export_mri_session, "Scan": export_mri_scan}
+}
 
 
 class ExportDestinationViewSet(DefaultsMixin, viewsets.ModelViewSet):

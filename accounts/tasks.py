@@ -92,12 +92,9 @@ def export_mri_scan(
     file_format = file_format.lower()
     # Create an iterable of file paths.
     scan = Scan.objects.get(id=scan_id)
-    files = []
-    if file_format == "dicom":
-        files = list(scan.dicom.image_set.values_list("dcm", flat=True))
-    elif file_format == "nifti":
-        nii_files = scan.nifti.get_file_paths()
-        files += [str(path) for path in nii_files]
+    files = [
+        str(path) for path in scan.get_file_paths(file_format=file_format)
+    ]
     export_files.delay(export_destination_id, files)
 
 

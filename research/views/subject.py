@@ -5,7 +5,8 @@ from typing import Callable, Dict
 
 from accounts.tasks import export_subject_mri_data
 from bokeh.client import pull_session
-from bokeh.embed import server_session
+from bokeh.embed import autoload_static, server_session
+from bokeh.resources import CDN
 from bs4 import BeautifulSoup
 from django.db.models import Q
 from django.http import HttpResponse
@@ -95,6 +96,13 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
         )
         df.to_csv(path_or_buf=response)
         return response
+
+    @action(detail=False, methods=["GET"])
+    def plot_summary(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        figure = queryset.plot_summary_info()
+        js, tag = autoload_static(figure, CDN, "tmp_bokeh_figure")
+        return Response({"js": js, "tag": tag})
 
     @action(detail=False, methods=["GET"])
     def plot(self, request, *args, **kwargs):

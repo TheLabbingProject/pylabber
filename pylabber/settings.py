@@ -282,6 +282,10 @@ LOGGING = {
             "handlers": ["debug_file", "info_file", "warning_file", "console"],
             "level": "DEBUG",
         },
+        "research": {
+            "handlers": ["debug_file", "info_file", "warning_file", "console"],
+            "level": "DEBUG",
+        },
         "celery": {"handlers": ["celery", "console"], "level": "DEBUG"},
     },
 }

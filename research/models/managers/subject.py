@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 from bokeh.layouts import layout
 from bokeh.models import Column
@@ -5,11 +7,13 @@ from bokeh.plotting import Figure
 from django.db import models
 from django.db.models import Count, Max
 from django_dicom.models.patient import Patient
+from research.models.managers import logs
 from research.plots.subject import (
     plot_bokeh_date_of_birth,
     plot_bokeh_dominant_hand_pie,
     plot_bokeh_sex_pie,
 )
+from tqdm import tqdm
 
 #: Subject fields to include in an exported DataFrame.
 DATAFRAME_FIELDS = (
@@ -46,6 +50,8 @@ class SubjectManager(models.Manager):
 
 
 class SubjectQuerySet(models.QuerySet):
+    _logger = logging.getLogger("research.subject")
+
     def to_dataframe(self) -> pd.DataFrame:
         """
         Export the queryset as a DataFrame.
@@ -86,3 +92,53 @@ class SubjectQuerySet(models.QuerySet):
         if dob_plot is not None:
             figure_layout[0].append(dob_plot)
         return layout(figure_layout)
+
+    def build_bids_directory(
+        self,
+        force: bool = False,
+        persistent: bool = True,
+        progressbar: bool = False,
+        progressbar_position: int = 0,
+    ):
+        # Run chronologically in reverse.
+        queryset = self.order_by("-latest_mri_session_time")
+        # Log BIDS build start.
+        start_log = logs.SUBJECT_SET_BIDS_BUILD_START.format(
+            count=queryset.count()
+        )
+        self._logger.debug(start_log)
+        # Create progressbar if required.
+        iterator = (
+            tqdm(
+                queryset,
+                desc="Subjects",
+                unit="subject",
+                position=progressbar_position,
+            )
+            if progressbar
+            else queryset
+        )
+        n_built = 0
+        # Iterate subjects and build BIDS directories.
+        try:
+            for subject in iterator:
+                subject.build_bids_directory(
+                    force=force,
+                    persistent=persistent,
+                    progressbar=progressbar,
+                    progressbar_position=progressbar_position + 1,
+                )
+                n_built += 1
+        except Exception as e:
+            # Log exception and re-raise.
+            failure_log = logs.SUBJECT_SET_BIDS_BUILD_FAILURE.format(
+                n_built=n_built, n_total=queryset.count(), exception=e
+            )
+            self._logger.warn(failure_log)
+            raise
+        else:
+            # Log successful BIDS build.
+            success_log = logs.SUBJECT_SET_BIDS_BUILD_SUCCESS.format(
+                count=queryset.count()
+            )
+            self._logger.debug(success_log)

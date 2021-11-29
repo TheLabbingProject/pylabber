@@ -1,13 +1,18 @@
 """
 Definition of the :class:`Subject` model.
 """
+import logging
+from pathlib import Path
+
 import pandas as pd
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
+from django_mri.utils import get_bids_dir
 from pylabber.utils import CharNullField
 from questionnaire_reader import QuestionnaireReader
+from research.models import logs
 from research.models.choices import DominantHand, Gender, Sex
 from research.models.managers.subject import SubjectManager, SubjectQuerySet
 from research.models.study import Study
@@ -65,6 +70,10 @@ class Subject(TimeStampedModel):
     custom_attributes = models.JSONField(blank=True, default=dict)
 
     objects = SubjectManager.from_queryset(SubjectQuerySet)()
+
+    BIDS_DIR_TEMPLATE: str = "sub-{pk}"
+
+    _logger = logging.getLogger("research.subject")
 
     class Meta:
         ordering = ("-id",)
@@ -199,3 +208,41 @@ class Subject(TimeStampedModel):
             subject_data, questionnaire
         )
         return output[self.id_number == output["Anonymized", "Patient ID"]]
+
+    def build_bids_directory(
+        self,
+        force: bool = False,
+        log_level: int = logging.DEBUG,
+        persistent: bool = True,
+        progressbar: bool = False,
+        progressbar_position: int = 0,
+    ):
+        # Log start.
+        start_log = logs.SUBJECT_NIFTI_CONVERSION_START.format(pk=self.id)
+        self._logger.debug(start_log)
+        # Convert MRI sessions to NIfTI.
+        try:
+            self.mri_session_set.convert_to_nifti(
+                force=force,
+                persistent=persistent,
+                progressbar=progressbar,
+                progressbar_position=progressbar_position,
+            )
+        except Exception as e:
+            # Log exception and re-raise.
+            failure_log = logs.SUBJECT_NIFTI_CONVERSION_FAILURE.format(
+                pk=self.id, exception=e
+            )
+            self._logger.warn(failure_log)
+            raise
+        else:
+            # Log successful conversion.
+            success_log = logs.SUBJECT_NIFTI_CONVERSION_SUCCESS.format(
+                pk=self.id
+            )
+            self._logger.debug(success_log)
+
+    def get_bids_directory(self) -> Path:
+        bids_root = get_bids_dir()
+        subject_dir_name = self.BIDS_DIR_TEMPLATE.format(pk=self.id)
+        return bids_root / subject_dir_name

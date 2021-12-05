@@ -14,7 +14,10 @@ from pylabber.utils import CharNullField
 from questionnaire_reader import QuestionnaireReader
 from research.models import logs
 from research.models.choices import DominantHand, Gender, Sex
+from research.models.group import Group
 from research.models.managers.subject import SubjectManager, SubjectQuerySet
+from research.models.measurement_definition import MeasurementDefinition
+from research.models.procedure import Procedure
 from research.models.study import Study
 from research.models.validators import not_future
 from research.utils.custom_attributes_processor import (
@@ -137,6 +140,19 @@ class Subject(TimeStampedModel):
             Subject's full name
         """
         return f"{self.first_name} {self.last_name}"
+
+    def query_measurements(self) -> models.QuerySet:
+        measurement_ids = self.mri_session_set.values("measurement")
+        return MeasurementDefinition.objects.filter(id__in=measurement_ids)
+
+    def query_procedures(self) -> models.QuerySet:
+        measurements = self.query_measurements()
+        procedure_ids = measurements.values("procedure")
+        return Procedure.objects.filter(id__in=procedure_ids)
+
+    def query_study_groups(self) -> models.QuerySet:
+        group_ids = self.mri_session_set.values("scan__study_groups")
+        return Group.objects.filter(id__in=group_ids)
 
     def query_studies(self) -> models.QuerySet:
         """

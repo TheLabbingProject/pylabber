@@ -15,7 +15,9 @@ class GroupFilter(filters.FilterSet):
 
     title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     description = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
-    study = filters.ModelChoiceFilter(queryset=Study.objects.all())
+    study = filters.ModelMultipleChoiceFilter(
+        queryset=Study.objects.all(), label="Studies:"
+    )
 
     class Meta:
         model = Group

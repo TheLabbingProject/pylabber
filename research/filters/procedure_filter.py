@@ -15,10 +15,11 @@ class ProcedureFilter(filters.FilterSet):
 
     title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     description = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
+    study = filters.ModelMultipleChoiceFilter(queryset=Study.objects.all())
     exclude_study = filters.ModelMultipleChoiceFilter(
         field_name="study", exclude=True, queryset=Study.objects.all()
     )
 
     class Meta:
         model = Procedure
-        fields = "id", "title", "description", "study", "exclude_study"
+        fields = ("id",)

@@ -2,18 +2,17 @@
 Definition of the :class:`MeasurementDefinitionFilter` class.
 """
 from django_filters import rest_framework as filters
+from research.filters.event_filter import EventFilter
 from research.filters.utils import LOOKUP_CHOICES
 from research.models.measurement_definition import MeasurementDefinition
 
 
-class MeasurementDefinitionFilter(filters.FilterSet):
+class MeasurementDefinitionFilter(EventFilter):
     """
     Provides useful filtering options for the
     :class:`~research.models.event.Event` model.
     """
 
-    title = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
-    description = filters.LookupChoiceFilter(lookup_choices=LOOKUP_CHOICES)
     model_name = filters.CharFilter(
         field_name="content_type__model",
         lookup_expr="exact",
@@ -27,4 +26,4 @@ class MeasurementDefinitionFilter(filters.FilterSet):
 
     class Meta:
         model = MeasurementDefinition
-        fields = "id", "title", "description", "content_type"
+        fields = "id",

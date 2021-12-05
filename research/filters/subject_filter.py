@@ -8,6 +8,12 @@ from django_mri.models.scan import Scan
 from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES, NumberInFilter
 from research.models.subject import Subject
 
+MEASUREMENT_DEFINITION_QUERY: str = "mri_session_set__measurement__in"
+PROCEDURE_QUERY: str = "mri_session_set__measurement__procedure__in"
+STUDY_BY_PROCEDURE_QUERY: str = "mri_session_set__measurement__procedure__study__in"  # noqa: E501
+STUDY_GROUP_QUERY: str = "mri_session_set__scan__study_groups__in"
+STUDY_BY_GROUP_QUERY: str = "mri_session_set__scan__study_groups__study__in"
+
 
 class SubjectFilter(filters.FilterSet):
     """
@@ -33,10 +39,20 @@ class SubjectFilter(filters.FilterSet):
     id_number = filters.LookupChoiceFilter(
         lookup_choices=DEFUALT_LOOKUP_CHOICES
     )
-    studies = NumberInFilter(method="filter_by_studies", label="Studies")
+    procedure = NumberInFilter(
+        method="filter_by_procedure", label="Procedures"
+    )
+    measurement = NumberInFilter(
+        method="filter_by_measurement", label="Measurement definitions"
+    )
+    study_group = NumberInFilter(
+        method="filter_by_study_group", label="Study group"
+    )
+    study = NumberInFilter(method="filter_by_studies", label="Studies")
     mri_session_time = filters.DateTimeFromToRangeFilter(
         field_name="mri_session_set__time"
     )
+    # TODO: Finish filters for measurement definition and group.
 
     class Meta:
         model = Subject
@@ -91,9 +107,16 @@ class SubjectFilter(filters.FilterSet):
             )
         return queryset.filter(**{name: value})
 
+    def filter_by_procedure(self, queryset, name, value):
+        return queryset.filter(**{PROCEDURE_QUERY: value})
+
+    def filter_by_measurement(self, queryset, name, value):
+        return queryset.filter(**{MEASUREMENT_DEFINITION_QUERY: value})
+
+    def filter_by_study_group(self, queryset, name, value):
+        return queryset.filter(**{STUDY_GROUP_QUERY: value})
+
     def filter_by_studies(self, queryset, name, value):
-        procedure_query = Q(
-            mri_session_set__measurement__procedure__study__in=value
-        )
-        group_query = Q(mri_session_set__scan__study_groups__study__in=value)
+        procedure_query = Q(**{STUDY_BY_PROCEDURE_QUERY: value})
+        group_query = Q(**{STUDY_BY_GROUP_QUERY: value})
         return queryset.filter(procedure_query | group_query)

@@ -44,7 +44,7 @@ class SubjectManager(models.Manager):
             .get_queryset()
             .annotate(
                 latest_mri_session_time=Max("mri_session_set__time"),
-                mri_session_count=Count("mri_session_set"),
+                mri_session_count=Count("mri_session_set", distinct=True),
             )
         )
 

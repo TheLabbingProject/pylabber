@@ -7,13 +7,13 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
-
 import os
 from pathlib import Path
 
 # import django_heroku
 import environ
 from django_mri.analysis.mri_interfaces import interfaces
+from django_mri.analysis.mri_output_parsers import MRI_OUTPUT_PARSERS
 
 # from django_mri.analysis.visualizers import MRI_VISUALIZERS
 
@@ -349,6 +349,7 @@ SSH_KNOWN_HOSTS = os.path.expanduser("~/.ssh/known_hosts")
 
 # django_analyses
 ANALYSIS_INTERFACES = interfaces
+ANALYSIS_OUTPUT_PARSERS = MRI_OUTPUT_PARSERS
 ANALYSIS_BASE_PATH = os.path.join(MEDIA_ROOT, "analysis")
 # ANALYSIS_VISUALIZERS = MRI_VISUALIZERS
 EXTRA_INPUT_DEFINITION_SERIALIZERS = {

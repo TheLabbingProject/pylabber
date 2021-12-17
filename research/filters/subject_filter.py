@@ -100,12 +100,18 @@ class SubjectFilter(filters.FilterSet):
             return queryset.filter(id=subject_ids.pop())
         return queryset.none()
 
-    def filter_nullable_charfield(self, queryset, name, value):
-        if value == "null":
-            return queryset.filter(
-                Q(**{f"{name}__isnull": True}) | Q(**{f"{name}__exact": ""})
-            )
-        return queryset.filter(**{name: value})
+    def filter_nullable_charfield(self, queryset, name, values):
+        if isinstance(values, str):
+            values = values.split(",")
+            return self.filter_nullable_charfield(queryset, name, values)
+        q = Q()
+        for value in values:
+            if value == "null":
+                q |= Q(**{f"{name}__isnull": True}) | Q(
+                    **{f"{name}__exact": ""}
+                )
+            q |= Q(**{name: value})
+        return queryset.filter(q)
 
     def filter_by_procedure(self, queryset, name, value):
         return queryset.filter(**{PROCEDURE_QUERY: value})

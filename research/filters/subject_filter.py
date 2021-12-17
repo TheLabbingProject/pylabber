@@ -1,7 +1,7 @@
 """
 Definition of the :class:`SubjectFilter` class.
 """
-from django.db.models import Q
+from django.db.models import Count, Max, Q
 from django_dicom.models.patient import Patient
 from django_filters import rest_framework as filters
 from django_mri.models.scan import Scan
@@ -119,4 +119,7 @@ class SubjectFilter(filters.FilterSet):
     def filter_by_studies(self, queryset, name, value):
         procedure_query = Q(**{STUDY_BY_PROCEDURE_QUERY: value})
         group_query = Q(**{STUDY_BY_GROUP_QUERY: value})
-        return queryset.filter(procedure_query | group_query)
+        return queryset.filter(procedure_query | group_query).annotate(
+            latest_mri_session_time=Max("mri_session_set__time"),
+            mri_session_count=Count("mri_session_set", distinct=True),
+        )

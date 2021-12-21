@@ -25,7 +25,6 @@ class ExportDestinationSerializer(serializers.HyperlinkedModelSerializer):
         many=True,
         queryset=User.objects.all(),
     )
-    status = serializers.SerializerMethodField()
 
     class Meta:
         model = ExportDestination
@@ -39,17 +38,8 @@ class ExportDestinationSerializer(serializers.HyperlinkedModelSerializer):
             "destination",
             "users",
             "user_ids",
-            "status",
             "port",
             "socket_timeout",
             "negotiation_timeout",
             "banner_timeout",
         )
-
-    def get_status(self, destination: ExportDestination) -> bool:
-        try:
-            destination.sftp_client
-        except (RuntimeError, SSHException, ConnectionResetError):
-            return False
-        else:
-            return True

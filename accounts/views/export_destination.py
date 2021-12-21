@@ -6,6 +6,7 @@ from accounts.models.export_destination import ExportDestination
 from accounts.serializers.export_destination import ExportDestinationSerializer
 from accounts.tasks import export_mri_scan, export_mri_session
 from django.db.models import QuerySet
+from paramiko import SSHException
 from pylabber.views.defaults import DefaultsMixin
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -57,3 +58,14 @@ class ExportDestinationViewSet(DefaultsMixin, viewsets.ModelViewSet):
             finally:
                 return Response(status.HTTP_200_OK)
         return Response(status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["get"])
+    def get_status(self, request: Request, pk: int):
+        export_destination = ExportDestination.objects.get(id=pk)
+        try:
+            export_destination.sftp_client
+        except (RuntimeError, SSHException, ConnectionResetError):
+            status = False
+        else:
+            status = True
+        return Response(data=status)

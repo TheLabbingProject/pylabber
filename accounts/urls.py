@@ -26,4 +26,9 @@ urlpatterns = [
         views.ExportDestinationViewSet.as_view({"POST": "export_instance"}),
         name="export_instance",
     ),
+    path(
+        "accounts/export_destination/<int:pk>/status/",
+        views.ExportDestinationViewSet.as_view({"get": "get_status"}),
+        name="export_instance_status",
+    ),
 ]

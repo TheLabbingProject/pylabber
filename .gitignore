@@ -11,6 +11,7 @@ __pycache__/
 
 # Environment variables
 .env
+.prod
 
 # Distribution directories and files
 dist/
@@ -60,6 +61,8 @@ subjects_script.ipynb
 *.xlsx
 *.xlsx#
 *.ods
+*.csv
+*.json
 
 # Default media directory
 media/*
@@ -73,3 +76,9 @@ notebooks/
 
 # MRIQC workflow directory
 work/
+
+# Local scripts.
+scripts/
+
+# Dask working directory
+dask-worker-space/

@@ -1,7 +1,6 @@
 import socket
 import subprocess
 
-
 PORTS = {"bokeh": 5006, "django": 8000, "vue": 8080}
 COMMANDS = {
     "bokeh": [
@@ -21,7 +20,7 @@ COMMANDS = {
         "10000",
         "plots/series/series_viewer",
     ],
-    "django": ["./manage.py", "runserver"],
+    "django": ["./manage.py", "runserver_plus"],
     "vue": ["npm", "run", "--prefix", "../vuelabber", "serve"],
 }
 

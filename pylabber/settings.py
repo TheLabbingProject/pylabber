@@ -25,7 +25,7 @@ from django_mri.analysis.mri_output_parsers import MRI_OUTPUT_PARSERS
 # directory.
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(str, [""]),
+    ALLOWED_HOSTS=(str, ""),
     SECRET_KEY=(str, "s0m3-$upEr=S3cre7/|<3Y-L0n9Er=7hAn32(haR$"),
     DB_NAME=(str, "pylabber"),
     DB_USER=(str, "postgres"),
@@ -59,7 +59,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG", default=True)
 
 # List of safe hosts to serve.
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 # List of applications used by the project.
 INSTALLED_APPS = [

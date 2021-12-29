@@ -164,7 +164,7 @@ MEDIA_ROOT = env("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
 MEDIA_URL = "/media/"
 
 # Static files (CSS, JavaScript, Images)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "pylabber.storage_backends.WhiteNoiseStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 os.makedirs(STATIC_ROOT, exist_ok=True)
 STATIC_URL = "/static/"

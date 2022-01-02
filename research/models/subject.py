@@ -20,13 +20,10 @@ from research.models.measurement_definition import MeasurementDefinition
 from research.models.procedure import Procedure
 from research.models.study import Study
 from research.models.validators import not_future
-from research.utils.custom_attributes_processor import (
-    CustomAttributesProcessor,
-)
-from research.utils.subject_table import (
-    merge_subject_and_questionnaire_data,
-    read_subject_table,
-)
+from research.utils.custom_attributes_processor import \
+    CustomAttributesProcessor
+from research.utils.subject_table import (merge_subject_and_questionnaire_data,
+                                          read_subject_table)
 
 
 class Subject(TimeStampedModel):
@@ -164,13 +161,7 @@ class Subject(TimeStampedModel):
         models.QuerySet
             Associated studies
         """
-        group_query = models.Q(
-            id__in=self.mri_session_set.values("scan__study_groups__study")
-        )
-        procedure_query = models.Q(
-            id__in=self.mri_session_set.values("measurement__procedure__study")
-        )
-        return Study.objects.filter(group_query | procedure_query)
+        return self.mri_session_set.query_studies()
 
     def get_personal_information(self) -> pd.Series:
         """

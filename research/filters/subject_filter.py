@@ -127,4 +127,4 @@ class SubjectFilter(filters.FilterSet):
         study_subjects = Study.objects.filter(
             id__in=value
         ).query_associated_subjects()
-        return queryset & study_subjects
+        return queryset.filter(id__in=study_subjects)

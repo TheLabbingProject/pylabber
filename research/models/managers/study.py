@@ -1,12 +1,13 @@
 from typing import List
 
+from django.apps import apps
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet
-from research.models.procedure import Procedure
 from research.models.managers.utils import (
     STUDY_SUBJECTS_AGGREGATION,
     STUDY_SUBJECTS_ANNOTATION,
 )
+from research.models.procedure import Procedure
 
 
 class StudyManager(QuerySet):
@@ -33,3 +34,22 @@ class StudyManager(QuerySet):
 
     def from_list(self, definitions: List[dict]) -> list:
         return [self.from_dict(definitions) for definitions in definitions]
+
+    def query_associated_subjects(self) -> QuerySet:
+        """
+        Returns a queryset of subjects associated with these studies.
+
+        See Also
+        --------
+        * :func:`subject_set`
+
+        Returns
+        -------
+        models.QuerySet
+            Subjects associated with these studies
+        """
+        Subject = apps.get_model("research", "Subject")
+        subjects = Subject.objects.none()
+        for study in self.all():
+            subjects |= study.query_associated_subjects()
+        return subjects

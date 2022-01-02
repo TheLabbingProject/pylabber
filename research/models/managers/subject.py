@@ -1,4 +1,5 @@
 import logging
+from typing import List, Union
 
 import pandas as pd
 from bokeh.layouts import layout
@@ -35,6 +36,8 @@ DATAFRAME_COLUMNS = (
     "Date Of Birth",
     "Dominant Hand",
 )
+COLLABORATOR_BY_MRI_PROCEDURE: str = "mri_session_set__measurement__procedure__study__collaborators"  # noqa: E501
+COLLABORATOR_BY_MRI_GROUP: str = "mri_session_set__scan__study_groups__study__collaborators"  # noqa: E501
 
 
 class SubjectManager(models.Manager):
@@ -42,6 +45,7 @@ class SubjectManager(models.Manager):
         return (
             super()
             .get_queryset()
+            .defer("gender", "custom_attributes", "created", "modified")
             .annotate(
                 latest_mri_session_time=Max("mri_session_set__time"),
                 mri_session_count=Count("mri_session_set", distinct=True),
@@ -51,6 +55,15 @@ class SubjectManager(models.Manager):
 
 class SubjectQuerySet(models.QuerySet):
     _logger = logging.getLogger("research.subject")
+
+    def filter_by_collaborators(
+        self, collaborators: Union[models.Model, List[models.Model]]
+    ) -> models.QuerySet:
+        procedure_query = models.Q(
+            **{COLLABORATOR_BY_MRI_PROCEDURE: collaborators}
+        )
+        group_query = models.Q(**{COLLABORATOR_BY_MRI_GROUP: collaborators})
+        return self.filter(procedure_query | group_query)
 
     def to_dataframe(self) -> pd.DataFrame:
         """

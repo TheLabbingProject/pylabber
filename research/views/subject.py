@@ -59,15 +59,9 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     def filter_queryset(self, queryset):
         user = self.request.user
         queryset = super().filter_queryset(queryset)
-        if user.is_superuser:
-            return queryset
-        procedure_query = Q(
-            mri_session_set__measurement__procedure__study__collaborators=user
-        )
-        group_query = Q(
-            mri_session_set__scan__study_groups__study__collaborators=user
-        )
-        return queryset.filter(procedure_query | group_query)
+        # if user.is_superuser:
+        #     return queryset
+        return queryset.filter_by_collaborators(user)
 
     @action(detail=False, methods=["POST"])
     def export_files(self, request):

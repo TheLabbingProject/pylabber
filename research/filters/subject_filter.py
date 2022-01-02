@@ -1,11 +1,12 @@
 """
 Definition of the :class:`SubjectFilter` class.
 """
-from django.db.models import Count, Max, Q
+from django.db.models import Prefetch, Q
 from django_dicom.models.patient import Patient
 from django_filters import rest_framework as filters
 from django_mri.models.scan import Scan
 from pylabber.utils.filters import DEFUALT_LOOKUP_CHOICES, NumberInFilter
+from research.models.study import Study
 from research.models.subject import Subject
 
 MEASUREMENT_DEFINITION_QUERY: str = "mri_session_set__measurement__in"
@@ -123,9 +124,21 @@ class SubjectFilter(filters.FilterSet):
         return queryset.filter(**{STUDY_GROUP_QUERY: value})
 
     def filter_by_studies(self, queryset, name, value):
-        procedure_query = Q(**{STUDY_BY_PROCEDURE_QUERY: value})
-        group_query = Q(**{STUDY_BY_GROUP_QUERY: value})
-        return queryset.filter(procedure_query | group_query).annotate(
-            latest_mri_session_time=Max("mri_session_set__time"),
-            mri_session_count=Count("mri_session_set", distinct=True),
-        )
+        study_subjects = Study.objects.filter(
+            id__in=value
+        ).query_associated_subjects()
+        return queryset & study_subjects
+        # procedure_query = Q(**{STUDY_BY_PROCEDURE_QUERY: value})
+        # group_query = Q(**{STUDY_BY_GROUP_QUERY: value})
+        # return queryset.prefetch_related(
+        #     Prefetch(
+        #         "mri_session_set__measurement__procedure_set__study_set",
+        #         to_attr="procedure_studies",
+        #         queryset=Study.objects.filter(id__in=value),
+        #     ),
+        #     Prefetch(
+        #         "mri_session_set__scan_set__study_groups__study",
+        #         to_attr="group_studies",
+        #         queryset=Study.objects.filter(id__in=value),
+        #     ),
+        # ).filter(procedure_query | group_query)

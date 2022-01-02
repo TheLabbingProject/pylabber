@@ -59,8 +59,8 @@ class SubjectViewSet(DefaultsMixin, viewsets.ModelViewSet):
     def filter_queryset(self, queryset):
         user = self.request.user
         queryset = super().filter_queryset(queryset)
-        # if user.is_superuser:
-        #     return queryset
+        if user.is_superuser:
+            return queryset
         return queryset.filter_by_collaborators(user)
 
     @action(detail=False, methods=["POST"])

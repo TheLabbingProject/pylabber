@@ -5,6 +5,7 @@ celery>=5.1.2
 dask
 Django~=3.2
 django-admin-inline-paginator~=0.1
+django-debug-toolbar~=3.2
 django-nonrelated-inlines~=0.1
 djangorestframework~=3.12
 djangorestframework_camel_case~=1.1

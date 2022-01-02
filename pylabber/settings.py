@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     "storages",
     "django_celery_results",
     "django_admin_inline_paginator",
+    "debug_toolbar",
     # Local
     "research",
     # Extensions
@@ -92,6 +93,7 @@ INSTALLED_APPS = [
 
 # List of hooks for request/response processing.
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -335,6 +337,8 @@ CORS_ORIGIN_WHITELIST = [
     "https://vuelabber.herokuapp.com",
     "https://pylabber.herokuapp.com",
 ]
+
+INTERNAL_IPS = ["127.0.0.1", "localhost"]
 
 # research
 SUBJECT_MODEL = "research.Subject"

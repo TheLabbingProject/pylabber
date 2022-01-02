@@ -418,6 +418,7 @@ if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_TASK_TRACK_STARTED = True
+CELERYD_TIME_LIMIT = 72000
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 # Uncomment to keep results forever

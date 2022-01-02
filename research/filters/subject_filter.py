@@ -128,17 +128,3 @@ class SubjectFilter(filters.FilterSet):
             id__in=value
         ).query_associated_subjects()
         return queryset & study_subjects
-        # procedure_query = Q(**{STUDY_BY_PROCEDURE_QUERY: value})
-        # group_query = Q(**{STUDY_BY_GROUP_QUERY: value})
-        # return queryset.prefetch_related(
-        #     Prefetch(
-        #         "mri_session_set__measurement__procedure_set__study_set",
-        #         to_attr="procedure_studies",
-        #         queryset=Study.objects.filter(id__in=value),
-        #     ),
-        #     Prefetch(
-        #         "mri_session_set__scan_set__study_groups__study",
-        #         to_attr="group_studies",
-        #         queryset=Study.objects.filter(id__in=value),
-        #     ),
-        # ).filter(procedure_query | group_query)

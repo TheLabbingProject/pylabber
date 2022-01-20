@@ -82,15 +82,6 @@ class Study(TitleDescriptionModel, TimeStampedModel):
             Subjects associated with this study
         """
         Subject = get_subject_model()
-        # mri_session_subjects = self.procedures.values_list(
-        #     "events__measurementdefinition__mri_session_set__subject",
-        #     flat=True,
-        # ).distinct()
-        # mri_scan_subjects = self.group_set.values_list(
-        #     "mri_scan_set__session__subject", flat=True
-        # ).distinct()
-        # subject_ids = set(list(mri_session_subjects) + list(mri_scan_subjects))
-        # return Subject.objects.filter(id__in=subject_ids)
         return Subject.objects.filter(
             mri_session_set__scan__study_groups__study=self.id
         ).distinct()

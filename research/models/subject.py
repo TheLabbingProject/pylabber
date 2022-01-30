@@ -6,8 +6,18 @@ from pathlib import Path
 
 import pandas as pd
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
+from django_analyses.models.input.definitions.integer_input_definition import (
+    IntegerInputDefinition,
+)
+from django_analyses.models.input.definitions.list_input_definition import (
+    ListInputDefinition,
+)
+from django_analyses.models.input.types.integer_input import IntegerInput
+from django_analyses.models.input.types.list_input import ListInput
+from django_analyses.models.run import Run
 from django_extensions.db.models import TimeStampedModel
 from django_mri.utils import get_bids_dir
 from pylabber.utils import CharNullField
@@ -20,10 +30,13 @@ from research.models.measurement_definition import MeasurementDefinition
 from research.models.procedure import Procedure
 from research.models.study import Study
 from research.models.validators import not_future
-from research.utils.custom_attributes_processor import \
-    CustomAttributesProcessor
-from research.utils.subject_table import (merge_subject_and_questionnaire_data,
-                                          read_subject_table)
+from research.utils.custom_attributes_processor import (
+    CustomAttributesProcessor,
+)
+from research.utils.subject_table import (
+    merge_subject_and_questionnaire_data,
+    read_subject_table,
+)
 
 
 class Subject(TimeStampedModel):
@@ -162,6 +175,28 @@ class Subject(TimeStampedModel):
             Associated studies
         """
         return self.mri_session_set.query_studies()
+
+    def query_run_set(self) -> models.QuerySet:
+        content_type = ContentType.objects.get_for_model(self)
+        list_input_definitions = ListInputDefinition.objects.filter(
+            content_type=content_type
+        )
+        integer_input_definitions = IntegerInputDefinition.objects.filter(
+            content_type=content_type
+        )
+        list_inputs = ListInput.objects.filter(
+            definition__in=list_input_definitions, value__contains=self.id
+        )
+        integer_inputs = IntegerInput.objects.filter(
+            definition__in=integer_input_definitions, value=self.id
+        )
+        run_ids = set(list_inputs.values_list("run", flat=True)) | set(
+            integer_inputs.values_list("run", flat=True)
+        )
+        runs = Run.objects.none()
+        for mri_session in self.mri_session_set.all():
+            runs |= mri_session.query_run_set()
+        return Run.objects.filter(id__in=run_ids) | runs
 
     def get_personal_information(self) -> pd.Series:
         """

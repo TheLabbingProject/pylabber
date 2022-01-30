@@ -60,11 +60,7 @@ def export_run(export_destination_id: int, run_id: int, max_parallel: int = 3):
     destinations = None
     path_fixer = RUN_EXPORT_MUTATIONS.get(run.analysis_version.analysis.title)
     if path_fixer:
-        destination = path_fixer(run)
-        destinations = [
-            str(destination / Path(path).relative_to(run.path))
-            for path in files
-        ]
+        destinations = [path_fixer(run, path) for path in files]
     export_files.delay(export_destination_id, files, destinations)
 
 

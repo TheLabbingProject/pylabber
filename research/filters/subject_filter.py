@@ -22,7 +22,7 @@ class SubjectFilter(filters.FilterSet):
     :class:`~research.models.subject.Subject` model.
     """
 
-    pk = filters.LookupChoiceFilter(lookup_choices=DEFUALT_LOOKUP_CHOICES)
+    # pk = filters.LookupChoiceFilter(lookup_choices=DEFUALT_LOOKUP_CHOICES)
     born_after_date = filters.DateFilter("date_of_birth", lookup_expr="gte")
     born_before_date = filters.DateFilter("date_of_birth", lookup_expr="lte")
     first_name = filters.LookupChoiceFilter(
@@ -58,7 +58,7 @@ class SubjectFilter(filters.FilterSet):
     class Meta:
         model = Subject
         fields = (
-            "pk",
+            "id",
             "first_name",
             "last_name",
             "sex",

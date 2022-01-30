@@ -14,6 +14,7 @@ from pathlib import Path
 import environ
 from django_mri.analysis.mri_interfaces import interfaces
 from django_mri.analysis.mri_output_parsers import MRI_OUTPUT_PARSERS
+from django_mri.utils.export import EXPORT_MUTATORS
 
 # from django_mri.analysis.visualizers import MRI_VISUALIZERS
 
@@ -350,6 +351,9 @@ QUESTIONNAIRE_DATA_PATH = env("QUESTIONNAIRE_DATA_PATH")
 DATA_ACQUISITION_MODELS = [{"app_label": "django_mri", "model": "session"}]
 # SSH_RSA_KEY = os.path.expanduser("~/.ssh/id_rsa")
 SSH_KNOWN_HOSTS = os.path.expanduser("~/.ssh/known_hosts")
+
+# accounts
+EXPORT_MUTATORS = EXPORT_MUTATORS
 
 # django_analyses
 ANALYSIS_INTERFACES = interfaces

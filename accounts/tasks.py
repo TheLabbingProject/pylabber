@@ -2,14 +2,19 @@
 Celery tasks exposed by the :mod:`pylabber.accounts` app.
 """
 import math
+from pathlib import Path
 from typing import Iterable, List, Union
 
 from celery import group, shared_task
+from django.conf import settings
+from django_analyses.models.run import Run
 from django_mri.models import Scan, Session
 from paramiko.ssh_exception import SSHException
 from research.models.subject import Subject
 
 from accounts.models.export_destination import ExportDestination
+
+RUN_EXPORT_MUTATIONS = getattr(settings, "EXPORT_MUTATORS", {})
 
 
 @shared_task(
@@ -17,9 +22,50 @@ from accounts.models.export_destination import ExportDestination
     autoretry_for=(OSError, SSHException),
     retry_backoff=True,
 )
-def export_files(export_destination_id: int, files: List[str]):
+def export_files(
+    export_destination_id: int,
+    files: List[str],
+    destinations: List[str] = None,
+):
     host = ExportDestination.objects.get(id=export_destination_id)
-    host.put(files)
+    host.put(files, destinations)
+
+
+@shared_task(name="accounts.export-run-results")
+def export_run(export_destination_id: int, run_id: int, max_parallel: int = 3):
+    # Split in case of multiple runs.
+    if isinstance(run_id, Iterable):
+        try:
+            n_chunks = math.ceil(len(run_id) / max_parallel)
+        except ZeroDivisionError:
+            # If `max_parallel` is set to 0, run all in parallel.
+            signatures = [
+                export_run.s(export_destination_id, pk) for pk in run_id
+            ]
+            group(signatures)()
+        else:
+            # Create the inputs for each separate execution and run in chunks.
+            inputs = ((export_destination_id, pk) for pk in run_id)
+            chunks = export_run.chunks(inputs, n_chunks)
+            chunks.group().skew()()
+        finally:
+            return
+    # Split in case of multiple export destinations.
+    if isinstance(export_destination_id, Iterable):
+        signatures = [export_run.s(pk, run_id) for pk in export_destination_id]
+        group(signatures)()
+        return
+    run = Run.objects.get(id=run_id)
+    files = [str(path) for path in run.path.rglob("*") if path.is_file()]
+    destinations = None
+    path_fixer = RUN_EXPORT_MUTATIONS.get(run.analysis_version.analysis.title)
+    if path_fixer:
+        destination = path_fixer(run)
+        destinations = [
+            str(destination / Path(path).relative_to(run.path))
+            for path in files
+        ]
+    export_files.delay(export_destination_id, files, destinations)
 
 
 @shared_task(name="accounts.export-mri-scan",)
@@ -43,7 +89,7 @@ def export_mri_scan(
     max_parallel : int
         Maximal number of parallel processes
     """
-    # Split in case of multiple sessions.
+    # Split in case of multiple scans.
     if isinstance(scan_id, Iterable):
         try:
             n_chunks = math.ceil(len(scan_id) / max_parallel)

@@ -514,8 +514,9 @@ class ExportDestination(TitleDescriptionModel):
                     else source
                 )
                 # Iterate *source* and transfer files.
-                for path in iterable:
-                    self.put(path, destination, exist_ok=exist_ok, force=force)
+                for i, path in enumerate(iterable):
+                    dest = destination[i] if destination else None
+                    self.put(path, dest, exist_ok=exist_ok, force=force)
             except TypeError:
                 # If iteration failed, log and re-raise.
                 bad_input_log = logs.SFTP_PUT_BAD_INPUT.format(

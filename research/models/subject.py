@@ -8,6 +8,7 @@ import pandas as pd
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django_analyses.models.input.definitions.integer_input_definition import (
     IntegerInputDefinition,
@@ -185,7 +186,14 @@ class Subject(TimeStampedModel):
             content_type=content_type
         )
         list_inputs = ListInput.objects.filter(
-            definition__in=list_input_definitions, value__contains=self.id
+            Q(definition__in=list_input_definitions)
+            & (
+                Q(definition__element_type="INT", value__contains=self.id)
+                | Q(
+                    definition__element_type="STR",
+                    value__contains=str(self.id),
+                )
+            )
         )
         integer_inputs = IntegerInput.objects.filter(
             definition__in=integer_input_definitions, value=self.id

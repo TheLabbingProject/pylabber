@@ -456,7 +456,7 @@ class ExportDestination(TitleDescriptionModel):
         # Transfer file.
         try:
             self.sftp_client.put(str(source), str(destination), confirm=True)
-        except OSError as e:
+        except (OSError, PermissionError) as e:
             # Log file transfer failure and re-raise.
             failure_log = logs.SFTP_PUT_FAILURE.format(
                 source=source,

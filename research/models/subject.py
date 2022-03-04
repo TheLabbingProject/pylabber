@@ -265,7 +265,6 @@ class Subject(TimeStampedModel):
     def build_bids_directory(
         self,
         force: bool = False,
-        log_level: int = logging.DEBUG,
         persistent: bool = True,
         progressbar: bool = False,
         progressbar_position: int = 0,
@@ -302,10 +301,12 @@ class Subject(TimeStampedModel):
 
     def query_scores(
         self,
-        analysis: Analysis = None,
-        analysis_title: str = None,
-        analysis_version: AnalysisVersion = None,
-        analysis_version_title: str = None,
+        analysis: Union[Analysis, Iterable[Analysis]] = None,
+        analysis_title: Union[str, Iterable[str]] = None,
+        analysis_version: Union[
+            AnalysisVersion, Iterable[AnalysisVersion]
+        ] = None,
+        analysis_version_title: Union[str, Iterable[str]] = None,
         atlas=None,
         atlas_title: Union[str, Iterable[str]] = None,
         metric=None,
@@ -318,29 +319,47 @@ class Subject(TimeStampedModel):
         runs = self.query_run_set()
         if isinstance(analysis, Analysis):
             runs = runs.filter(analysis_version__analysis=analysis)
-        elif analysis_title is not None:
+        elif isinstance(analysis, Iterable):
+            runs = runs.filter(analysis_version__analysis__in=analysis)
+        elif isinstance(analysis_title, str):
             runs = runs.filter(
                 analysis_version__analysis__title=analysis_title
             )
+        elif isinstance(analysis_title, Iterable):
+            runs = runs.filter(
+                analysis_version__analysis__title__in=analysis_title
+            )
         if isinstance(analysis_version, AnalysisVersion):
             runs = runs.filter(analysis_version=analysis_version)
-        elif analysis_version_title is not None:
+        elif isinstance(analysis_version, Iterable):
+            runs = runs.filter(analysis_version__in=analysis_version)
+        elif isinstance(analysis_version_title, str):
             runs = runs.filter(analysis_version__title=analysis_version_title)
+        elif isinstance(analysis_version_title, Iterable):
+            runs = runs.filter(
+                analysis_version__title__in=analysis_version_title
+            )
         Score = apps.get_model("django_mri", "score")
         scores = Score.objects.filter(run__in=runs)
-        if atlas is not None:
+        if isinstance(atlas, Iterable):
+            scores = scores.filter(region__atlas__in=atlas)
+        elif atlas is not None:
             scores = scores.filter(region__atlas=atlas)
         elif isinstance(atlas_title, str):
             scores = scores.filter(region__atlas__title=atlas_title)
         elif isinstance(atlas_title, Iterable):
             scores = scores.filter(region__atlas__title__in=atlas_title)
-        if metric is not None:
+        if isinstance(metric, Iterable):
+            scores = scores.filter(metric__in=metric)
+        elif metric is not None:
             scores = scores.filter(metric=metric)
         elif isinstance(metric_title, str):
             scores = scores.filter(metric__title=metric_title)
         elif isinstance(metric_title, Iterable):
             scores = scores.filter(metric__title__in=metric_title)
-        if region is not None:
+        if isinstance(region, Iterable):
+            scores = scores.filter(region__in=region)
+        elif region is not None:
             scores = scores.filter(region=region)
         elif isinstance(region_title, str):
             scores = scores.filter(region__title=region_title)

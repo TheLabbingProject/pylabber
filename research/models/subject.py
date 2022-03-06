@@ -3,13 +3,17 @@ Definition of the :class:`Subject` model.
 """
 import logging
 from pathlib import Path
+from typing import Iterable, Union
 
 import pandas as pd
+from django.apps import apps
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.urls import reverse
+from django_analyses.models.analysis import Analysis
+from django_analyses.models.analysis_version import AnalysisVersion
 from django_analyses.models.input.definitions.integer_input_definition import (
     IntegerInputDefinition,
 )
@@ -29,7 +33,6 @@ from research.models.group import Group
 from research.models.managers.subject import SubjectManager, SubjectQuerySet
 from research.models.measurement_definition import MeasurementDefinition
 from research.models.procedure import Procedure
-from research.models.study import Study
 from research.models.validators import not_future
 from research.utils.custom_attributes_processor import (
     CustomAttributesProcessor,
@@ -262,7 +265,6 @@ class Subject(TimeStampedModel):
     def build_bids_directory(
         self,
         force: bool = False,
-        log_level: int = logging.DEBUG,
         persistent: bool = True,
         progressbar: bool = False,
         progressbar_position: int = 0,
@@ -296,3 +298,77 @@ class Subject(TimeStampedModel):
         bids_root = get_bids_dir()
         subject_dir_name = self.BIDS_DIR_TEMPLATE.format(pk=self.id)
         return bids_root / subject_dir_name
+
+    def query_scores(
+        self,
+        analysis: Union[Analysis, Iterable[Analysis]] = None,
+        analysis_title: Union[str, Iterable[str]] = None,
+        analysis_version: Union[
+            AnalysisVersion, Iterable[AnalysisVersion]
+        ] = None,
+        analysis_version_title: Union[str, Iterable[str]] = None,
+        atlas=None,
+        atlas_title: Union[str, Iterable[str]] = None,
+        metric=None,
+        metric_title: Union[str, Iterable[str]] = None,
+        region=None,
+        region_title: Union[str, Iterable[str]] = None,
+        region_index: Union[int, Iterable[int]] = None,
+        hemisphere: str = None,
+    ) -> QuerySet:
+        runs = self.query_run_set()
+        if isinstance(analysis, Analysis):
+            runs = runs.filter(analysis_version__analysis=analysis)
+        elif isinstance(analysis, Iterable):
+            runs = runs.filter(analysis_version__analysis__in=analysis)
+        elif isinstance(analysis_title, str):
+            runs = runs.filter(
+                analysis_version__analysis__title=analysis_title
+            )
+        elif isinstance(analysis_title, Iterable):
+            runs = runs.filter(
+                analysis_version__analysis__title__in=analysis_title
+            )
+        if isinstance(analysis_version, AnalysisVersion):
+            runs = runs.filter(analysis_version=analysis_version)
+        elif isinstance(analysis_version, Iterable):
+            runs = runs.filter(analysis_version__in=analysis_version)
+        elif isinstance(analysis_version_title, str):
+            runs = runs.filter(analysis_version__title=analysis_version_title)
+        elif isinstance(analysis_version_title, Iterable):
+            runs = runs.filter(
+                analysis_version__title__in=analysis_version_title
+            )
+        Score = apps.get_model("django_mri", "score")
+        scores = Score.objects.filter(run__in=runs)
+        if isinstance(atlas, Iterable):
+            scores = scores.filter(region__atlas__in=atlas)
+        elif atlas is not None:
+            scores = scores.filter(region__atlas=atlas)
+        elif isinstance(atlas_title, str):
+            scores = scores.filter(region__atlas__title=atlas_title)
+        elif isinstance(atlas_title, Iterable):
+            scores = scores.filter(region__atlas__title__in=atlas_title)
+        if isinstance(metric, Iterable):
+            scores = scores.filter(metric__in=metric)
+        elif metric is not None:
+            scores = scores.filter(metric=metric)
+        elif isinstance(metric_title, str):
+            scores = scores.filter(metric__title=metric_title)
+        elif isinstance(metric_title, Iterable):
+            scores = scores.filter(metric__title__in=metric_title)
+        if isinstance(region, Iterable):
+            scores = scores.filter(region__in=region)
+        elif region is not None:
+            scores = scores.filter(region=region)
+        elif isinstance(region_title, str):
+            scores = scores.filter(region__title=region_title)
+        elif isinstance(region_title, Iterable):
+            scores = scores.filter(region__title__in=region_title)
+        elif isinstance(region_index, int):
+            scores = scores.filter(region__index=region_index)
+        elif isinstance(region_index, Iterable):
+            scores = scores.filter(region__index__in=region_index)
+        if hemisphere is not None:
+            scores = scores.filter(region__hemisphere=hemisphere)
+        return scores

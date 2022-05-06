@@ -56,7 +56,9 @@ class SubjectsSynchronizer(Synchronizer):
         )
         self._logger.log(log_level, flagged_columns_log)
         # Fix date of birth to use native Python date type.
-        df.loc[:, "Date Of Birth"] = pd.to_datetime(df.loc[:, "Date Of Birth"])
+        df.loc[:, "Date Of Birth"] = pd.to_datetime(
+            df.loc[:, "Date Of Birth"], format="%d/%m/%Y"
+        )
         # Drop rows with no :attr:`id_column` and reset the index to it.
         return df.dropna(subset=[self.id_column]).set_index(self.id_column)
 

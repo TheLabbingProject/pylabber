@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     # Local
     "research",
+    "external_tables",
     # Extensions
     "django_dicom",
     "django_mri",
@@ -286,6 +287,10 @@ LOGGING = {
             "level": "DEBUG",
         },
         "research": {
+            "handlers": ["debug_file", "info_file", "warning_file", "console"],
+            "level": "DEBUG",
+        },
+        "external_tables": {
             "handlers": ["debug_file", "info_file", "warning_file", "console"],
             "level": "DEBUG",
         },

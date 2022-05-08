@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 from django.db import models
@@ -19,6 +19,7 @@ class SubjectsSynchronizer(Synchronizer):
         "Sex",
         "Date Of Birth",
     ]
+    CUSTOM_ATTRIBUTES: List[Tuple[str, str]] = [("Questionnaire ID", "String")]
 
     _logger = logging.getLogger("external_tables.sync")
 
@@ -114,6 +115,21 @@ class SubjectsSynchronizer(Synchronizer):
                     )
                     self._logger.log(logging.INFO, update_message)
                     setattr(subject, field_name, table_value)
+                    updated = True
+            for attribute_name, attribute_type in self.CUSTOM_ATTRIBUTES:
+                value = row[attribute_name]
+                if pd.isnull(value):
+                    continue
+                attribute_name = attribute_name.strip().lower().replace(" ", "_")
+                if attribute_name not in subject.custom_attributes:
+                    subject.custom_attributes[attribute_name] = {"type": attribute_type, "value": value}
+                    message = logs.CUSTOM_ATTRIBUTE_CREATION.format(subject_id=subject.id, name=attribute_name, value=value)
+                    self._logger.log(logging.INFO, message)
+                    updated = True
+                elif subject.custom_attributes[attribute_name]["value"] != value:
+                    subject.custom_attributes[attribute_name] = {"type": attribute_type, "value": value}
+                    message = logs.CUSTOM_ATTRIBUTE_UPDATE.format(subject_id=subject.id, name=attribute_name, value=value)
+                    self._logger.log(logging.INFO, message)
                     updated = True
             if updated and not dry:
                 subject.save()

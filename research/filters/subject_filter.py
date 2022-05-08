@@ -52,7 +52,7 @@ class SubjectFilter(filters.FilterSet):
     mri_session_time = filters.DateTimeFromToRangeFilter(
         field_name="mri_session_set__time"
     )
-    # TODO: Finish filters for measurement definition and group.
+    questionnaire_id = filters.CharFilter(method="filter_by_questionnaire_id")
 
     class Meta:
         model = Subject
@@ -127,3 +127,8 @@ class SubjectFilter(filters.FilterSet):
             id__in=value
         ).query_associated_subjects()
         return queryset.filter(id__in=study_subjects)
+
+    def filter_by_questionnaire_id(self, queryset, name, value):
+        return queryset.filter(
+            custom_attributes__questionnaire_id__value=value
+        )

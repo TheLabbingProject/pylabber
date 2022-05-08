@@ -62,7 +62,9 @@ class SubjectsSynchronizer(Synchronizer):
         # Drop rows with no :attr:`id_column` and reset the index to it.
         return df.dropna(subset=[self.id_column]).set_index(self.id_column)
 
-    def sync_subject(self, row: pd.Series, dry: bool = False) -> None:
+    def sync_subject(
+        self, row: pd.Series, dry: bool = False, warn_missing: bool = True
+    ) -> None:
         """
         Synchronize database subject information from subject series.
 
@@ -72,17 +74,21 @@ class SubjectsSynchronizer(Synchronizer):
             Subject row from subjects dataframe
         dry : bool, optional
             Whether to skip applying the changes, by default False
+        warn_missing : bool, optional
+            Whether to display a warning for missing database instances, by
+            default False
         """
         try:
             subject = Subject.objects.get(**{self.id_field: row.name})
         except Subject.DoesNotExist:
-            # Warn table subject does not exist in the database.
-            warning_log = logs.NO_DATABASE_INSTANCE.format(
-                model_name=self.MODEL.__name__,
-                field_name=self.id_field,
-                value=row.name,
-            )
-            self._logger.log(logging.WARNING, warning_log)
+            if warn_missing:
+                # Warn table subject does not exist in the database.
+                warning_log = logs.NO_DATABASE_INSTANCE.format(
+                    model_name=self.MODEL.__name__,
+                    field_name=self.id_field,
+                    value=row.name,
+                )
+                self._logger.log(logging.WARNING, warning_log)
         else:
             sync_fields = row[self.SYNC_FIELDS]
             updated = False

@@ -123,6 +123,7 @@ class SubjectsSynchronizer(Synchronizer):
         df: pd.DataFrame,
         dry: bool = False,
         log_level: int = logging.DEBUG,
+        warn_missing: bool = False,
     ) -> None:
         df = self.clean_table(df, log_level=log_level)
-        df.apply(self.sync_subject, dry=dry, axis=1)
+        df.apply(self.sync_subject, dry=dry, warn_missing=warn_missing, axis=1)

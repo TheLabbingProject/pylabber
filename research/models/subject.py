@@ -137,10 +137,8 @@ class Subject(TimeStampedModel):
         .. _overriding model methods:
            https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
         """
-        custom_attributes_processor = CustomAttributesProcessor(
-            self.custom_attributes
-        )
-        custom_attributes_processor.validate()
+        custom_attributes_processor = CustomAttributesProcessor()
+        custom_attributes_processor.validate(self.custom_attributes)
         super().save(*args, **kwargs)
 
     def get_full_name(self) -> str:

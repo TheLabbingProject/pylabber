@@ -90,6 +90,8 @@ class SubjectsSynchronizer(Synchronizer):
                 # Fix field names from column titles to model attributes.
                 field_name = field_name.lower().replace(" ", "_")
                 # Fix table values to match database values.
+                if isinstance(table_value, str):
+                    table_value = table_value.strip()
                 if field_name == "date_of_birth":
                     table_value = table_value.date()
                 elif field_name == "sex":

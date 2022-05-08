@@ -28,4 +28,3 @@ class Synchronizer:
         log_level: int = logging.DEBUG,
     ) -> None:
         raise NotImplementedError
-

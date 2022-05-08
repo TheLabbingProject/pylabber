@@ -8,9 +8,6 @@ class CustomAttributesProcessor:
         "Dictionary": dict,
     }
 
-    def __init__(self, custom_attributes: dict):
-        self.custom_attributes = custom_attributes
-
     def get_type_from_string(self, type_string: str):
         try:
             return self.STRING_TO_TYPE[type_string]
@@ -33,8 +30,8 @@ class CustomAttributesProcessor:
             return True
         return False
 
-    def validate(self):
-        for key, definition in self.custom_attributes.items():
+    def validate(self, custom_attributes: dict):
+        for key, definition in custom_attributes.items():
             if not self.validate_definition(definition):
                 type_representation = definition["type"].lower()
                 raise ValueError(

@@ -1,7 +1,7 @@
 """
 Definition of the :class:`SubjectFilter` class.
 """
-from django.db.models import Prefetch, Q
+from django.db.models import Q
 from django_dicom.models.patient import Patient
 from django_filters import rest_framework as filters
 from django_mri.models.scan import Scan
@@ -22,7 +22,6 @@ class SubjectFilter(filters.FilterSet):
     :class:`~research.models.subject.Subject` model.
     """
 
-    # pk = filters.LookupChoiceFilter(lookup_choices=DEFUALT_LOOKUP_CHOICES)
     born_after_date = filters.DateFilter("date_of_birth", lookup_expr="gte")
     born_before_date = filters.DateFilter("date_of_birth", lookup_expr="lte")
     first_name = filters.LookupChoiceFilter(

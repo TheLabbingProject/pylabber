@@ -35,8 +35,15 @@ class GoogleSheet(SyncTable):
         except KeyError:
             raise NotImplementedError("Synchronizer for {label} not found!")
 
-    def sync(self, dry: bool = False, log_level: int = logging.DEBUG) -> None:
-        self.synchronizer.sync(self.df, dry=dry, log_level=log_level)
+    def sync(
+        self,
+        dry: bool = False,
+        log_level: int = logging.DEBUG,
+        warn_missing: bool = False,
+    ) -> None:
+        self.synchronizer.sync(
+            self.df, dry=dry, log_level=log_level, warn_missing=warn_missing
+        )
 
     @property
     def synchronizer(self) -> Synchronizer:

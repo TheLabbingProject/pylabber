@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.3.0
-  codecov: codecov/codecov@1.0.5
+  python: circleci/python@2.0.3
+  codecov: codecov/codecov@3.2.3
 
 jobs:
   build-and-test:
@@ -29,11 +29,7 @@ jobs:
           command: apt update && apt install -y libpq-dev
       - run:
           name: Install lzma
-          command: |
-           apt install -y liblzma-dev lzma
-           ./configure --enable-optimizations
-           make
-           make install
+          command: apt install -y liblzma-dev lzma
       - python/load-cache
       - python/install-deps
       - python/save-cache

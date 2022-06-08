@@ -7,6 +7,7 @@ orbs:
 jobs:
   build-and-test:
     working_directory: ~/pylabber
+    executor: python/default
     docker:
       - image: themattrix/tox
         environment:
@@ -30,9 +31,9 @@ jobs:
       - run:
           name: Install lzma
           command: apt install -y liblzma-dev lzma
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      - python/install-packages:
+          pip-dependency-file: requirements-dev.txt
+          pkg-manager: pip
       - run:
           name: Install tox
           command: pip install tox

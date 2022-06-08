@@ -22,10 +22,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Disable xdebug
-          command: |
-            sed -i 's/^zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-      - run:
           name: Upgrade pip
           command: pip install --upgrade pip
       - run:

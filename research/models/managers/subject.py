@@ -9,15 +9,18 @@ from django.db import models
 from django.db.models import Count, Max
 from django_dicom.models.patient import Patient
 from research.models.managers import logs
-from research.plots.subject import (plot_bokeh_date_of_birth,
-                                    plot_bokeh_dominant_hand_pie,
-                                    plot_bokeh_sex_pie)
+from research.plots.subject import (
+    plot_bokeh_date_of_birth,
+    plot_bokeh_dominant_hand_pie,
+    plot_bokeh_sex_pie,
+)
 from tqdm import tqdm
 
 #: Subject fields to include in an exported DataFrame.
 DATAFRAME_FIELDS = (
     "id",
     "id_number",
+    "custom_attributes__questionnaire_id__value",
     "first_name",
     "last_name",
     "sex",

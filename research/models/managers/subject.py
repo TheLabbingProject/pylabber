@@ -31,6 +31,7 @@ DATAFRAME_FIELDS = (
 DATAFRAME_COLUMNS = (
     "ID",
     "ID Number",
+    "Questionnaire ID",
     "First Name",
     "Last Name",
     "Sex",

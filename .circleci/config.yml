@@ -28,8 +28,8 @@ jobs:
           name: Install libpq-dev
           command: apt update && apt install -y libpq-dev
       - run:
-          name: Install liblzma
-          command: apt install -y liblzma-dev
+          name: Install lzma
+          command: apt install -y liblzma-dev lzma
       - python/load-cache
       - python/install-deps
       - python/save-cache

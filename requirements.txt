@@ -50,3 +50,4 @@ git+https://github.com/TheLabbingProject/questionnaire_reader.git@main#egg=quest
 git+https://github.com/open-dicom/dicom_parser.git@main#egg=dicom_parser
 git+https://github.com/GalBenZvi/nipype@master#egg=nipype
 git+https://github.com/GalBenZvi/dwiprep@master#egg=dwiprep
+git+https://github.com/ZviBaratz/BrainPrint-python@main#egg=brainprint

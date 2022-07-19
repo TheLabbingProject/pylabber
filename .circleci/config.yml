@@ -1,12 +1,13 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.3.0
-  codecov: codecov/codecov@1.0.5
+  python: circleci/python@2.0.3
+  codecov: codecov/codecov@3.2.3
 
 jobs:
   build-and-test:
     working_directory: ~/pylabber
+    executor: python/default
     docker:
       - image: themattrix/tox
         environment:
@@ -27,9 +28,12 @@ jobs:
       - run:
           name: Install libpq-dev
           command: apt update && apt install -y libpq-dev
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      - run:
+          name: Install lzma
+          command: apt install -y liblzma-dev lzma
+      - python/install-packages:
+          pip-dependency-file: requirements-dev.txt
+          pkg-manager: pip
       - run:
           name: Install tox
           command: pip install tox

@@ -24,7 +24,9 @@ class SubjectsSynchronizer(Synchronizer):
     _logger = logging.getLogger("external_tables.sync")
 
     def clean_table(
-        self, df: pd.DataFrame, log_level: int = logging.DEBUG,
+        self,
+        df: pd.DataFrame,
+        log_level: int = logging.DEBUG,
     ) -> pd.DataFrame:
         """
         Cleans up the raw sheet parsing result.

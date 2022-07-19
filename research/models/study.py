@@ -1,10 +1,15 @@
 """
 Definition of the :class:`Study` model.
 """
+import shutil
+from pathlib import Path
+
+from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
+from django_mri.utils import get_bids_dir, get_mri_root
 from research.models.managers.study import StudyManager
 from research.utils import get_subject_model
 
@@ -85,6 +90,51 @@ class Study(TitleDescriptionModel, TimeStampedModel):
         return Subject.objects.filter(
             mri_session_set__scan__study_groups__study=self.id
         ).distinct()
+
+    def get_data_directory(self) -> Path:
+        return get_mri_root() / "studies" / str(self.id)
+
+    def initiate_bids_directory(self):
+        """
+        Initiate the BIDS directory with all mandatory files.
+        """
+        self.bids_manager.set_description_json()
+        self.bids_manager.generate_bidsignore()
+        self.bids_manager.generate_readme()
+
+    def create_data_directory(self, force: bool = False):
+        Scan = apps.get_model("django_mri", "scan")
+        BIDS_ROOT = get_bids_dir()
+        if force and self.data_directory.exists():
+            shutil.rmtree(self.data_directory)
+        self.initiate_bids_directory()
+        scans = Scan.objects.filter(study_groups__in=self.group_set.all())
+        for scan in scans:
+            if scan.nifti is None:
+                continue
+            self.bids_manager.set_participant_tsv_and_json(scan)
+            paths = scan.nifti.get_file_paths()
+            for path in paths:
+                try:
+                    link_path = self.data_directory / path.relative_to(BIDS_ROOT)
+                except ValueError:
+                    print(
+                        f"WARNING! {scan} does not have a BIDS compatible destination, skipping!"  # noqa: E501
+                    )
+                if link_path.exists():
+                    continue
+                link_path.parent.mkdir(parents=True, exist_ok=True)
+                link_path.symlink_to(path)
+
+    @property
+    def data_directory(self) -> Path:
+        return self.get_data_directory()
+
+    @property
+    def bids_manager(self):
+        from django_mri.utils.bids import BidsManager
+
+        return BidsManager(bids_dir=self.data_directory)
 
     @property
     def subject_set(self) -> models.QuerySet:

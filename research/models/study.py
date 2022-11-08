@@ -3,7 +3,7 @@ Definition of the :class:`Study` model.
 """
 import shutil
 from pathlib import Path
-
+import tqdm
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -109,8 +109,14 @@ class Study(TitleDescriptionModel, TimeStampedModel):
             shutil.rmtree(self.data_directory)
         self.initiate_bids_directory()
         scans = Scan.objects.filter(study_groups__in=self.group_set.all())
-        for scan in scans:
-            if scan.nifti is None:
+        for scan in tqdm.tqdm(scans):
+            try:
+                if scan.nifti is None:
+                    continue
+            except FileNotFoundError:
+                print(
+                        f"WARNING! {scan} does not exist, skipping!"  # noqa: E501
+                    )
                 continue
             self.bids_manager.set_participant_tsv_and_json(scan)
             paths = scan.nifti.get_file_paths()

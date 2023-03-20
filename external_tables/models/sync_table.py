@@ -59,7 +59,7 @@ class SyncTable(models.Model):
     @property
     def df(self) -> pd.DataFrame:
         """
-        Returs the :class:`SyncTable` as a dataframe.
+        Returns the :class:`SyncTable` as a dataframe.
 
         Returns
         -------

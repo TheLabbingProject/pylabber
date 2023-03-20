@@ -71,7 +71,7 @@ class FiguresManager:
         Returns
         -------
         Image
-            The created Image instace for the given plot.
+            The created Image instance for the given plot.
         """
 
         plot = self.figures[plane].image(

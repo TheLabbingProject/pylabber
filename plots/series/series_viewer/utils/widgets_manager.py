@@ -144,7 +144,7 @@ class WidgetsManager:
         Parameters
         ----------
         active : bool
-            Index sliders' visiblity toggle button state.
+            Index sliders' visibility toggle button state.
         """
 
         for slider in self.index_sliders.values():
@@ -171,7 +171,7 @@ class WidgetsManager:
         Parameters
         ----------
         active : bool
-            Range sliders' visiblity toggle button state.
+            Range sliders' visibility toggle button state.
         """
 
         for slider in self.range_sliders.values():
@@ -211,7 +211,7 @@ class WidgetsManager:
 
     def create_visibility_checkbox(self) -> CheckboxButtonGroup:
         """
-        Toggles crosshair and axes visiblity on or off.
+        Toggles crosshair and axes visibility on or off.
 
         Returns
         -------

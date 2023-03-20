@@ -7,7 +7,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     when implemented as part of the defaults mixin and therefore was moved
     to this class, which is meant to be set in the
     `ViewSets <https://www.django-rest-framework.org/api-guide/viewsets/>`_'
-    *pagination_class* attribue definition, or in the REST_FRAMEWORK definition
+    *pagination_class* attribute definition, or in the REST_FRAMEWORK definition
     within settings.py. For much information see
     `the DRF documentation <https://www.django-rest-framework.org/api-guide/pagination/#modifying-the-pagination-style>`_.
     

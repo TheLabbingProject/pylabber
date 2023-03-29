@@ -99,7 +99,7 @@ class SubjectModelTestCase(TestCase):
         # result = self.test_subject.get_personal_information()
         # result = result[[item for item in ]]
 
-        # excpected = {
+        # expected = {
         #     ("Anonymized", "Patient ID"): "ABC123",
         #     ("Anonymized", "First Name"): "Noam",
         #     ("Anonymized", "Last Name"): "Aharony",

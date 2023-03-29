@@ -22,7 +22,7 @@ Is The Labbing Project only suitable for MRI-based neuroscientific research?
 
 Not at all! The purpose of the :mod:`research` app is to provide common,
 generic models (such as :class:`~research.models.subject.Subject` and
-:class:`~research.models.study.Study`) that may be associted with any number of
+:class:`~research.models.study.Study`) that may be associated with any number of
 data models originating from any number of reusable apps.
 
 How are different data types integrated into the application's database?

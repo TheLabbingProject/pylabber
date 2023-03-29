@@ -1,5 +1,5 @@
 """
-Definintion of the :class:`StudyViewSet` class.
+Definition of the :class:`StudyViewSet` class.
 """
 from typing import Tuple
 

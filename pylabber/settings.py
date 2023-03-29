@@ -151,7 +151,7 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# Password strengh validation
+# Password strength validation
 VALIDATION_MODULE = "django.contrib.auth.password_validation"
 SIMILARITY_VALIDATOR = f"{VALIDATION_MODULE}.UserAttributeSimilarityValidator"
 MINIMUM_LENGTH_VALIDATOR = f"{VALIDATION_MODULE}.MinimumLengthValidator"

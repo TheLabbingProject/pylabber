@@ -35,7 +35,7 @@ urlpatterns = [
     path("api/", include("research.urls", namespace="research")),
     path("api/", include("django_mri.urls", namespace="mri")),
     path("api/", include("django_analyses.urls", namespace="analyses")),
-    path("api/auth/", include("rest_auth.urls")),
+    path("api/auth/", include("dj_rest_auth.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 

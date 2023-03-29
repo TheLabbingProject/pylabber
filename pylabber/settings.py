@@ -12,6 +12,7 @@ from pathlib import Path
 
 # import django_heroku
 import environ
+
 from django_mri.analysis.mri_interfaces import interfaces
 from django_mri.analysis.mri_output_parsers import MRI_OUTPUT_PARSERS
 from django_mri.utils.export import EXPORT_MUTATORS
@@ -78,12 +79,12 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
-    "rest_auth",
     "corsheaders",
     "storages",
     "django_celery_results",
     "django_admin_inline_paginator",
     "debug_toolbar",
+    "dj_rest_auth",
     # Local
     "research",
     "external_tables",

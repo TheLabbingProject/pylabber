@@ -1,4 +1,4 @@
-black==19.10b0
+black==24.3.0
 coverage~=4.5
 factory-boy~=2.12
 flake8~=3.7

@@ -21,7 +21,7 @@ django-model-utils==4.*
 django-nonrelated-inlines~=0.1
 dj_rest_auth~=3.0
 django-storages~=1.9
-gunicorn==20.0.4
+gunicorn==22.0.0
 matplotlib~=3.3
 nibabel~=3.2
 nilearn~=0.7
